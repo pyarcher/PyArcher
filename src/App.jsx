@@ -22,13 +22,104 @@ function GmailIcon({ size = 18 }) {
   );
 }
 
+// NOTE: keep your original long base64 strings for these two constants —
+// copy them from your current App.jsx and paste over these placeholders.
 const FACE_IMG = "data:image/jpeg;base64,PLACEHOLDER_KEEP_YOUR_ORIGINAL_BASE64_HERE";
 const BOOK_IMG = "data:image/jpeg;base64,PLACEHOLDER_KEEP_YOUR_ORIGINAL_BASE64_HERE";
 
+// Column & Essay archive — grouped by year, newest first.
+// To add a new piece, just add a new object to the matching year's `items`
+// array (or create a new year group at the top).
 const ARTICLES = [
-  { title: "꿰지 못할 서말 구슬", url: "https://blog.naver.com/sixpod/222305844084" },
-  // 새 기고문이 생기면 아래처럼 한 줄만 추가하세요:
-  // { title: "제목", url: "링크 주소" },
+  {
+    year: "2026",
+    items: [
+      { title: "울산 전통 활쏘기의 종가, 원학정", date: "2026.7.8", url: "https://www.ksilbo.co.kr/news/articleView.html?idxno=1061475" },
+      { title: "울주 개지변과 울산 팰리세이드", date: "2026.7.2", url: "http://www.ujeil.com/news/articleView.html?idxno=388196" },
+      { title: "18세기 울산 동헌 풍경", date: "2026.6.11", url: "https://www.iusm.co.kr/news/articleView.html?idxno=1063979" },
+    ],
+  },
+  {
+    year: "2025",
+    items: [
+      { title: "울산 병영의 칼과 펜", date: "2025.9.18", url: "https://www.ksilbo.co.kr/news/articleView.html?idxno=1037083" },
+      { title: "울산읍성과 좌병영 사이, 부평 단장골", date: "2025.8.6", url: "https://www.ulsanpress.net/news/articleView.html?idxno=556483" },
+      { title: "흥례(興禮), 울주 흥업(興業), 울산", date: "2025.7.1", url: "http://www.ujeil.com/news/articleView.html?idxno=369550" },
+      { title: "울산의 태화, 열두 길", date: "2025.4.28", url: "https://www.iusm.co.kr/news/articleView.html?idxno=1050897" },
+      { title: "태화, 원융과 태평을 품다", date: "2025.2.14", url: "http://www.ulsanilbo.co.kr/news/articleView.html?idxno=92566" },
+    ],
+  },
+  {
+    year: "2024",
+    items: [
+      { title: "기후대응댐, 회야댐 다시 음수사원", date: "2024.8.28", url: "https://www.iusm.co.kr/news/articleView.html?idxno=1045173" },
+      { title: "심원권 일기, 일기의 쓸모", date: "2024.7.7", url: "https://www.iusm.co.kr/news/articleView.html?idxno=1042788" },
+      { title: "돈 먹는 물, 돈 같은 물, 돈 되는 물", date: "2024.6.23", url: "https://www.iusm.co.kr/news/articleView.html?idxno=1041940" },
+      { title: "장춘오의 기나긴 봄", date: "2024.4.30", url: "https://www.iusm.co.kr/news/articleView.html?idxno=1039082" },
+      { title: "말은 언제 오나?", date: "2024.4.18", url: "https://www.iusm.co.kr/news/articleView.html?idxno=1038382" },
+      { title: "울산과 샌디에고, 두 고래도시 이야기", date: "2024.3.12", url: "https://www.ulsanpress.net/news/articleView.html?idxno=523761" },
+    ],
+  },
+  {
+    year: "2022",
+    items: [
+      { title: "울산의 꽃, 화유십일홍", date: "2022.10.27", url: "https://www.iusm.co.kr/news/articleView.html?idxno=1001695" },
+      { title: "이순신 장군과 일촌 맺기", date: "2022.8.31", url: "https://www.ksilbo.co.kr/news/articleView.html?idxno=945584" },
+      { title: "고래, 발가락이 닮았다", date: "2022.7.4", url: "https://www.iusm.co.kr/news/articleView.html?idxno=951047" },
+      { title: "접항(接港), 방어진의 용(龍)가자미", date: "2022.5.6", url: "https://www.ksilbo.co.kr/news/articleView.html?idxno=934565" },
+      { title: "부상효채, 동대삼객(扶桑曉彩 東臺三客)", date: "2022.4.25", url: "https://www.iusm.co.kr/news/articleView.html?idxno=944513" },
+      { title: "세계 조선산업도시 열전", date: "2022.3.3", url: "https://www.ksilbo.co.kr/news/articleView.html?idxno=928187" },
+      { title: "항(港)과 항(巷), 두 도시 이야기", date: "2022.2.14", url: "http://www.ujeil.com/news/articleView.html?idxno=297480" },
+    ],
+  },
+  {
+    year: "2021",
+    items: [
+      { title: "숟가락과 젓가락 사이, 울산", date: "2021.11.28", url: "https://www.iusm.co.kr/news/articleView.html?idxno=930522" },
+      { title: "특별하고 일반적인 도시가 따로 있나?", date: "2021.11.23", url: "https://www.ksilbo.co.kr/news/articleView.html?idxno=919214" },
+      { title: "단계적 일상회복과 공공의료", date: "2021.10.26", url: "https://www.iusm.co.kr/news/articleView.html?idxno=926671" },
+      { title: "코로나19에서 울산이 살아남는 법", date: "2021.10.11", url: "https://www.ulsanpress.net/news/articleView.html?idxno=385954" },
+      { title: "약방의 시대, 의료원의 시대", date: "2021.6.2", url: "https://www.iusm.co.kr/news/articleView.html?idxno=912521" },
+      { title: "신라의 태화! 울산의 태화!", date: "2021.3.24", url: "https://www.ksilbo.co.kr/news/articleView.html?idxno=792304" },
+      { title: "코로나19와의 전쟁 1년… 부적과 과학", date: "2021.2.22", url: "https://www.ksilbo.co.kr/news/articleView.html?idxno=789115" },
+      { title: "현곡 이유수 선생과 울산향토사", date: "2021.1.12", url: "https://www.ulsanpress.net/news/articleView.html?idxno=368777" },
+    ],
+  },
+  {
+    year: "2020",
+    items: [
+      { title: "울산 동해 바이킹 시즌2", date: "2020.11.8", url: "http://www.ulsanilbo.co.kr/news/articleView.html?idxno=16812" },
+      { title: "반구대 암각화와 운문댐 물값", date: "2020.8.23", url: "https://www.ksilbo.co.kr/news/articleView.html?idxno=770840" },
+      { title: "낙동강 물로 하나되는 영남", date: "2020", url: null },
+    ],
+  },
+  {
+    year: "2018",
+    items: [
+      { title: "북송 등문고에서 울산 신문고까지", date: "2018.8.26", url: "https://www.ksilbo.co.kr/news/articleView.html?idxno=655130" },
+    ],
+  },
+  {
+    year: "2016",
+    items: [
+      { title: "신고리 5·6호기 건설로 울산 경기회복 물꼬 터야", date: "2016.6.22", url: "https://www.iusm.co.kr/news/articleView.html?idxno=668772" },
+      { title: "제9회 울산 조선해양의날: 골리앗 크레인은 무너지지 않는다", date: "2016.1.7", url: "https://m.blog.naver.com/sixpod/220590562287" },
+    ],
+  },
+  {
+    year: "2015",
+    items: [
+      { title: "[뉴스] 제9회 울산조선해양의 날 특집 '조선해양산업 현재와 미래 전망'", date: "2015.7.1", url: "http://www.ulsan-news.com/news/view.php?idx=24020" },
+      { title: "백경을 쫓은 피쿼드호는 이양선이었다", date: "2015.5.24", url: "https://www.ksilbo.co.kr/news/articleView.html?idxno=501872" },
+      { title: "울산형 경제건설, 창조경제적 어프로치", date: "2015.3.20", url: "https://www.iusm.co.kr/news/articleView.html?idxno=583862" },
+    ],
+  },
+  {
+    year: "2013",
+    items: [
+      { title: "4월, 고래의 달, 고래바다여행선을 띄우며", date: "2013.4.1", url: "https://www.ksilbo.co.kr/news/articleView.html?idxno=405481" },
+    ],
+  },
 ];
 
 export default function KimSangYukPortfolio() {
@@ -62,15 +153,17 @@ export default function KimSangYukPortfolio() {
         .kp-social:hover { transform: translateY(-2px); background: #E9ECF6; }
         .kp-copy:hover { background: #EEF1FA; }
         .kp-book:hover { transform: translateY(-3px); }
-        .kp-article-link { transition: background 0.15s ease, padding-left 0.15s ease; }
-        .kp-article-link:hover { background: #EEF1FA; padding-left: 10px; }
+        .kp-essay-link { transition: background 0.15s ease, padding-left 0.15s ease, border-color 0.15s ease; }
+        .kp-essay-link:hover { background: #EEF1FA; padding-left: 12px; border-color: #C7CDE3 !important; }
+        .kp-essay-static { opacity: 0.55; }
         @media (prefers-reduced-motion: reduce) {
-          .kp-btn-primary, .kp-btn-ghost, .kp-social, .kp-copy, .kp-book, .kp-article-link { transition: none; }
+          .kp-btn-primary, .kp-btn-ghost, .kp-social, .kp-copy, .kp-book, .kp-essay-link { transition: none; }
         }
         @media (max-width: 880px) {
           .kp-layout { grid-template-columns: 1fr !important; }
           .kp-card { margin-top: 40px; }
           .kp-name { font-size: clamp(46px, 13vw, 88px) !important; }
+          .kp-essay-cols { grid-template-columns: 1fr !important; }
         }
       `}</style>
 
@@ -220,24 +313,48 @@ export default function KimSangYukPortfolio() {
           </div>
         </div>
 
-        <div style={styles.articlesSection}>
+        {/* ---------------- Column and Essay ---------------- */}
+        <div style={styles.essaySection}>
           <p style={styles.eyebrow}>
-            WRITINGS <span style={styles.eyebrowDash}>&mdash;</span>{" "}
-            <span style={styles.eyebrowBlue}>기고문</span>
+            COLUMN <span style={styles.eyebrowDash}>&amp;</span>{" "}
+            <span style={styles.eyebrowBlue}>ESSAY</span>
           </p>
-          <div style={styles.articlesList}>
-            {ARTICLES.map((article, i) => (
-              <a
-                key={i}
-                href={article.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="kp-article-link"
-                style={styles.articleItem}
-              >
-                <span style={styles.articleTitle}>{article.title}</span>
-                <span style={styles.articleArrow}>&rarr;</span>
-              </a>
+
+          <div className="kp-essay-cols" style={styles.essayCols}>
+            {ARTICLES.map((group) => (
+              <div key={group.year} style={styles.yearBlock}>
+                <div style={styles.yearHeader}>
+                  <span style={styles.yearNumber}>{group.year}</span>
+                  <span style={styles.yearLine} />
+                </div>
+
+                <div style={styles.yearItems}>
+                  {group.items.map((item, i) =>
+                    item.url ? (
+                      <a
+                        key={i}
+                        href={item.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="kp-essay-link"
+                        style={styles.essayItem}
+                      >
+                        <span style={styles.essayTitle}>{item.title}</span>
+                        <span style={styles.essayDate}>{item.date}</span>
+                      </a>
+                    ) : (
+                      <div
+                        key={i}
+                        className="kp-essay-static"
+                        style={styles.essayItem}
+                      >
+                        <span style={styles.essayTitle}>{item.title}</span>
+                        <span style={styles.essayDate}>비공개</span>
+                      </div>
+                    )
+                  )}
+                </div>
+              </div>
             ))}
           </div>
         </div>
@@ -437,32 +554,66 @@ const styles = {
   },
   copyLabel: { fontSize: 12, color: "#8A90A8", minWidth: 50 },
   copyValue: { fontSize: 13.5, color: "#0B1220", fontWeight: 600, flex: 1 },
-  articlesSection: {
-    marginTop: 72,
-    paddingTop: 40,
-    borderTop: "1px solid #E7EAF4",
+
+  /* ---- Column & Essay ---- */
+  essaySection: {
+    marginTop: 88,
+    paddingTop: 44,
+    borderTop: "1px solid #D7DCEE",
   },
-  articlesList: {
+  essayCols: {
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    columnGap: 56,
+  },
+  yearBlock: {
+    breakInside: "avoid",
+    marginBottom: 20,
+  },
+  yearHeader: {
+    display: "flex",
+    alignItems: "baseline",
+    gap: 14,
+    marginBottom: 5,
+  },
+  yearNumber: {
+    fontFamily: "'Inter', sans-serif",
+    fontWeight: 700,
+    fontSize: 13,
+    color: "#6D4FE0",
+    letterSpacing: "0.14em",
+  },
+  yearLine: {
+    flex: 1,
+    height: 1,
+    background: "#D7DCEE",
+  },
+  yearItems: {
     display: "flex",
     flexDirection: "column",
   },
-  articleItem: {
+  essayItem: {
     display: "flex",
     justifyContent: "space-between",
-    alignItems: "center",
-    padding: "18px 8px",
-    borderBottom: "1px solid #E7EAF4",
+    alignItems: "baseline",
+    gap: 16,
+    padding: "5px 6px",
+    borderRadius: 8,
+    borderLeft: "2px solid transparent",
     textDecoration: "none",
     color: "#0B1220",
-    borderRadius: 8,
   },
-  articleTitle: {
-    fontSize: 17,
+  essayTitle: {
+    fontSize: 13,
     fontWeight: 700,
+    color: "#0B1220",
+    lineHeight: 1.5,
   },
-  articleArrow: {
-    fontSize: 18,
-    color: "#2F5FE0",
-    fontWeight: 700,
+  essayDate: {
+    fontSize: 12,
+    color: "#9096AC",
+    fontWeight: 500,
+    whiteSpace: "nowrap",
+    flexShrink: 0,
   },
 };
