@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Github, Copy, Check } from "lucide-react";
 import faceImg from "./assets/face.jpg";
 import bookImg from "./assets/book.png";
+import whalingImg from "./assets/whaling.jpg";
 
 function NaverIcon({ size = 18 }) {
   return (
@@ -23,6 +24,22 @@ function GmailIcon({ size = 18 }) {
     </svg>
   );
 }
+
+// Published books — shown under "AUTHOR OF", each cover links out.
+const BOOKS = [
+  {
+    title: "위대한 번방 울산",
+    meta: "김상육 지음",
+    cover: bookImg,
+    url: "https://product.kyobobook.co.kr/detail/S000061694894",
+  },
+  {
+    title: "고래와 고래잡이, 그리고 고래특구",
+    meta: "울산광역시 남구",
+    cover: whalingImg,
+    url: "https://dl.nanet.go.kr/search/searchInnerDetail.do?searchType=INNER_SEARCH&resultType=INNER_SEARCH_DETAIL&searchMehtod=L&searchClass=S&controlNo=MONO1201244487&queryText=&prevQueryText=%EA%B3%A0%EB%9E%98%EC%9E%A1%EC%9D%B4%3AALL_NI_TOC%3AAND&zone=&fieldText=&prevPubYearFieldText=&languageCode=&synonymYn=&refineSearchYn=&ddcPopSearchYn=&pageNum=&pageSize=&orderBy=&topMainMenuCode=&topSubMenuCode=&totalSize=118&totalSizeByMenu=118&seqNo=&hanjaYn=Y&knowPub=&isdb=&isdbsvc=&tt1=&down=&frgnLangMtrlYn=&targetLangCode=&checkedDbIdList=&baseDbId=&selectedDbIndexIdList=&caller=&asideState=&dpBranch=ALL&journalKind=&degreeDiv=&searchQuery=%EA%B3%A0%EB%9E%98%EC%9E%A1%EC%9D%B4",
+  },
+];
 
 // Column & Essay archive — grouped by year, newest first.
 // To add a new piece, just add a new object to the matching year's `items`
@@ -266,13 +283,25 @@ export default function KimSangYukPortfolio() {
             <div style={styles.cardDivider} />
 
             <p style={styles.cardEyebrow}>AUTHOR OF</p>
-            <div className="kp-book" style={styles.bookRow}>
-              <img src={bookImg} alt="Book cover" style={styles.bookCover} />
-              <div>
-                <p style={styles.bookTitle}>위대한 번방 울산</p>
-                <p style={styles.bookMeta}>김상육 지음</p>
-              </div>
-            </div>
+            {BOOKS.map((book, i) => (
+              <a
+                key={i}
+                href={book.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="kp-book"
+                style={{
+                  ...styles.bookRow,
+                  marginBottom: i === BOOKS.length - 1 ? 0 : 16,
+                }}
+              >
+                <img src={book.cover} alt={book.title} style={styles.bookCover} />
+                <div>
+                  <p style={styles.bookTitle}>{book.title}</p>
+                  <p style={styles.bookMeta}>{book.meta}</p>
+                </div>
+              </a>
+            ))}
 
             <div style={styles.cardDivider} />
 
@@ -518,6 +547,8 @@ const styles = {
     display: "flex",
     gap: 14,
     alignItems: "center",
+    textDecoration: "none",
+    color: "inherit",
   },
   bookCover: {
     width: 56,
