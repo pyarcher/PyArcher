@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Github, Copy, Check } from "lucide-react";
+import faceImg from "./assets/face.jpg";
+import bookImg from "./assets/book.png";
 
 function NaverIcon({ size = 18 }) {
   return (
@@ -21,11 +23,6 @@ function GmailIcon({ size = 18 }) {
     </svg>
   );
 }
-
-// NOTE: keep your original long base64 strings for these two constants —
-// copy them from your current App.jsx and paste over these placeholders.
-const FACE_IMG = "data:image/jpeg;base64,PLACEHOLDER_KEEP_YOUR_ORIGINAL_BASE64_HERE";
-const BOOK_IMG = "data:image/jpeg;base64,PLACEHOLDER_KEEP_YOUR_ORIGINAL_BASE64_HERE";
 
 // Column & Essay archive — grouped by year, newest first.
 // To add a new piece, just add a new object to the matching year's `items`
@@ -249,7 +246,7 @@ export default function KimSangYukPortfolio() {
 
           <div className="kp-card" style={styles.card}>
             <div style={styles.photoWrap}>
-              <img src={FACE_IMG} alt="Kim Sang Yuk portrait" style={styles.photo} />
+              <img src={faceImg} alt="Kim Sang Yuk portrait" style={styles.photo} />
             </div>
 
             <p style={styles.cardEyebrow}>K-ULSANER</p>
@@ -270,7 +267,7 @@ export default function KimSangYukPortfolio() {
 
             <p style={styles.cardEyebrow}>AUTHOR OF</p>
             <div className="kp-book" style={styles.bookRow}>
-              <img src={BOOK_IMG} alt="Book cover" style={styles.bookCover} />
+              <img src={bookImg} alt="Book cover" style={styles.bookCover} />
               <div>
                 <p style={styles.bookTitle}>위대한 번방 울산</p>
                 <p style={styles.bookMeta}>김상육 지음</p>
