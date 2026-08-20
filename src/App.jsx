@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Github, Copy, Check } from "lucide-react";
 import faceImg from "./assets/face.jpg";
 import bookImg from "./assets/book.png";
-import whalingImg from "./assets/whaling.jpg";
+import whalingImg from "./assets/whaling.jpeg";
 
 function NaverIcon({ size = 18 }) {
   return (
