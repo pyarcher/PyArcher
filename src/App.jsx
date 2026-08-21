@@ -252,7 +252,7 @@ export default function KimSangYukPortfolio() {
       <div style={styles.wrap}>
         <p style={styles.eyebrow}>
           KIM SANG YUK <span style={styles.eyebrowDash}>&mdash;</span>{" "}
-          <span style={styles.eyebrowBlue}>ARCHER &middot; AUTHOR &middot; Admin &middot; ULSANER</span>
+          <span style={styles.eyebrowBlue}>ARCHER &middot; AUTHOR &middot; Watcher &middot; ULSANER</span>
         </p>
 
         <div className="kp-layout" style={styles.layout}>
@@ -335,7 +335,7 @@ export default function KimSangYukPortfolio() {
             <p style={styles.cardEyebrow}>K-ULSANER</p>
             <h2 style={styles.cardTitle}>김상육 &middot; Kim Sang Yuk</h2>
             <p style={styles.cardDesc}>
-              Archer, author rooted in Ulsan &mdash; writing history
+               GenX rooted in Ulsan &mdash; writing local history
               and reflection into everyday life.
             </p>
 
