@@ -3,7 +3,7 @@ import { Github, Copy, Check } from "lucide-react";
 import faceImg from "./assets/face.jpg";
 import bookImg from "./assets/book.png";
 import whalingImg from "./assets/whaling.jpeg";
-import harmonyImg from "./assets/harmony.png";
+import harmonyImg from "./assets/harmony.svg";
 
 function NaverIcon({ size = 18 }) {
   return (
