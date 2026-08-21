@@ -411,11 +411,13 @@ export default function KimSangYukPortfolio() {
             ABOUT <span style={styles.eyebrowDash}>&mdash;</span>{" "}
             <span style={styles.eyebrowBlue}>ULSAN</span>
           </p>
-          <img
-            src={harmonyImg}
-            alt="Ulsan harmony"
-            style={styles.aboutImage}
-          />
+          <div style={styles.aboutImageWrap}>
+            <img
+              src={harmonyImg}
+              alt="Ulsan harmony"
+              style={styles.aboutImage}
+            />
+          </div>
         </div>
 
         {/* ---------------- Column and Essay ---------------- */}
@@ -730,13 +732,19 @@ const styles = {
     paddingTop: 44,
     borderTop: "1px solid #D7DCEE",
   },
+  aboutImageWrap: {
+    background: "#fff",
+    borderRadius: 20,
+    boxShadow: "0 20px 50px rgba(20,30,70,0.16)",
+    padding: 20,
+    display: "flex",
+    justifyContent: "center",
+  },
   aboutImage: {
     display: "block",
     width: "100%",
     maxHeight: 420,
-    objectFit: "cover",
-    borderRadius: 20,
-    boxShadow: "0 20px 50px rgba(20,30,70,0.16)",
+    objectFit: "contain",
   },
 
   /* ---- Column & Essay ---- */
