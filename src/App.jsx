@@ -3,11 +3,6 @@ import { Github, Copy, Check } from "lucide-react";
 import faceImg from "./assets/face.jpg";
 import bookImg from "./assets/book.png";
 import whalingImg from "./assets/whaling.jpg";
-import houseDoc from "./assets/house.pdf";
-import prideDoc from "./assets/pride.pdf";
-import industryDoc from "./assets/industry.pdf";
-import whaleseaDoc from "./assets/whalesea.pdf";
-import chronologyDoc from "./assets/chronology.pdf";
 
 function NaverIcon({ size = 18 }) {
   return (
@@ -47,6 +42,8 @@ const BOOKS = [
 ];
 
 // Ulsan Digest — rediscovered historical documents & texts.
+// PDFs live in the `public/pdfs` folder (NOT src/assets) and are referenced
+// by plain path, so no build-time import is needed.
 // `summary` is optional: add a one-line description whenever ready,
 // leave it blank ("") to show just the title and author/year.
 const DIGEST = [
@@ -55,35 +52,35 @@ const DIGEST = [
     author: "유한위",
     year: "1784",
     summary: "",
-    file: houseDoc,
+    file: "/pdfs/house.pdf",
   },
   {
     title: "내 고향의 자랑, 울산풍물(蔚山風物)",
     author: "최현배",
     year: "1941",
     summary: "",
-    file: prideDoc,
+    file: "/pdfs/pride.pdf",
   },
   {
     title: "울산공업센터 기공식 치사문",
     author: "박정희",
     year: "1962",
     summary: "",
-    file: industryDoc,
+    file: "/pdfs/industry.pdf",
   },
   {
     title: "한반도연해포경사 서문",
     author: "박구병",
     year: "1987",
     summary: "",
-    file: whaleseaDoc,
+    file: "/pdfs/whalesea.pdf",
   },
   {
     title: "울산역사연표",
     author: "pyarcher",
     year: "2026",
     summary: "",
-    file: chronologyDoc,
+    file: "/pdfs/chronology.pdf",
   },
 ];
 
