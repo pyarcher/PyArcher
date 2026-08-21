@@ -2,7 +2,12 @@ import { useState } from "react";
 import { Github, Copy, Check } from "lucide-react";
 import faceImg from "./assets/face.jpg";
 import bookImg from "./assets/book.png";
-import whalingImg from "./assets/whaling.jpeg";
+import whalingImg from "./assets/whaling.jpg";
+import houseDoc from "./assets/house.pdf";
+import prideDoc from "./assets/pride.pdf";
+import industryDoc from "./assets/industry.pdf";
+import whaleseaDoc from "./assets/whalesea.pdf";
+import chronologyDoc from "./assets/chronology.pdf";
 
 function NaverIcon({ size = 18 }) {
   return (
@@ -38,6 +43,47 @@ const BOOKS = [
     meta: "울산광역시 남구",
     cover: whalingImg,
     url: "https://dl.nanet.go.kr/search/searchInnerDetail.do?searchType=INNER_SEARCH&resultType=INNER_SEARCH_DETAIL&searchMehtod=L&searchClass=S&controlNo=MONO1201244487&queryText=&prevQueryText=%EA%B3%A0%EB%9E%98%EC%9E%A1%EC%9D%B4%3AALL_NI_TOC%3AAND&zone=&fieldText=&prevPubYearFieldText=&languageCode=&synonymYn=&refineSearchYn=&ddcPopSearchYn=&pageNum=&pageSize=&orderBy=&topMainMenuCode=&topSubMenuCode=&totalSize=118&totalSizeByMenu=118&seqNo=&hanjaYn=Y&knowPub=&isdb=&isdbsvc=&tt1=&down=&frgnLangMtrlYn=&targetLangCode=&checkedDbIdList=&baseDbId=&selectedDbIndexIdList=&caller=&asideState=&dpBranch=ALL&journalKind=&degreeDiv=&searchQuery=%EA%B3%A0%EB%9E%98%EC%9E%A1%EC%9D%B4",
+  },
+];
+
+// Ulsan Digest — rediscovered historical documents & texts.
+// `summary` is optional: add a one-line description whenever ready,
+// leave it blank ("") to show just the title and author/year.
+const DIGEST = [
+  {
+    title: "일학헌중수상량문",
+    author: "유한위",
+    year: "1784",
+    summary: "",
+    file: houseDoc,
+  },
+  {
+    title: "내 고향의 자랑, 울산풍물(蔚山風物)",
+    author: "최현배",
+    year: "1941",
+    summary: "",
+    file: prideDoc,
+  },
+  {
+    title: "울산공업센터 기공식 치사문",
+    author: "박정희",
+    year: "1962",
+    summary: "",
+    file: industryDoc,
+  },
+  {
+    title: "한반도연해포경사 서문",
+    author: "박구병",
+    year: "1987",
+    summary: "",
+    file: whaleseaDoc,
+  },
+  {
+    title: "울산역사연표",
+    author: "pyarcher",
+    year: "2026",
+    summary: "",
+    file: chronologyDoc,
   },
 ];
 
@@ -384,6 +430,37 @@ export default function KimSangYukPortfolio() {
             ))}
           </div>
         </div>
+
+        {/* ---------------- Ulsan Digest ---------------- */}
+        <div style={styles.digestSection}>
+          <p style={styles.eyebrow}>
+            ULSAN <span style={styles.eyebrowDash}>&mdash;</span>{" "}
+            <span style={styles.eyebrowBlue}>DIGEST</span>
+          </p>
+
+          <div style={styles.digestList}>
+            {DIGEST.map((doc, i) => (
+              <a
+                key={i}
+                href={doc.file}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="kp-essay-link"
+                style={styles.digestItem}
+              >
+                <div style={styles.digestTextCol}>
+                  <span style={styles.digestTitle}>{doc.title}</span>
+                  {doc.summary ? (
+                    <span style={styles.digestSummary}>{doc.summary}</span>
+                  ) : null}
+                </div>
+                <span style={styles.digestMeta}>
+                  {doc.author} &middot; {doc.year}
+                </span>
+              </a>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -641,6 +718,51 @@ const styles = {
     fontSize: 12,
     color: "#9096AC",
     fontWeight: 500,
+    whiteSpace: "nowrap",
+    flexShrink: 0,
+  },
+
+  /* ---- Ulsan Digest ---- */
+  digestSection: {
+    marginTop: 60,
+    paddingTop: 44,
+    borderTop: "1px solid #D7DCEE",
+  },
+  digestList: {
+    display: "flex",
+    flexDirection: "column",
+  },
+  digestItem: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "baseline",
+    gap: 16,
+    padding: "12px 6px",
+    borderRadius: 8,
+    borderLeft: "2px solid transparent",
+    borderBottom: "1px solid #E7EAF4",
+    textDecoration: "none",
+    color: "#0B1220",
+  },
+  digestTextCol: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 3,
+  },
+  digestTitle: {
+    fontSize: 13,
+    fontWeight: 700,
+    color: "#0B1220",
+  },
+  digestSummary: {
+    fontSize: 12.5,
+    fontWeight: 400,
+    color: "#6B7290",
+  },
+  digestMeta: {
+    fontSize: 12,
+    color: "#6D4FE0",
+    fontWeight: 600,
     whiteSpace: "nowrap",
     flexShrink: 0,
   },
