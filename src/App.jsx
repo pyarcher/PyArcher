@@ -28,14 +28,14 @@ function GmailIcon({ size = 18 }) {
 // Published books — shown under "AUTHOR OF", each cover links out.
 const BOOKS = [
   {
-    title: "위대한 번방 울산",
+    title: "위대한 변방 울산",
     meta: "김상육 지음",
     cover: bookImg,
     url: "https://product.kyobobook.co.kr/detail/S000061694894",
   },
   {
     title: "고래와 고래잡이, 그리고 고래특구",
-    meta: "울산광역시 남구",
+    meta: "김상육 편집",
     cover: whalingImg,
     url: "https://dl.nanet.go.kr/search/searchInnerDetail.do?searchType=INNER_SEARCH&resultType=INNER_SEARCH_DETAIL&searchMehtod=L&searchClass=S&controlNo=MONO1201244487&queryText=&prevQueryText=%EA%B3%A0%EB%9E%98%EC%9E%A1%EC%9D%B4%3AALL_NI_TOC%3AAND&zone=&fieldText=&prevPubYearFieldText=&languageCode=&synonymYn=&refineSearchYn=&ddcPopSearchYn=&pageNum=&pageSize=&orderBy=&topMainMenuCode=&topSubMenuCode=&totalSize=118&totalSizeByMenu=118&seqNo=&hanjaYn=Y&knowPub=&isdb=&isdbsvc=&tt1=&down=&frgnLangMtrlYn=&targetLangCode=&checkedDbIdList=&baseDbId=&selectedDbIndexIdList=&caller=&asideState=&dpBranch=ALL&journalKind=&degreeDiv=&searchQuery=%EA%B3%A0%EB%9E%98%EC%9E%A1%EC%9D%B4",
   },
