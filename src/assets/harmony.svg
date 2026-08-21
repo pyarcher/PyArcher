@@ -7,8 +7,6 @@
 </marker>
 </defs>
 
-<rect x="0" y="0" width="380" height="440" fill="#FDFCF9"/>
-
 <!-- spokes -->
 <line x1="190" y1="216" x2="190" y2="186" stroke="#5F5E5A" stroke-width="0.5" marker-end="url(#arrow)"/>
 <line x1="190" y1="304" x2="190" y2="334" stroke="#5F5E5A" stroke-width="0.5" marker-end="url(#arrow)"/>
