@@ -179,6 +179,27 @@ const ARTICLES = [
   },
 ];
 
+// U-History Archive — reference list of primary sources & records held by
+// other institutions. No file is hosted here; each entry simply names the
+// source and the institution that provides access to it. Add a `url` field
+// to any entry later if you want the title to link out.
+const ARCHIVE = [
+  { title: "송호유집(류정)", org: "한국국학진흥원" },
+  { title: "부북일기(박계숙/박취문)", org: "다빈치맵" },
+  { title: "청대일기(권상일)", org: "한국국학진흥원" },
+  { title: "함안군총쇄록(오횡묵)", org: "한국학중앙연구원" },
+  { title: "심원권일기(심원권)", org: "국사편찬위원회" },
+  { title: "울산부호적", org: "규장각" },
+  { title: "통합울산지리지", org: "울산문화원연합회" },
+  { title: "통합울산선생안", org: "울산연구원" },
+  { title: "울산고지도", org: "규장각" },
+  { title: "군세일반", org: "국사편찬위원회" },
+  { title: "오만분일지형도", org: "국사편찬위원회" },
+  { title: "울산공업센터", org: "한국정책방송원" },
+  { title: "울산광역시사", org: "울산광역시" },
+  { title: "행정구역명칭변천사", org: "울산연구원" },
+];
+
 export default function KimSangYukPortfolio() {
   const [copied, setCopied] = useState("");
 
@@ -221,6 +242,7 @@ export default function KimSangYukPortfolio() {
           .kp-card { margin-top: 40px; }
           .kp-name { font-size: clamp(46px, 13vw, 88px) !important; }
           .kp-essay-cols { grid-template-columns: 1fr !important; }
+          .kp-archive-cols { grid-template-columns: 1fr !important; }
         }
       `}</style>
 
@@ -456,6 +478,37 @@ export default function KimSangYukPortfolio() {
                 </span>
               </a>
             ))}
+          </div>
+        </div>
+
+        {/* ---------------- U-History Archive ---------------- */}
+        <div style={styles.archiveSection}>
+          <p style={styles.eyebrow}>
+            U-HISTORY <span style={styles.eyebrowDash}>&mdash;</span>{" "}
+            <span style={styles.eyebrowBlue}>ARCHIVE</span>
+          </p>
+
+          <div className="kp-archive-cols" style={styles.archiveCols}>
+            {ARCHIVE.map((doc, i) =>
+              doc.url ? (
+                <a
+                  key={i}
+                  href={doc.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="kp-essay-link"
+                  style={styles.archiveItem}
+                >
+                  <span style={styles.archiveTitle}>{doc.title}</span>
+                  <span style={styles.archiveOrg}>{doc.org}</span>
+                </a>
+              ) : (
+                <div key={i} style={styles.archiveItem}>
+                  <span style={styles.archiveTitle}>{doc.title}</span>
+                  <span style={styles.archiveOrg}>{doc.org}</span>
+                </div>
+              )
+            )}
           </div>
         </div>
       </div>
@@ -757,6 +810,42 @@ const styles = {
     color: "#6B7290",
   },
   digestMeta: {
+    fontSize: 12,
+    color: "#6D4FE0",
+    fontWeight: 600,
+    whiteSpace: "nowrap",
+    flexShrink: 0,
+  },
+
+  /* ---- U-History Archive ---- */
+  archiveSection: {
+    marginTop: 60,
+    paddingTop: 44,
+    borderTop: "1px solid #D7DCEE",
+  },
+  archiveCols: {
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    columnGap: 56,
+  },
+  archiveItem: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "baseline",
+    gap: 16,
+    padding: "8px 6px",
+    borderRadius: 8,
+    borderLeft: "2px solid transparent",
+    borderBottom: "1px solid #E7EAF4",
+    textDecoration: "none",
+    color: "#0B1220",
+  },
+  archiveTitle: {
+    fontSize: 13,
+    fontWeight: 700,
+    color: "#0B1220",
+  },
+  archiveOrg: {
     fontSize: 12,
     color: "#6D4FE0",
     fontWeight: 600,
