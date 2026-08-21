@@ -3,6 +3,7 @@ import { Github, Copy, Check } from "lucide-react";
 import faceImg from "./assets/face.jpg";
 import bookImg from "./assets/book.png";
 import whalingImg from "./assets/whaling.jpeg";
+import harmonyImg from "./assets/harmony.png";
 
 function NaverIcon({ size = 18 }) {
   return (
@@ -404,6 +405,19 @@ export default function KimSangYukPortfolio() {
           </div>
         </div>
 
+        {/* ---------------- About Ulsan ---------------- */}
+        <div style={styles.aboutSection}>
+          <p style={styles.eyebrow}>
+            ABOUT <span style={styles.eyebrowDash}>&mdash;</span>{" "}
+            <span style={styles.eyebrowBlue}>ULSAN</span>
+          </p>
+          <img
+            src={harmonyImg}
+            alt="Ulsan harmony"
+            style={styles.aboutImage}
+          />
+        </div>
+
         {/* ---------------- Column and Essay ---------------- */}
         <div style={styles.essaySection}>
           <p style={styles.eyebrow}>
@@ -710,9 +724,24 @@ const styles = {
   copyLabel: { fontSize: 12, color: "#8A90A8", minWidth: 50 },
   copyValue: { fontSize: 13.5, color: "#0B1220", fontWeight: 600, flex: 1 },
 
+  /* ---- About Ulsan ---- */
+  aboutSection: {
+    marginTop: 88,
+    paddingTop: 44,
+    borderTop: "1px solid #D7DCEE",
+  },
+  aboutImage: {
+    display: "block",
+    width: "100%",
+    maxHeight: 420,
+    objectFit: "cover",
+    borderRadius: 20,
+    boxShadow: "0 20px 50px rgba(20,30,70,0.16)",
+  },
+
   /* ---- Column & Essay ---- */
   essaySection: {
-    marginTop: 88,
+    marginTop: 60,
     paddingTop: 44,
     borderTop: "1px solid #D7DCEE",
   },
