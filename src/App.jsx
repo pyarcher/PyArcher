@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { Github, Copy, Check } from "lucide-react";
 import faceImg from "./assets/face.jpg";
 import bookImg from "./assets/book.png";
@@ -219,205 +219,13 @@ const CURATOR = [
   { title: "양산박물관", url: "https://www.yangsan.go.kr/museum/" },
 ];
 
-// General Humanitas — curated reference sites, grouped by category
-// (from the "인문학자료실" sheet). Entries without a URL render as
-// plain (non-clickable) text.
-const HUMANITAS = [
-  {
-    category: "학회",
-    items: [
-      { title: "신라사학회", url: "https://sillasa.modoo.at/" },
-      { title: "역사문화학회", url: "https://hiscu.jams.or.kr/co/main/jmMain.kci" },
-      { title: "한국상고사학회", url: "http://www.sanggo.or.kr/index.ink" },
-    ],
-  },
-  {
-    category: "논문",
-    items: [
-      { title: "KISS", url: "https://kiss.kstudy.com/" },
-      { title: "RISS", url: "https://www.riss.kr/index.do" },
-      { title: "KCI", url: "https://www.kci.go.kr/kciportal/main.kci" },
-    ],
-  },
-  {
-    category: "문법",
-    items: [{ title: "공공언어", url: "https://publang.korean.go.kr/" }],
-  },
-  {
-    category: "총류",
-    items: [
-      { title: "동양고전종합", url: "http://db.cyberseodang.or.kr/" },
-      { title: "한국고전번역원", url: "http://www.itkc.or.kr/" },
-      { title: "한문고전자문서비스", url: "https://www.itkc.or.kr/content/contents.do?menuId=148" },
-      { title: "한국고전종합데이터베이스", url: "https://db.itkc.or.kr/" },
-      { title: "한국문집총간", url: "https://db.itkc.or.kr/dir/item?itemId=MO" },
-      { title: "국학진흥원", url: "http://koreastudy.or.kr/" },
-      { title: "화문서적(중국책)", url: "http://www.huawen.co.kr/" },
-      { title: "중국사회과학망", url: "http://www.cssn.cn/" },
-      { title: "인터넷 아카이브", url: "https://archive.org/" },
-      { title: "K-MOOC", url: "http://www.kmooc.kr/" },
-      { title: "향토문화전자대전", url: "http://www.grandculture.net/" },
-    ],
-  },
-  {
-    category: "천문",
-    items: [{ title: "고천문연구센터", url: "https://harg.kasi.re.kr/" }],
-  },
-  {
-    category: "역사",
-    items: [
-      { title: "국사편찬위원회", url: "http://www.history.go.kr/" },
-      { title: "한국사연구휘보", url: "https://db.history.go.kr/diachronic/level.do?itemId=hb" },
-      { title: "한국사데이터베이스", url: "http://db.history.go.kr/" },
-      { title: "역사정보통합시스템", url: "http://www.koreanhistory.or.kr/" },
-      { title: "조선왕조실록", url: "http://sillok.history.go.kr/" },
-      { title: "고려사", url: "http://db.history.go.kr/KOREA/" },
-      { title: "규장각한국학연구원", url: "http://kyujanggak.snu.ac.kr/home/main.do?siteCd=KYU" },
-      { title: "세종고전(한글불교윤리과학문학)", url: "http://db.sejongkorea.org/" },
-      { title: "동방미디어(동국통감)", url: "https://www.koreaa2z.com/" },
-      { title: "대통령기록관", url: "http://www.pa.go.kr/" },
-      { title: "e영상역사관", url: "http://www.ehistory.go.kr/" },
-      { title: "금석문영상시스템", url: "http://gsm.nricp.go.kr/" },
-      { title: "환단고기", url: "http://www.hwandangogi.or.kr/" },
-      { title: "한국표준연력", url: "http://manse.kisti.re.kr/" },
-      { title: "위키문헌", url: "http://ko.wikisource.org/" },
-      { title: "한국역대인물/관직명", url: "http://people.aks.ac.kr/" },
-      { title: "문화원형용어사전", url: "http://www.culturecontent.com" },
-      { title: "한국전통지식포털", url: "http://www.koreantk.com/ktkp2014/" },
-      { title: "뉴스라이브러리", url: "https://newslibrary.naver.com" },
-      { title: "고려대 민족문화연구원", url: "https://riks.korea.ac.kr/" },
-      { title: "국가한옥센터", url: "https://www.hanokdb.kr/" },
-    ],
-  },
-  {
-    category: "문화재",
-    items: [
-      { title: "국제돈황프로젝트", url: "http://idp.bl.uk/" },
-      { title: "돈황연구원", url: "http://www.dha.ac.cn/" },
-      { title: "문자박물관(갑골문)", url: "http://www.wzbwg.com/Cn" },
-      { title: "파리 기메박물관", url: "https://www.guimet.fr/" },
-      { title: "세계문화유산", url: "https://whc.unesco.org/" },
-      { title: "문화유산채널tv", url: "http://www.k-heritage.tv/main/heritage" },
-      { title: "한국문화유산협회", url: "http://www.kaah.kr/" },
-    ],
-  },
-  {
-    category: "울산",
-    items: [
-      { title: "울산문화대전", url: "http://ulsan.grandculture.net/" },
-      { title: "울산문화재연구원", url: "http://www.usmy.or.kr/" },
-      { title: "울주문화원", url: "http://www.ulju.or.kr/index.html" },
-    ],
-  },
-  {
-    category: "합천",
-    items: [{ title: "합천군향토사카페", url: "https://cafe.naver.com/hapcheonlife/19" }],
-  },
-  {
-    category: "고래",
-    items: [{ title: "Masaaki Ishida", url: "http://luna.pos.to/whale/jpn_link.html" }],
-  },
-  {
-    category: "철학",
-    items: [
-      { title: "중국철학전산화망", url: "https://ctext.org/" },
-      { title: "플라톤아카데미", url: "http://www.platonacademy.org/" },
-      { title: "다산연구소", url: "http://www.edasan.org/" },
-    ],
-  },
-  {
-    category: "종교",
-    items: [
-      { title: "성경읽기", url: "http://www.godpia.com/" },
-      { title: "불교학술원(불경)", url: "http://abc.dongguk.edu/abc/index.jsp" },
-    ],
-  },
-  {
-    category: "과학",
-    items: [
-      { title: "카오스재단", url: "http://ikaos.org/ko/main/main.html" },
-      { title: "한국천문연구원", url: "https://www.kasi.re.kr/kor/index" },
-    ],
-  },
-  {
-    category: "이벤트",
-    items: [{ title: "와우북페스티발", url: "http://wowbookfest.com/" }],
-  },
-  {
-    category: "언어",
-    items: [
-      { title: "中国唱片总公司", url: null },
-      { title: "한국한자연구소(경성대)", url: "http://www.hanja.asia/index.html" },
-      { title: "인문한국(HK)지원사업", url: "http://hk.nrf.re.kr/intro/intro01.do" },
-      { title: "한자자원(汉字叔叔)", url: "https://hanziyuan.net/" },
-      { title: "한자로드(신동윤)", url: null },
-    ],
-  },
-  {
-    category: "문학",
-    items: [
-      { title: "중국국학망", url: "http://www.guoxue.com/" },
-      { title: "중국예술연구원", url: "http://www.zgysyjy.org.cn/" },
-      { title: "오강시사망(한시)", url: "http://www.wjszx.com.cn/" },
-      { title: "중국현대문학관", url: "http://wxg.org.cn/" },
-      { title: "네불라상", url: "https://nebulas.sfwa.org/" },
-      { title: "휴고상", url: "http://www.thehugoawards.org/" },
-    ],
-  },
-  {
-    category: "독서록",
-    items: [{ title: "고 요나단 동서고전200선", url: "https://korocamia.blog.me/220779176547" }],
-  },
-  {
-    category: "경제",
-    items: [{ title: "MMF", url: "http://neweconomicperspectives.org/" }],
-  },
-];
-
-// Left-hand scroll-spy nav — id must match the section's DOM id below.
-const NAV_ITEMS = [
-  { id: "about-ulsan", label: "ULSAN" },
-  { id: "column-essay", label: "COLUMN" },
-  { id: "ulsan-digest", label: "DIGEST" },
-  { id: "u-history-archive", label: "ARCHIVE" },
-  { id: "u-historian-curator", label: "CURATOR" },
-  { id: "general-humanitas", label: "HUMANITAS" },
-];
-
 export default function KimSangYukPortfolio() {
   const [copied, setCopied] = useState("");
-  const [activeSection, setActiveSection] = useState(NAV_ITEMS[0].id);
-  const sectionRefs = useRef({});
 
   const copy = (label, value) => {
     navigator.clipboard?.writeText(value);
     setCopied(label);
     setTimeout(() => setCopied(""), 1600);
-  };
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
-        });
-      },
-      { rootMargin: "-45% 0px -50% 0px", threshold: 0 }
-    );
-
-    NAV_ITEMS.forEach(({ id }) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
-
-    return () => observer.disconnect();
-  }, []);
-
-  const scrollToSection = (id) => {
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   return (
@@ -445,10 +253,8 @@ export default function KimSangYukPortfolio() {
         .kp-essay-link { transition: background 0.15s ease, padding-left 0.15s ease, border-color 0.15s ease; }
         .kp-essay-link:hover { background: #EEF1FA; padding-left: 12px; border-color: #C7CDE3 !important; }
         .kp-essay-static { opacity: 0.55; }
-        .kp-navlink { transition: color 0.2s ease, opacity 0.2s ease; }
-        .kp-navlink:hover { opacity: 1 !important; }
         @media (prefers-reduced-motion: reduce) {
-          .kp-btn-primary, .kp-btn-ghost, .kp-social, .kp-copy, .kp-book, .kp-essay-link, .kp-navlink { transition: none; }
+          .kp-btn-primary, .kp-btn-ghost, .kp-social, .kp-copy, .kp-book, .kp-essay-link { transition: none; }
         }
         @media (max-width: 880px) {
           .kp-layout { grid-template-columns: 1fr !important; }
@@ -457,41 +263,10 @@ export default function KimSangYukPortfolio() {
           .kp-essay-cols { grid-template-columns: 1fr !important; }
           .kp-archive-cols { grid-template-columns: 1fr !important; }
           .kp-curator-cols { grid-template-columns: 1fr !important; }
-          .kp-humanitas-cols { grid-template-columns: 1fr !important; }
-          .kp-sidenav { display: none !important; }
         }
       `}</style>
 
       <div className="kp-bg-grid" />
-
-      {/* Scroll-spy side nav (desktop only) */}
-      <nav className="kp-sidenav" style={styles.sideNav} aria-label="Section navigation">
-        {NAV_ITEMS.map((item) => {
-          const isActive = activeSection === item.id;
-          return (
-            <button
-              key={item.id}
-              className="kp-navlink"
-              onClick={() => scrollToSection(item.id)}
-              style={{
-                ...styles.navLink,
-                color: isActive ? "#2F5FE0" : "#0B1220",
-                opacity: isActive ? 1 : 0.45,
-                fontWeight: isActive ? 800 : 600,
-              }}
-            >
-              <span
-                style={{
-                  ...styles.navDash,
-                  background: isActive ? "#2F5FE0" : "#9096AC",
-                  width: isActive ? 22 : 12,
-                }}
-              />
-              {item.label}
-            </button>
-          );
-        })}
-      </nav>
 
       <div style={styles.wrap}>
         <p style={styles.eyebrow}>
@@ -499,7 +274,7 @@ export default function KimSangYukPortfolio() {
           <span style={styles.eyebrowBlue}>ARCHER &middot; RIDER &middot; AUTHOR &middot; K-ULSANER</span>
         </p>
 
-        <div id="about-ulsan" className="kp-layout" style={styles.layout}>
+        <div className="kp-layout" style={styles.layout}>
           <div>
             <h1 className="kp-name" style={styles.name}>
               <span style={styles.nameSolid}>KIM</span>
@@ -650,7 +425,7 @@ export default function KimSangYukPortfolio() {
         </div>
 
         {/* ---------------- Column and Essay ---------------- */}
-        <div id="column-essay" style={styles.essaySection}>
+        <div style={styles.essaySection}>
           <p style={styles.eyebrow}>
             COLUMN <span style={styles.eyebrowDash}>&amp;</span>{" "}
             <span style={styles.eyebrowBlue}>ESSAY</span>
@@ -696,7 +471,7 @@ export default function KimSangYukPortfolio() {
         </div>
 
         {/* ---------------- Ulsan Digest ---------------- */}
-        <div id="ulsan-digest" style={styles.digestSection}>
+        <div style={styles.digestSection}>
           <p style={styles.eyebrow}>
             ULSAN <span style={styles.eyebrowDash}>&mdash;</span>{" "}
             <span style={styles.eyebrowBlue}>DIGEST</span>
@@ -727,7 +502,7 @@ export default function KimSangYukPortfolio() {
         </div>
 
         {/* ---------------- U-History Archive ---------------- */}
-        <div id="u-history-archive" style={styles.archiveSection}>
+        <div style={styles.archiveSection}>
           <p style={styles.eyebrow}>
             U-HISTORY <span style={styles.eyebrowDash}>&mdash;</span>{" "}
             <span style={styles.eyebrowBlue}>ARCHIVE</span>
@@ -758,7 +533,7 @@ export default function KimSangYukPortfolio() {
         </div>
 
         {/* ---------------- U-Historian & Curator ---------------- */}
-        <div id="u-historian-curator" style={styles.curatorSection}>
+        <div style={styles.curatorSection}>
           <p style={styles.eyebrow}>
             U-HISTORIAN <span style={styles.eyebrowDash}>&amp;</span>{" "}
             <span style={styles.eyebrowBlue}>CURATOR</span>
@@ -780,48 +555,6 @@ export default function KimSangYukPortfolio() {
           </div>
         </div>
 
-        {/* ---------------- General Humanitas ---------------- */}
-        <div id="general-humanitas" style={styles.humanitasSection}>
-          <p style={styles.eyebrow}>
-            GENERAL <span style={styles.eyebrowDash}>&mdash;</span>{" "}
-            <span style={styles.eyebrowBlue}>HUMANITAS</span>
-          </p>
-
-          <div className="kp-humanitas-cols" style={styles.humanitasCols}>
-            {HUMANITAS.map((group) => (
-              <div key={group.category} style={styles.humanitasBlock}>
-                <div style={styles.humanitasHeader}>
-                  <span style={styles.humanitasCategory}>{group.category}</span>
-                  <span style={styles.humanitasLine} />
-                </div>
-                <div style={styles.humanitasItems}>
-                  {group.items.map((item, i) =>
-                    item.url ? (
-                      <a
-                        key={i}
-                        href={item.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="kp-essay-link"
-                        style={styles.humanitasItem}
-                      >
-                        <span style={styles.humanitasTitle}>{item.title}</span>
-                      </a>
-                    ) : (
-                      <div
-                        key={i}
-                        className="kp-essay-static"
-                        style={styles.humanitasItem}
-                      >
-                        <span style={styles.humanitasTitle}>{item.title}</span>
-                      </div>
-                    )
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
     </div>
   );
@@ -842,34 +575,6 @@ const styles = {
     maxWidth: 1180,
     margin: "0 auto",
     padding: "56px 32px 90px",
-  },
-  sideNav: {
-    position: "fixed",
-    top: "50%",
-    left: 28,
-    transform: "translateY(-50%)",
-    zIndex: 10,
-    display: "flex",
-    flexDirection: "column",
-    gap: 16,
-  },
-  navLink: {
-    display: "flex",
-    alignItems: "center",
-    gap: 10,
-    background: "none",
-    border: "none",
-    padding: 0,
-    cursor: "pointer",
-    fontFamily: "'Inter', sans-serif",
-    fontSize: 11,
-    letterSpacing: "0.08em",
-    textAlign: "left",
-  },
-  navDash: {
-    height: 2,
-    borderRadius: 999,
-    display: "inline-block",
   },
   eyebrow: {
     fontFamily: "'Inter', sans-serif",
@@ -1216,57 +921,6 @@ const styles = {
   curatorTitle: {
     fontSize: 13,
     fontWeight: 700,
-    color: "#0B1220",
-  },
-
-  /* ---- General Humanitas ---- */
-  humanitasSection: {
-    marginTop: 60,
-    paddingTop: 44,
-    borderTop: "1px solid #D7DCEE",
-  },
-  humanitasCols: {
-    display: "grid",
-    gridTemplateColumns: "1fr 1fr 1fr",
-    columnGap: 40,
-  },
-  humanitasBlock: {
-    breakInside: "avoid",
-    marginBottom: 24,
-  },
-  humanitasHeader: {
-    display: "flex",
-    alignItems: "baseline",
-    gap: 12,
-    marginBottom: 4,
-  },
-  humanitasCategory: {
-    fontFamily: "'Inter', sans-serif",
-    fontWeight: 700,
-    fontSize: 12,
-    color: "#6D4FE0",
-    letterSpacing: "0.08em",
-  },
-  humanitasLine: {
-    flex: 1,
-    height: 1,
-    background: "#D7DCEE",
-  },
-  humanitasItems: {
-    display: "flex",
-    flexDirection: "column",
-  },
-  humanitasItem: {
-    display: "block",
-    padding: "4px 6px",
-    borderRadius: 6,
-    borderLeft: "2px solid transparent",
-    textDecoration: "none",
-    color: "#0B1220",
-  },
-  humanitasTitle: {
-    fontSize: 12.5,
-    fontWeight: 600,
     color: "#0B1220",
   },
 };
