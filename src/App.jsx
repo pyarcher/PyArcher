@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Github, Copy, Check } from "lucide-react";
+import { Github, Copy, Check, X } from "lucide-react";
 import faceImg from "./assets/face.jpg";
 import bookImg from "./assets/book.png";
 import whalingImg from "./assets/whaling.jpeg";
@@ -55,6 +55,13 @@ const DIGEST = [
     file: "/pdfs/house.pdf",
   },
   {
+    title: "서지하화기",
+    author: "심원열",
+    year: "1855",
+    summary: "",
+    file: "/pdfs/westpond.pdf",
+  },
+  {
     title: "내 고향의 자랑, 울산풍물(蔚山風物)",
     author: "최현배",
     year: "1941",
@@ -81,6 +88,20 @@ const DIGEST = [
     year: "2026",
     summary: "",
     file: "/pdfs/chronology.pdf",
+  },
+  {
+    title: "경상좌병영지도 이야기",
+    author: "pyarcher",
+    year: "2026",
+    summary: "",
+    file: "/pdfs/campleft.pdf",
+  },
+  {
+    title: "경상좌병영 동문(인빈문) 이야기",
+    author: "pyarcher",
+    year: "2026",
+    summary: "",
+    file: "/pdfs/eastgate.pdf",
   },
 ];
 
@@ -179,6 +200,21 @@ const ARTICLES = [
   },
 ];
 
+// Goods & Gallery — photo thumbnails grouped by row (group number = first
+// digit of the filename). Rows are ordered highest group number first, and
+// within a row, items keep the order given (by their second digit). Images
+// live in `public/gallery/` (NOT src/assets) and are referenced by plain
+// path, same pattern as the Ulsan Digest PDFs. Clicking a thumbnail opens
+// the full-size original in a lightbox.
+const GALLERY = [
+  { group: 7, files: ["71bibyunsa", "72dasannampo", "73yosandai"] },
+  { group: 6, files: ["61mugcup", "62lotus"] },
+  { group: 5, files: ["51seaside", "52bamboo"] },
+  { group: 4, files: ["41windycliff", "42sunrising", "43twinrock"] },
+  { group: 3, files: ["31tongdosa", "33virchow"] },
+  { group: 1, files: ["11epitaph2", "12epitaph"] },
+];
+
 // U-History Archive — reference list of primary sources & records held by
 // other institutions. No file is hosted here; each entry simply names the
 // source and the institution that provides access to it. Add a `url` field
@@ -221,6 +257,7 @@ const CURATOR = [
 
 export default function KimSangYukPortfolio() {
   const [copied, setCopied] = useState("");
+  const [lightboxSrc, setLightboxSrc] = useState(null);
 
   const copy = (label, value) => {
     navigator.clipboard?.writeText(value);
@@ -253,8 +290,10 @@ export default function KimSangYukPortfolio() {
         .kp-essay-link { transition: background 0.15s ease, padding-left 0.15s ease, border-color 0.15s ease; }
         .kp-essay-link:hover { background: #EEF1FA; padding-left: 12px; border-color: #C7CDE3 !important; }
         .kp-essay-static { opacity: 0.55; }
+        .kp-thumb { transition: transform 0.15s ease, box-shadow 0.15s ease; }
+        .kp-thumb:hover { transform: translateY(-3px); box-shadow: 0 10px 22px rgba(20,30,70,0.22); }
         @media (prefers-reduced-motion: reduce) {
-          .kp-btn-primary, .kp-btn-ghost, .kp-social, .kp-copy, .kp-book, .kp-essay-link { transition: none; }
+          .kp-btn-primary, .kp-btn-ghost, .kp-social, .kp-copy, .kp-book, .kp-essay-link, .kp-thumb { transition: none; }
         }
         @media (max-width: 880px) {
           .kp-layout { grid-template-columns: 1fr !important; }
@@ -263,6 +302,7 @@ export default function KimSangYukPortfolio() {
           .kp-essay-cols { grid-template-columns: 1fr !important; }
           .kp-archive-cols { grid-template-columns: 1fr !important; }
           .kp-curator-cols { grid-template-columns: 1fr !important; }
+          .kp-thumb img { width: 84px !important; height: 84px !important; }
         }
       `}</style>
 
@@ -470,6 +510,36 @@ export default function KimSangYukPortfolio() {
           </div>
         </div>
 
+        {/* ---------------- Goods and Gallery ---------------- */}
+        <div style={styles.gallerySection}>
+          <p style={styles.eyebrow}>
+            GOODS <span style={styles.eyebrowDash}>&amp;</span>{" "}
+            <span style={styles.eyebrowBlue}>GALLERY</span>
+          </p>
+
+          <div style={styles.galleryRows}>
+            {GALLERY.map((row) => (
+              <div key={row.group} style={styles.galleryRow}>
+                {row.files.map((name) => (
+                  <button
+                    key={name}
+                    className="kp-thumb"
+                    style={styles.galleryThumbBtn}
+                    onClick={() => setLightboxSrc(`/gallery/${name}.jpg`)}
+                    aria-label={`Open ${name}`}
+                  >
+                    <img
+                      src={`/gallery/${name}.jpg`}
+                      alt={name}
+                      style={styles.galleryThumb}
+                    />
+                  </button>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* ---------------- Ulsan Digest ---------------- */}
         <div style={styles.digestSection}>
           <p style={styles.eyebrow}>
@@ -556,6 +626,29 @@ export default function KimSangYukPortfolio() {
         </div>
 
       </div>
+
+      {lightboxSrc && (
+        <div
+          style={styles.lightboxOverlay}
+          onClick={() => setLightboxSrc(null)}
+          role="dialog"
+          aria-modal="true"
+        >
+          <button
+            style={styles.lightboxClose}
+            onClick={() => setLightboxSrc(null)}
+            aria-label="Close"
+          >
+            <X size={22} />
+          </button>
+          <img
+            src={lightboxSrc}
+            alt=""
+            style={styles.lightboxImage}
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
     </div>
   );
 }
@@ -814,6 +907,75 @@ const styles = {
     fontWeight: 500,
     whiteSpace: "nowrap",
     flexShrink: 0,
+  },
+
+  /* ---- Goods & Gallery ---- */
+  gallerySection: {
+    marginTop: 60,
+    paddingTop: 44,
+    borderTop: "1px solid #D7DCEE",
+    textAlign: "center",
+  },
+  galleryRows: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: 14,
+  },
+  galleryRow: {
+    display: "flex",
+    justifyContent: "center",
+    gap: 14,
+    flexWrap: "wrap",
+  },
+  galleryThumbBtn: {
+    padding: 0,
+    border: "none",
+    background: "none",
+    cursor: "pointer",
+    borderRadius: 12,
+    overflow: "hidden",
+    lineHeight: 0,
+  },
+  galleryThumb: {
+    width: 104,
+    height: 104,
+    objectFit: "cover",
+    display: "block",
+    borderRadius: 12,
+    boxShadow: "0 4px 14px rgba(20,30,70,0.16)",
+  },
+  lightboxOverlay: {
+    position: "fixed",
+    inset: 0,
+    background: "rgba(11,18,32,0.86)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 100,
+    padding: 24,
+  },
+  lightboxImage: {
+    maxWidth: "92vw",
+    maxHeight: "88vh",
+    objectFit: "contain",
+    borderRadius: 8,
+    boxShadow: "0 20px 60px rgba(0,0,0,0.5)",
+  },
+  lightboxClose: {
+    position: "fixed",
+    top: 20,
+    right: 20,
+    width: 40,
+    height: 40,
+    borderRadius: "50%",
+    background: "rgba(255,255,255,0.12)",
+    border: "none",
+    color: "#fff",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    cursor: "pointer",
   },
 
   /* ---- Ulsan Digest ---- */
