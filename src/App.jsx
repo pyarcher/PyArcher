@@ -207,8 +207,9 @@ const ARTICLES = [
 // path, same pattern as the Ulsan Digest PDFs. Clicking a thumbnail opens
 // the full-size original in a lightbox.
 const GALLERY = [
-  { group: 7, files: ["71bibyunsa", "72dasannampo", "73yosandai"] },
-  { group: 6, files: ["61mugcup", "62lotus"] },
+  { group: 8, files: ["81bibyunsa", "82haedong"] },
+  { group: 7, files: ["72dasannampo", "73yosandai"] },
+  { group: 6, files: ["61mugcup", "62lotus", "63birdpole"] },
   { group: 5, files: ["51seaside", "52bamboo"] },
   { group: 4, files: ["41windycliff", "42sunrising", "43twinrock"] },
   { group: 3, files: ["31tongdosa", "33virchow"] },
