@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Internet Archive — Kim Sang Yuk</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: linear-gradient(180deg, #EEF1FA 0%, #E7EBF7 100%);
+    font-family: 'Inter', sans-serif;
+    color: #0B1220;
+  }
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 56px 32px 100px;
+  }
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    color: #4A5170;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 40px;
+    transition: color 0.15s ease;
+  }
+  .back-link:hover { color: #2F5FE0; }
+  .eyebrow {
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    margin: 0 0 12px;
+  }
+  .eyebrow .dash { color: #0B1220; }
+  .eyebrow .blue { color: #2F5FE0; }
+  .subtitle {
+    font-size: 14px;
+    color: #6B7290;
+    margin: 0 0 48px;
+    line-height: 1.6;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 48px;
+    row-gap: 8px;
+  }
+  .category {
+    break-inside: avoid;
+    margin-bottom: 32px;
+  }
+  .category-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  .category-name {
+    font-weight: 700;
+    font-size: 12px;
+    color: #6D4FE0;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+  }
+  .category-line {
+    flex: 1;
+    height: 1px;
+    background: #D7DCEE;
+  }
+  .item-list {
+    display: flex;
+    flex-direction: column;
+  }
+  .item {
+    display: block;
+    padding: 5px 6px;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #0B1220;
+    font-size: 12.5px;
+    font-weight: 600;
+    transition: background 0.15s ease, padding-left 0.15s ease;
+  }
+  .item:hover {
+    background: #EEF1FA;
+    padding-left: 10px;
+  }
+  @media (max-width: 880px) {
+    .grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 560px) {
+    .grid { grid-template-columns: 1fr; }
+    .wrap { padding: 40px 20px 80px; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <a href="/" class="back-link">&larr; KIM SANG YUK</a>
+
+    <p class="eyebrow">
+      INTERNET <span class="dash">&mdash;</span> <span class="blue">ARCHIVE</span>
+    </p>
+    <p class="subtitle">인문학·역사 연구에 참고하는 사이트와 데이터베이스 모음.</p>
+
+    <div class="grid">
+
+      <div class="category">
+        <div class="category-header">
+          <span class="category-name">ENCYCLOPEDIA</span>
+          <span class="category-line"></span>
+        </div>
+        <div class="item-list">
+          <a class="item" href="http://db.cyberseodang.or.kr/" target="_blank" rel="noopener noreferrer">동양고전종합</a>
+          <a class="item" href="http://www.itkc.or.kr/" target="_blank" rel="noopener noreferrer">한국고전번역원</a>
+          <a class="item" href="https://db.itkc.or.kr/" target="_blank" rel="noopener noreferrer">한국고전종합데이터베이스</a>
+          <a class="item" href="https://db.itkc.or.kr/dir/item?itemId=MO" target="_blank" rel="noopener noreferrer">한국문집총간</a>
+          <a class="item" href="https://db.history.go.kr/id/ma" target="_blank" rel="noopener noreferrer">근현대잡지</a>
+          <a class="item" href="http://www.riks.or.kr/" target="_blank" rel="noopener noreferrer">한국연구원</a>
+          <a class="item" href="http://koreastudy.or.kr/" target="_blank" rel="noopener noreferrer">국학진흥원</a>
+          <a class="item" href="http://www.huawen.co.kr/" target="_blank" rel="noopener noreferrer">화문서적(중국책)</a>
+          <a class="item" href="http://www.cssn.cn/" target="_blank" rel="noopener noreferrer">중국사회과학망</a>
+          <a class="item" href="https://archive.org/" target="_blank" rel="noopener noreferrer">인터넷 아카이브</a>
+          <a class="item" href="http://www.kmooc.kr/" target="_blank" rel="noopener noreferrer">K-MOOC</a>
+          <a class="item" href="http://www.grandculture.net/" target="_blank" rel="noopener noreferrer">향토문화전자대전</a>
+          <a class="item" href="https://k-knowledge.kr/" target="_blank" rel="noopener noreferrer">디지털집현전</a>
+          <a class="item" href="https://korocamia.blog.me/220779176547" target="_blank" rel="noopener noreferrer">고 요나단 동서고전200선</a>
+        </div>
+      </div>
+
+      <div class="category">
+        <div class="category-header">
+          <span class="category-name">HISTORIA</span>
+          <span class="category-line"></span>
+        </div>
+        <div class="item-list">
+          <a class="item" href="http://www.history.go.kr/" target="_blank" rel="noopener noreferrer">국사편찬위원회</a>
+          <a class="item" href="https://db.history.go.kr/ancient/level.do?levelId=gskh_001_0010_0010_0030" target="_blank" rel="noopener noreferrer">금석문</a>
+          <a class="item" href="https://db.history.go.kr/diachronic/level.do?itemId=hb" target="_blank" rel="noopener noreferrer">한국사연구휘보</a>
+          <a class="item" href="http://db.history.go.kr/" target="_blank" rel="noopener noreferrer">한국사데이터베이스</a>
+          <a class="item" href="http://www.koreanhistory.or.kr/" target="_blank" rel="noopener noreferrer">역사정보통합시스템</a>
+          <a class="item" href="http://sillok.history.go.kr/" target="_blank" rel="noopener noreferrer">조선왕조실록</a>
+          <a class="item" href="http://db.history.go.kr/KOREA/" target="_blank" rel="noopener noreferrer">고려사</a>
+          <a class="item" href="http://kyujanggak.snu.ac.kr/home/main.do?siteCd=KYU" target="_blank" rel="noopener noreferrer">규장각한국학연구원(호적)</a>
+          <a class="item" href="https://jsg.aks.ac.kr/" target="_blank" rel="noopener noreferrer">디지털장서각(오횡묵)</a>
+          <a class="item" href="https://map.ngii.go.kr/ms/history/historyMapInfo.do" target="_blank" rel="noopener noreferrer">역사정보지도</a>
+          <a class="item" href="http://www.pa.go.kr/" target="_blank" rel="noopener noreferrer">대통령기록관</a>
+          <a class="item" href="http://www.ehistory.go.kr/" target="_blank" rel="noopener noreferrer">e영상역사관</a>
+          <a class="item" href="http://gsm.nricp.go.kr/" target="_blank" rel="noopener noreferrer">금석문영상시스템</a>
+          <a class="item" href="http://www.hwandangogi.or.kr/" target="_blank" rel="noopener noreferrer">환단고기</a>
+          <a class="item" href="http://manse.kisti.re.kr/" target="_blank" rel="noopener noreferrer">한국표준연력</a>
+          <a class="item" href="http://ko.wikisource.org/" target="_blank" rel="noopener noreferrer">위키문헌</a>
+          <a class="item" href="http://people.aks.ac.kr/" target="_blank" rel="noopener noreferrer">한국역대인물/관직명</a>
+          <a class="item" href="http://www.culturecontent.com/" target="_blank" rel="noopener noreferrer">문화원형용어사전</a>
+          <a class="item" href="http://www.koreantk.com/ktkp2014/" target="_blank" rel="noopener noreferrer">한국전통지식포털</a>
+          <a class="item" href="https://newslibrary.naver.com/" target="_blank" rel="noopener noreferrer">뉴스라이브러리</a>
+          <a class="item" href="https://riks.korea.ac.kr/" target="_blank" rel="noopener noreferrer">고려대 민족문화연구원</a>
+          <a class="item" href="https://www.hanokdb.kr/" target="_blank" rel="noopener noreferrer">국가한옥센터</a>
+          <a class="item" href="https://www.nl.go.kr/newspaper/" target="_blank" rel="noopener noreferrer">대한민국 신문아카이브</a>
+          <a class="item" href="https://sillasa.modoo.at/" target="_blank" rel="noopener noreferrer">신라사학회</a>
+          <a class="item" href="https://hiscu.jams.or.kr/co/main/jmMain.kci" target="_blank" rel="noopener noreferrer">역사문화학회</a>
+          <a class="item" href="http://www.sanggo.or.kr/index.ink" target="_blank" rel="noopener noreferrer">한국상고사학회</a>
+          <a class="item" href="http://www.cartography.or.kr/" target="_blank" rel="noopener noreferrer">한국지도학회</a>
+          <a class="item" href="https://www.oldmap.or.kr/index.ink" target="_blank" rel="noopener noreferrer">한국고지도학회</a>
+        </div>
+      </div>
+
+      <div class="category">
+        <div class="category-header">
+          <span class="category-name">HERITAGE</span>
+          <span class="category-line"></span>
+        </div>
+        <div class="item-list">
+          <a class="item" href="http://www.wzbwg.com/Cn" target="_blank" rel="noopener noreferrer">문자박물관(갑골문)</a>
+          <a class="item" href="https://www.guimet.fr/" target="_blank" rel="noopener noreferrer">파리 기메박물관</a>
+          <a class="item" href="https://whc.unesco.org/" target="_blank" rel="noopener noreferrer">세계문화유산</a>
+          <a class="item" href="http://idp.bl.uk/" target="_blank" rel="noopener noreferrer">국제돈황프로젝트</a>
+          <a class="item" href="http://www.dha.ac.cn/" target="_blank" rel="noopener noreferrer">돈황연구원</a>
+          <a class="item" href="https://www.heritage.go.kr/" target="_blank" rel="noopener noreferrer">국가유산포털</a>
+          <a class="item" href="https://www.kh.or.kr/kha" target="_blank" rel="noopener noreferrer">국가유산진흥원</a>
+          <a class="item" href="https://www.kofta.org/" target="_blank" rel="noopener noreferrer">전통건축수리기술진흥재단</a>
+          <a class="item" href="https://nhpi.or.kr/" target="_blank" rel="noopener noreferrer">국가유산정책연구원</a>
+          <a class="item" href="http://www.k-heritage.tv/main/heritage" target="_blank" rel="noopener noreferrer">문화유산채널tv</a>
+          <a class="item" href="http://www.kaah.kr/" target="_blank" rel="noopener noreferrer">한국문화유산협회</a>
+        </div>
+      </div>
+
+      <div class="category">
+        <div class="category-header">
+          <span class="category-name">LITERATURE</span>
+          <span class="category-line"></span>
+        </div>
+        <div class="item-list">
+          <a class="item" href="http://www.guoxue.com/" target="_blank" rel="noopener noreferrer">중국국학망</a>
+          <a class="item" href="http://www.zgysyjy.org.cn/" target="_blank" rel="noopener noreferrer">중국예술연구원</a>
+          <a class="item" href="http://www.wjszx.com.cn/" target="_blank" rel="noopener noreferrer">오강시사망(한시)</a>
+          <a class="item" href="http://wxg.org.cn/" target="_blank" rel="noopener noreferrer">중국현대문학관</a>
+          <a class="item" href="https://nebulas.sfwa.org/" target="_blank" rel="noopener noreferrer">네불라상</a>
+          <a class="item" href="http://www.thehugoawards.org/" target="_blank" rel="noopener noreferrer">휴고상</a>
+        </div>
+      </div>
+
+      <div class="category">
+        <div class="category-header">
+          <span class="category-name">PHILOSOPHIA &amp; RELIGION</span>
+          <span class="category-line"></span>
+        </div>
+        <div class="item-list">
+          <a class="item" href="http://www.platonacademy.org/" target="_blank" rel="noopener noreferrer">플라톤아카데미</a>
+          <a class="item" href="http://www.edasan.org/" target="_blank" rel="noopener noreferrer">다산연구소</a>
+          <a class="item" href="https://ctext.org/" target="_blank" rel="noopener noreferrer">중국철학전산화</a>
+          <a class="item" href="http://www.godpia.com/" target="_blank" rel="noopener noreferrer">성경읽기</a>
+          <a class="item" href="http://abc.dongguk.edu/abc/index.jsp" target="_blank" rel="noopener noreferrer">불교학술원(불경)</a>
+        </div>
+      </div>
+
+      <div class="category">
+        <div class="category-header">
+          <span class="category-name">KOREAN &amp; LANGUAGE</span>
+          <span class="category-line"></span>
+        </div>
+        <div class="item-list">
+          <a class="item" href="https://kdp.aks.ac.kr/inde/classic" target="_blank" rel="noopener noreferrer">한국고전원문자료관</a>
+          <a class="item" href="https://www.placename.or.kr/" target="_blank" rel="noopener noreferrer">한국지명학회</a>
+          <a class="item" href="http://www.skl.or.kr/" target="_blank" rel="noopener noreferrer">국어학회</a>
+          <a class="item" href="https://hangeul.or.kr/" target="_blank" rel="noopener noreferrer">한글학회</a>
+          <a class="item" href="https://www.hangeul.go.kr/" target="_blank" rel="noopener noreferrer">국립한글박물관</a>
+          <a class="item" href="https://www.korean.go.kr/" target="_blank" rel="noopener noreferrer">국립국어원</a>
+          <a class="item" href="https://kansong.org/foundation/index.do" target="_blank" rel="noopener noreferrer">간송미술문화재단</a>
+          <a class="item" href="http://davincimap.co.kr/" target="_blank" rel="noopener noreferrer">다빈치맵 훈민정음해례본</a>
+          <a class="item" href="http://www.hanja.asia/index.html" target="_blank" rel="noopener noreferrer">한국한자연구소(경성대)</a>
+          <a class="item" href="http://hk.nrf.re.kr/intro/intro01.do" target="_blank" rel="noopener noreferrer">인문한국(HK)지원사업</a>
+          <a class="item" href="https://hanziyuan.net/" target="_blank" rel="noopener noreferrer">한자자원(汉字叔叔)</a>
+          <a class="item" href="https://www.penn.museum/cgi/hieroglyphsreal.php" target="_blank" rel="noopener noreferrer">이집트상형문자</a>
+          <a class="item" href="https://publang.korean.go.kr/" target="_blank" rel="noopener noreferrer">공공언어</a>
+        </div>
+      </div>
+
+      <div class="category">
+        <div class="category-header">
+          <span class="category-name">SCIENCE</span>
+          <span class="category-line"></span>
+        </div>
+        <div class="item-list">
+          <a class="item" href="https://harg.kasi.re.kr/" target="_blank" rel="noopener noreferrer">고천문연구센터</a>
+          <a class="item" href="http://ikaos.org/ko/main/main.html" target="_blank" rel="noopener noreferrer">카오스재단</a>
+          <a class="item" href="https://www.kasi.re.kr/kor/index" target="_blank" rel="noopener noreferrer">한국천문연구원</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>
