@@ -293,6 +293,8 @@ export default function KimSangYukPortfolio() {
         .kp-essay-static { opacity: 0.55; }
         .kp-thumb { transition: transform 0.15s ease, box-shadow 0.15s ease; }
         .kp-thumb:hover { transform: translateY(-3px); box-shadow: 0 10px 22px rgba(20,30,70,0.22); }
+        .kp-archive-linkcard { transition: transform 0.15s ease, box-shadow 0.15s ease; }
+        .kp-archive-linkcard:hover { transform: translateY(-2px); box-shadow: 0 18px 40px rgba(20,30,70,0.16); }
         @media (prefers-reduced-motion: reduce) {
           .kp-btn-primary, .kp-btn-ghost, .kp-social, .kp-copy, .kp-book, .kp-essay-link, .kp-thumb { transition: none; }
         }
@@ -624,6 +626,17 @@ export default function KimSangYukPortfolio() {
               </a>
             ))}
           </div>
+        </div>
+
+        {/* ---------------- Internet Archive (external page) ---------------- */}
+        <div style={styles.archiveLinkSection}>
+          <a href="/archive.html" className="kp-archive-linkcard" style={styles.archiveLinkCard}>
+            <span style={styles.archiveLinkEyebrow}>
+              INTERNET <span style={styles.eyebrowDash}>&mdash;</span>{" "}
+              <span style={styles.eyebrowBlue}>ARCHIVE</span>
+            </span>
+            <span style={styles.archiveLinkArrow}>&rarr;</span>
+          </a>
         </div>
 
       </div>
@@ -1085,5 +1098,33 @@ const styles = {
     fontSize: 13,
     fontWeight: 700,
     color: "#0B1220",
+  },
+
+  /* ---- Internet Archive link-out card ---- */
+  archiveLinkSection: {
+    marginTop: 60,
+    paddingTop: 44,
+    borderTop: "1px solid #D7DCEE",
+  },
+  archiveLinkCard: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    background: "#FFFFFF",
+    borderRadius: 16,
+    padding: "22px 26px",
+    textDecoration: "none",
+    boxShadow: "0 12px 30px rgba(20,30,70,0.10)",
+  },
+  archiveLinkEyebrow: {
+    fontFamily: "'Inter', sans-serif",
+    fontWeight: 700,
+    fontSize: 13,
+    letterSpacing: "0.14em",
+  },
+  archiveLinkArrow: {
+    fontSize: 18,
+    color: "#2F5FE0",
+    fontWeight: 700,
   },
 };
