@@ -200,6 +200,15 @@ const ARTICLES = [
   },
 ];
 
+// Report & Paper — PDFs in `public/pdfs/`, referenced by plain path.
+// Title text includes the year where given, so no separate date field.
+const REPORTS = [
+  { title: "Lessons from Onondaga Lake Remediation, 2003", file: "/pdfs/lake.pdf" },
+  { title: "The Strike of the Korean Cargo Workers Federation in 2003", file: "/pdfs/cargo.pdf" },
+  { title: "대학생 촌관제와 후루사토 워킹홀리데이 연구, 2017", file: "/pdfs/work.pdf" },
+  { title: "미국 캘리포니아 고래관광 및 말산업 연구, 2023", file: "/pdfs/horse.pdf" },
+];
+
 // Goods & Gallery — photo thumbnails grouped by row (group number = first
 // digit of the filename). Rows are ordered highest group number first, and
 // within a row, items keep the order given (by their second digit). Images
@@ -509,6 +518,29 @@ export default function KimSangYukPortfolio() {
                   )}
                 </div>
               </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ---------------- Report and Paper ---------------- */}
+        <div style={styles.reportSection}>
+          <p style={styles.eyebrow}>
+            REPORT <span style={styles.eyebrowDash}>&amp;</span>{" "}
+            <span style={styles.eyebrowBlue}>PAPER</span>
+          </p>
+
+          <div style={styles.reportList}>
+            {REPORTS.map((doc, i) => (
+              <a
+                key={i}
+                href={doc.file}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="kp-essay-link"
+                style={styles.reportItem}
+              >
+                <span style={styles.reportTitle}>{doc.title}</span>
+              </a>
             ))}
           </div>
         </div>
@@ -921,6 +953,31 @@ const styles = {
     fontWeight: 500,
     whiteSpace: "nowrap",
     flexShrink: 0,
+  },
+
+  /* ---- Report & Paper ---- */
+  reportSection: {
+    marginTop: 60,
+    paddingTop: 44,
+    borderTop: "1px solid #D7DCEE",
+  },
+  reportList: {
+    display: "flex",
+    flexDirection: "column",
+  },
+  reportItem: {
+    display: "block",
+    padding: "10px 6px",
+    borderRadius: 8,
+    borderLeft: "2px solid transparent",
+    borderBottom: "1px solid #E7EAF4",
+    textDecoration: "none",
+    color: "#0B1220",
+  },
+  reportTitle: {
+    fontSize: 13,
+    fontWeight: 700,
+    color: "#0B1220",
   },
 
   /* ---- Goods & Gallery ---- */
