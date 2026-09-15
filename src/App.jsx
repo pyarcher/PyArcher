@@ -3,6 +3,7 @@ import { Github, Copy, Check, X } from "lucide-react";
 import faceImg from "./assets/face.jpg";
 import bookImg from "./assets/book.png";
 import whalingImg from "./assets/whaling.jpeg";
+import harmonyImg from "./assets/harmony.png";
 
 function NaverIcon({ size = 18 }) {
   return (
@@ -297,6 +298,9 @@ export default function KimSangYukPortfolio() {
         .kp-social:hover { transform: translateY(-2px); background: #E9ECF6; }
         .kp-copy:hover { background: #EEF1FA; }
         .kp-book:hover { transform: translateY(-3px); }
+        .kp-harmony { transition: transform 0.15s ease; }
+        .kp-harmony:hover { transform: translateY(-3px); }
+        .kp-harmony:hover .kp-harmony-caption { color: #2F5FE0; }
         .kp-essay-link { transition: background 0.15s ease, padding-left 0.15s ease, border-color 0.15s ease; }
         .kp-essay-link:hover { background: #EEF1FA; padding-left: 12px; border-color: #C7CDE3 !important; }
         .kp-essay-static { opacity: 0.55; }
@@ -439,6 +443,25 @@ export default function KimSangYukPortfolio() {
                 </div>
               </a>
             ))}
+
+            <div style={styles.cardDivider} />
+
+            <a
+              href="https://pyarcher.github.io/Figure21/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="kp-harmony"
+              style={styles.harmonyBlock}
+            >
+              <img
+                src={harmonyImg}
+                alt="태화강은 흐른다: 울산을 만든 인물들"
+                style={styles.harmonyImage}
+              />
+              <span className="kp-harmony-caption" style={styles.harmonyCaption}>
+                ☑️ 태화강은 흐른다: 울산을 만든 인물들
+              </span>
+            </a>
 
             <div style={styles.cardDivider} />
 
@@ -876,6 +899,27 @@ const styles = {
     lineHeight: 1.35,
   },
   bookMeta: { fontSize: 13, color: "#8A90A8", margin: 0 },
+  harmonyBlock: {
+    display: "block",
+    textDecoration: "none",
+  },
+  harmonyImage: {
+    width: "100%",
+    height: 140,
+    objectFit: "cover",
+    borderRadius: 12,
+    boxShadow: "0 8px 20px rgba(20,30,70,0.2)",
+    marginBottom: 10,
+    display: "block",
+  },
+  harmonyCaption: {
+    display: "block",
+    fontSize: 14,
+    fontWeight: 700,
+    color: "#0B1220",
+    lineHeight: 1.4,
+    transition: "color 0.15s ease",
+  },
   copyRow: {
     width: "100%",
     display: "flex",
