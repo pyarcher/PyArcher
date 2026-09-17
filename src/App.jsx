@@ -198,7 +198,7 @@ const ARTICLES = [
 // Title text includes the year where given, so no separate date field.
 const REPORTS = [
   { title: "Lessons from Onondaga Lake Remediation, 2003", file: "/pdfs/lake.pdf" },
-  { title: "The Strike of the Korean Cargo Workers Federation in 2003", file: "/pdfs/cargo.pdf" },
+  { title: "The Strike of the Korean Cargo Workers Federation in 2003, 2003", file: "/pdfs/cargo.pdf" },
   { title: "고래와 고래잡이, 그리고 고래특구, 2012", file: "/pdfs/ulsanwhaling.pdf" },
   { title: "대학생 촌관제와 후루사토 워킹홀리데이 연구, 2017", file: "/pdfs/work.pdf" },
   { title: "미국 캘리포니아 고래관광 및 말산업 연구, 2023", file: "/pdfs/horse.pdf" },
@@ -493,6 +493,29 @@ export default function KimSangYukPortfolio() {
           </div>
         </div>
 
+        {/* ---------------- Report and Paper ---------------- */}
+        <div style={styles.reportSection}>
+          <p style={styles.eyebrow}>
+            REPORT <span style={styles.eyebrowDash}>&amp;</span>{" "}
+            <span style={styles.eyebrowBlue}>PAPER</span>
+          </p>
+
+          <div style={styles.reportList}>
+            {REPORTS.map((doc, i) => (
+              <a
+                key={i}
+                href={doc.file}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="kp-essay-link"
+                style={styles.reportItem}
+              >
+                <span style={styles.reportTitle}>{doc.title}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+
         {/* ---------------- Column and Essay ---------------- */}
         <div style={styles.essaySection}>
           <p style={styles.eyebrow}>
@@ -535,29 +558,6 @@ export default function KimSangYukPortfolio() {
                   )}
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
-
-        {/* ---------------- Report and Paper ---------------- */}
-        <div style={styles.reportSection}>
-          <p style={styles.eyebrow}>
-            REPORT <span style={styles.eyebrowDash}>&amp;</span>{" "}
-            <span style={styles.eyebrowBlue}>PAPER</span>
-          </p>
-
-          <div style={styles.reportList}>
-            {REPORTS.map((doc, i) => (
-              <a
-                key={i}
-                href={doc.file}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="kp-essay-link"
-                style={styles.reportItem}
-              >
-                <span style={styles.reportTitle}>{doc.title}</span>
-              </a>
             ))}
           </div>
         </div>
@@ -933,7 +933,7 @@ const styles = {
 
   /* ---- Column & Essay ---- */
   essaySection: {
-    marginTop: 88,
+    marginTop: 60,
     paddingTop: 44,
     borderTop: "1px solid #D7DCEE",
   },
@@ -995,7 +995,7 @@ const styles = {
 
   /* ---- Report & Paper ---- */
   reportSection: {
-    marginTop: 60,
+    marginTop: 88,
     paddingTop: 44,
     borderTop: "1px solid #D7DCEE",
   },
