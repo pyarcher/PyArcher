@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Github, Copy, Check, X } from "lucide-react";
 import faceImg from "./assets/face.jpg";
 import bookImg from "./assets/book.png";
-import whalingImg from "./assets/whaling.jpeg";
 import harmonyImg from "./assets/harmony.png";
 
 function NaverIcon({ size = 18 }) {
@@ -33,12 +32,6 @@ const BOOKS = [
     meta: "김상육 지음",
     cover: bookImg,
     url: "https://product.kyobobook.co.kr/detail/S000061694894",
-  },
-  {
-    title: "고래와 고래잡이, 그리고 고래특구",
-    meta: "김상육 편집",
-    cover: whalingImg,
-    url: "https://dl.nanet.go.kr/search/searchInnerDetail.do?searchType=INNER_SEARCH&resultType=INNER_SEARCH_DETAIL&searchMehtod=L&searchClass=S&controlNo=MONO1201244487&queryText=&prevQueryText=%EA%B3%A0%EB%9E%98%EC%9E%A1%EC%9D%B4%3AALL_NI_TOC%3AAND&zone=&fieldText=&prevPubYearFieldText=&languageCode=&synonymYn=&refineSearchYn=&ddcPopSearchYn=&pageNum=&pageSize=&orderBy=&topMainMenuCode=&topSubMenuCode=&totalSize=118&totalSizeByMenu=118&seqNo=&hanjaYn=Y&knowPub=&isdb=&isdbsvc=&tt1=&down=&frgnLangMtrlYn=&targetLangCode=&checkedDbIdList=&baseDbId=&selectedDbIndexIdList=&caller=&asideState=&dpBranch=ALL&journalKind=&degreeDiv=&searchQuery=%EA%B3%A0%EB%9E%98%EC%9E%A1%EC%9D%B4",
   },
 ];
 
@@ -206,6 +199,7 @@ const ARTICLES = [
 const REPORTS = [
   { title: "Lessons from Onondaga Lake Remediation, 2003", file: "/pdfs/lake.pdf" },
   { title: "The Strike of the Korean Cargo Workers Federation in 2003", file: "/pdfs/cargo.pdf" },
+  { title: "고래와 고래잡이, 그리고 고래특구, 2012", file: "/pdfs/ulsanwhaling.pdf" },
   { title: "대학생 촌관제와 후루사토 워킹홀리데이 연구, 2017", file: "/pdfs/work.pdf" },
   { title: "미국 캘리포니아 고래관광 및 말산업 연구, 2023", file: "/pdfs/horse.pdf" },
 ];
