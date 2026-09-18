@@ -189,7 +189,7 @@ const ARTICLES = [
   {
     year: "2013",
     items: [
-      { title: "4월, 고래의 달, 고래바다여행선을 띄우며", date: "2013.4.1", url: "https://www.ksilbo.co.kr/news/articleView.html?idxno=405481" },
+      { title: "4월 고래의 달, 고래바다여행선을 띄우며", date: "2013.4.1", url: "https://www.ksilbo.co.kr/news/articleView.html?idxno=405481" },
     ],
   },
 ];
