@@ -489,7 +489,7 @@ export default function KimSangYukPortfolio() {
             style={styles.harmonyCaptionLink}
           >
             <Check size={14} style={{ flexShrink: 0 }} />
-            GO TO STUDY &lt;태화강은 흐른다: 울산을 만든 사람들&gt;
+            GO STUDY &lt;태화강은 흐른다: 울산을 만든 사람들&gt;
           </a>
 
           <a
