@@ -294,6 +294,8 @@ export default function KimSangYukPortfolio() {
         .kp-book:hover { transform: translateY(-3px); }
         .kp-harmony-caption { transition: color 0.15s ease; }
         .kp-harmony-caption:hover { color: #2F5FE0; }
+        .kp-harmony-img { transition: transform 0.15s ease, box-shadow 0.15s ease; }
+        .kp-harmony-img:hover { transform: translateY(-3px); }
         .kp-essay-link { transition: background 0.15s ease, padding-left 0.15s ease, border-color 0.15s ease; }
         .kp-essay-link:hover { background: #EEF1FA; padding-left: 12px; border-color: #C7CDE3 !important; }
         .kp-essay-static { opacity: 0.55; }
@@ -479,14 +481,6 @@ export default function KimSangYukPortfolio() {
             <span style={styles.eyebrowBlue}>IN HARMONY</span>
           </p>
 
-          <div style={styles.harmonyImageWrap}>
-            <img
-              src={harmonyImg}
-              alt="태화강은 흐른다: 울산을 만든 사람들"
-              style={styles.harmonyImageLarge}
-            />
-          </div>
-
           <a
             href="https://pyarcher.github.io/Figure21/"
             target="_blank"
@@ -494,7 +488,22 @@ export default function KimSangYukPortfolio() {
             className="kp-harmony-caption"
             style={styles.harmonyCaptionLink}
           >
+            <Check size={14} style={{ flexShrink: 0 }} />
             GO TO STUDY &lt;태화강은 흐른다: 울산을 만든 사람들&gt;
+          </a>
+
+          <a
+            href="https://pyarcher.github.io/Figure21/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="kp-harmony-img"
+            style={styles.harmonyImageWrap}
+          >
+            <img
+              src={harmonyImg}
+              alt="태화강은 흐른다: 울산을 만든 사람들"
+              style={styles.harmonyImageLarge}
+            />
           </a>
         </div>
 
@@ -907,24 +916,28 @@ const styles = {
     textAlign: "center",
   },
   harmonyImageWrap: {
-    maxWidth: 900,
-    margin: "0 auto 22px",
+    display: "block",
+    maxWidth: 360,
+    margin: "0 auto",
   },
   harmonyImageLarge: {
     width: "100%",
     height: "auto",
     objectFit: "contain",
-    borderRadius: 16,
-    boxShadow: "0 20px 50px rgba(20,30,70,0.22)",
+    borderRadius: 12,
+    boxShadow: "0 12px 30px rgba(20,30,70,0.18)",
     display: "block",
   },
   harmonyCaptionLink: {
-    display: "inline-block",
-    fontSize: 15,
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 6,
+    fontSize: 13,
     fontWeight: 700,
     color: "#0B1220",
     textDecoration: "none",
     transition: "color 0.15s ease",
+    marginBottom: 18,
   },
   copyRow: {
     width: "100%",
