@@ -189,7 +189,7 @@ const ARTICLES = [
   {
     year: "2013",
     items: [
-      { title: "4월 고래의 달, 고래바다여행선을 띄우며", date: "2013.4.1", url: "https://www.ksilbo.co.kr/news/articleView.html?idxno=405481" },
+      { title: "4월, 고래의 달, 고래바다여행선을 띄우며", date: "2013.4.1", url: "https://www.ksilbo.co.kr/news/articleView.html?idxno=405481" },
     ],
   },
 ];
@@ -292,9 +292,8 @@ export default function KimSangYukPortfolio() {
         .kp-social:hover { transform: translateY(-2px); background: #E9ECF6; }
         .kp-copy:hover { background: #EEF1FA; }
         .kp-book:hover { transform: translateY(-3px); }
-        .kp-harmony { transition: transform 0.15s ease; }
-        .kp-harmony:hover { transform: translateY(-3px); }
-        .kp-harmony:hover .kp-harmony-caption { color: #2F5FE0; }
+        .kp-harmony-caption { transition: color 0.15s ease; }
+        .kp-harmony-caption:hover { color: #2F5FE0; }
         .kp-essay-link { transition: background 0.15s ease, padding-left 0.15s ease, border-color 0.15s ease; }
         .kp-essay-link:hover { background: #EEF1FA; padding-left: 12px; border-color: #C7CDE3 !important; }
         .kp-essay-static { opacity: 0.55; }
@@ -321,7 +320,7 @@ export default function KimSangYukPortfolio() {
       <div style={styles.wrap}>
         <p style={styles.eyebrow}>
           KIM SANG YUK <span style={styles.eyebrowDash}>&mdash;</span>{" "}
-          <span style={styles.eyebrowBlue}>ARCHER &middot; RIDER &middot; AUTHOR &middot; K-ULSANER</span>
+          <span style={styles.eyebrowBlue}>ARCHER &middot; AUTHOR &middot; K-ULSANER</span>
         </p>
 
         <div className="kp-layout" style={styles.layout}>
@@ -404,13 +403,12 @@ export default function KimSangYukPortfolio() {
             <p style={styles.cardEyebrow}>K-ULSANER</p>
             <h2 style={styles.cardTitle}>김상육 &middot; Kim Sang Yuk</h2>
             <p style={styles.cardDesc}>
-              Archer, rider, and author rooted in Ulsan &mdash; writing history
+              Archer and author rooted in Ulsan &mdash; writing history
               and reflection into everyday life.
             </p>
 
             <div style={styles.roleRow}>
               <span style={styles.rolePill}>Archer</span>
-              <span style={styles.rolePill}>Rider</span>
               <span style={styles.rolePill}>Author</span>
               <span style={styles.rolePill}>K-Ulsaner</span>
             </div>
@@ -437,25 +435,6 @@ export default function KimSangYukPortfolio() {
                 </div>
               </a>
             ))}
-
-            <div style={styles.cardDivider} />
-
-            <a
-              href="https://pyarcher.github.io/Figure21/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="kp-harmony"
-              style={styles.harmonyBlock}
-            >
-              <img
-                src={harmonyImg}
-                alt="태화강은 흐른다: 울산을 만든 인물들"
-                style={styles.harmonyImage}
-              />
-              <span className="kp-harmony-caption" style={styles.harmonyCaption}>
-                ☑️ 태화강은 흐른다: 울산을 만든 인물들
-              </span>
-            </a>
 
             <div style={styles.cardDivider} />
 
@@ -491,6 +470,32 @@ export default function KimSangYukPortfolio() {
               {copied === "email" ? <Check size={15} /> : <Copy size={15} />}
             </button>
           </div>
+        </div>
+
+        {/* ---------------- Ulsan In Harmony ---------------- */}
+        <div style={styles.harmonySection}>
+          <p style={styles.eyebrow}>
+            ULSAN <span style={styles.eyebrowDash}>&mdash;</span>{" "}
+            <span style={styles.eyebrowBlue}>IN HARMONY</span>
+          </p>
+
+          <div style={styles.harmonyImageWrap}>
+            <img
+              src={harmonyImg}
+              alt="태화강은 흐른다: 울산을 만든 사람들"
+              style={styles.harmonyImageLarge}
+            />
+          </div>
+
+          <a
+            href="https://pyarcher.github.io/Figure21/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="kp-harmony-caption"
+            style={styles.harmonyCaptionLink}
+          >
+            GO TO STUDY &lt;태화강은 흐른다: 울산을 만든 사람들&gt;
+          </a>
         </div>
 
         {/* ---------------- Report and Paper ---------------- */}
@@ -893,25 +898,32 @@ const styles = {
     lineHeight: 1.35,
   },
   bookMeta: { fontSize: 13, color: "#8A90A8", margin: 0 },
-  harmonyBlock: {
-    display: "block",
-    textDecoration: "none",
+
+  /* ---- Ulsan In Harmony ---- */
+  harmonySection: {
+    marginTop: 88,
+    paddingTop: 44,
+    borderTop: "1px solid #D7DCEE",
+    textAlign: "center",
   },
-  harmonyImage: {
+  harmonyImageWrap: {
+    maxWidth: 900,
+    margin: "0 auto 22px",
+  },
+  harmonyImageLarge: {
     width: "100%",
-    height: 140,
-    objectFit: "cover",
-    borderRadius: 12,
-    boxShadow: "0 8px 20px rgba(20,30,70,0.2)",
-    marginBottom: 10,
+    height: "auto",
+    objectFit: "contain",
+    borderRadius: 16,
+    boxShadow: "0 20px 50px rgba(20,30,70,0.22)",
     display: "block",
   },
-  harmonyCaption: {
-    display: "block",
-    fontSize: 14,
+  harmonyCaptionLink: {
+    display: "inline-block",
+    fontSize: 15,
     fontWeight: 700,
     color: "#0B1220",
-    lineHeight: 1.4,
+    textDecoration: "none",
     transition: "color 0.15s ease",
   },
   copyRow: {
@@ -995,7 +1007,7 @@ const styles = {
 
   /* ---- Report & Paper ---- */
   reportSection: {
-    marginTop: 88,
+    marginTop: 60,
     paddingTop: 44,
     borderTop: "1px solid #D7DCEE",
   },
