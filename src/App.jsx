@@ -106,6 +106,8 @@ const ARTICLES = [
   {
     year: "2026",
     items: [
+      { title: "울산의 섬, 과거와 통하다", date: "2026.10.21", url: "https://www.iusm.co.kr/news/articleView.html?idxno=1069468" },
+      { title: "울산 사람 외솔 최현배의 애향가", date: "2026.10.6", url: "https://www.ksilbo.co.kr/news/articleView.html?idxno=1068940" },
       { title: "울산 전통 활쏘기의 종가, 원학정", date: "2026.7.8", url: "https://www.ksilbo.co.kr/news/articleView.html?idxno=1061475" },
       { title: "울주 개지변과 울산 팰리세이드", date: "2026.7.2", url: "http://www.ujeil.com/news/articleView.html?idxno=388196" },
       { title: "18세기 울산 동헌 풍경", date: "2026.6.11", url: "https://www.iusm.co.kr/news/articleView.html?idxno=1063979" },
