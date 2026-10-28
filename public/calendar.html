@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pyarcher’s Calendar — Kim Sang Yuk</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+  :root {
+    --text: #0B1220; --muted: #6B7290; --soft: #8A90A8; --border: #D7DCEE; --line: #E7EAF4;
+    --blue: #2F5FE0; --purple: #6D4FE0; --red: #D64545; --teal: #168A7A; --amber: #A8670F;
+    --hover: #EEF1FA;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh;
+    background: linear-gradient(180deg, #EEF1FA 0%, #E7EBF7 100%);
+    font-family: 'Inter', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    color: var(--text);
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 56px 32px 100px; }
+  .back-link {
+    display: inline-flex; align-items: center; gap: 6px; text-decoration: none;
+    color: #4A5170; font-size: 13px; font-weight: 600; margin-bottom: 40px; transition: color .15s ease;
+  }
+  .back-link:hover { color: var(--blue); }
+  .eyebrow { font-weight: 700; font-size: 13px; letter-spacing: .14em; margin: 0 0 12px; }
+  .eyebrow .blue { color: var(--blue); }
+  h1 { font-size: 40px; line-height: 1.1; margin: 0 0 14px; font-weight: 800; letter-spacing: -0.02em; }
+  .subtitle { font-size: 14px; color: var(--muted); margin: 0 0 8px; line-height: 1.6; }
+
+  section { margin-top: 56px; }
+  .sec-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 18px; }
+  .sec-name { font-weight: 800; font-size: 13px; color: var(--purple); letter-spacing: .1em; white-space: nowrap; }
+  .sec-line { flex: 1; height: 1px; background: var(--border); }
+  .sec-tools { display: flex; gap: 8px; }
+
+  .card { background: #fff; border-radius: 16px; box-shadow: 0 12px 30px rgba(20,30,70,.10); padding: 22px 26px; }
+
+  /* TODAY */
+  .today-line { font-size: 22px; font-weight: 800; margin: 0 0 16px; letter-spacing: -0.01em; }
+  .today-line .tri { color: var(--blue); margin-right: 6px; }
+  .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 12px; }
+  .tile { background: #fff; border-radius: 14px; padding: 14px 16px; box-shadow: 0 8px 22px rgba(20,30,70,.08); }
+  .tile .lab { font-size: 11px; font-weight: 700; color: var(--soft); letter-spacing: .04em; line-height: 1.4; }
+  .tile .val { font-size: 20px; font-weight: 800; margin-top: 6px; }
+  .tile .sub { font-size: 12px; color: var(--muted); margin-top: 2px; min-height: 16px; }
+  .today-note { font-size: 13px; color: var(--muted); margin-top: 6px; line-height: 1.7; }
+
+  /* nav + filters */
+  .navbar { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+  .navgroup { display: flex; gap: 8px; align-items: center; }
+  .btn {
+    font: inherit; font-size: 13px; font-weight: 700; color: #4A5170; background: #fff;
+    border: 1px solid var(--border); border-radius: 999px; padding: 8px 14px; cursor: pointer;
+    transition: background .15s ease, color .15s ease, border-color .15s ease;
+  }
+  .btn:hover { background: var(--hover); color: var(--blue); border-color: var(--blue); }
+  .btn.primary { background: var(--blue); color: #fff; border-color: var(--blue); }
+  .btn.primary:hover { background: #2450c4; color: #fff; }
+  .btn.small { padding: 5px 11px; font-size: 12px; }
+  .btn.danger:hover { color: var(--red); border-color: var(--red); }
+  .btn:focus-visible, .cell:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+  .monthlabel { font-size: 24px; font-weight: 800; letter-spacing: -0.01em; min-width: 150px; text-align: center; }
+  .filters { display: flex; flex-wrap: wrap; gap: 8px 16px; margin: 0 0 14px; }
+  .filters label { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: #4A5170; cursor: pointer; }
+  .filters input { accent-color: var(--blue); width: 15px; height: 15px; margin: 0; }
+
+  /* grid */
+  .cal { background: #fff; border-radius: 16px; box-shadow: 0 20px 50px rgba(20,30,70,.14); overflow: hidden; }
+  .dows, .days { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
+  .dows div { text-align: center; font-size: 12px; font-weight: 800; letter-spacing: .08em; padding: 11px 0; color: #4A5170; border-bottom: 1px solid var(--border); background: #F7F8FD; }
+  .dows div:first-child { color: var(--red); }
+  .dows div:last-child { color: var(--blue); }
+  .cell {
+    font: inherit; text-align: left; color: inherit; background: #fff; border: 0;
+    border-right: 1px solid var(--line); border-bottom: 1px solid var(--line);
+    min-height: 118px; padding: 7px 7px 6px; cursor: pointer; display: flex; flex-direction: column; gap: 3px; min-width: 0;
+  }
+  .cell:nth-child(7n) { border-right: 0; }
+  .cell:hover { background: var(--hover); }
+  .cell.out { background: #FBFBFE; }
+  .cell.out .num, .cell.out .lun { opacity: .45; }
+  .cell.sel { box-shadow: inset 0 0 0 2px var(--blue); }
+  .ctop { display: flex; justify-content: space-between; align-items: baseline; gap: 4px; }
+  .num { font-size: 14px; font-weight: 800; min-width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; border-radius: 999px; }
+  .num.sun, .num.off { color: var(--red); }
+  .num.sat { color: var(--blue); }
+  .num.today { background: var(--blue); color: #fff; }
+  .lun { font-size: 10.5px; color: var(--soft); font-weight: 600; white-space: nowrap; }
+  .chips { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .chip { font-size: 10.5px; font-weight: 700; line-height: 1.3; padding: 1.5px 5px; border-radius: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .c-hol { background: #FDECEC; color: #C03030; }
+  .c-term { background: #E6F5F2; color: var(--teal); }
+  .c-mem { background: #EEF1FA; color: #4A5170; }
+  .c-folk { background: #F1EDFC; color: var(--purple); }
+  .c-ul { background: #E8EEFD; color: var(--blue); }
+  .c-mk { background: #FFF3DC; color: var(--amber); }
+  .c-dd { background: #0B1220; color: #fff; }
+  .dots { display: none; gap: 3px; flex-wrap: wrap; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; }
+  .d-hol { background: var(--red); } .d-term { background: var(--teal); } .d-mem { background: #8A90A8; }
+  .d-folk { background: var(--purple); } .d-ul { background: var(--blue); } .d-mk { background: #D79A2B; } .d-dd { background: #0B1220; }
+
+  /* selected-day detail */
+  .detail { margin-top: 16px; }
+  .detail h3 { margin: 0 0 12px; font-size: 18px; font-weight: 800; }
+  .drow { display: grid; grid-template-columns: 110px 1fr; gap: 10px; padding: 8px 0; border-top: 1px solid var(--line); font-size: 14px; line-height: 1.6; }
+  .drow:first-of-type { border-top: 0; }
+  .drow .k { font-weight: 700; color: var(--soft); font-size: 12px; letter-spacing: .06em; padding-top: 2px; }
+  .drow .v .red { color: var(--red); font-weight: 700; }
+  .drow .v .none { color: var(--soft); }
+
+  /* D-DAY table */
+  table.dd { width: 100%; border-collapse: collapse; font-size: 14px; }
+  table.dd th { text-align: left; font-size: 12px; letter-spacing: .08em; color: var(--soft); font-weight: 800; padding: 0 10px 10px; border-bottom: 1px solid var(--border); }
+  table.dd td { padding: 11px 10px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+  table.dd tr:last-child td { border-bottom: 0; }
+  table.dd td.dday { font-weight: 800; color: var(--blue); white-space: nowrap; }
+  table.dd tr.past td { color: var(--soft); }
+  table.dd tr.past td.dday { color: var(--soft); }
+  table.dd tr.today td.dday { color: var(--red); }
+  table.dd td.date { white-space: nowrap; color: #4A5170; }
+  table.dd input[type=text], table.dd input[type=date], .pw input {
+    font: inherit; font-size: 14px; padding: 7px 10px; border: 1px solid var(--border); border-radius: 8px; width: 100%; background: #fff; color: var(--text);
+  }
+  .editbar { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; align-items: center; }
+  .hint { font-size: 12px; color: var(--muted); line-height: 1.6; margin: 10px 0 0; }
+  .pw { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 14px; }
+  .pw input { width: 220px; }
+  .msg { font-size: 12px; color: var(--red); font-weight: 600; }
+  .msg.ok { color: var(--teal); }
+
+  /* lists */
+  .lrow { display: grid; grid-template-columns: 96px 1fr; gap: 10px; padding: 7px 0; font-size: 14px; line-height: 1.7; }
+  .lrow .k { font-weight: 700; color: var(--purple); }
+  .lrow .v .none { color: var(--soft); }
+  .note { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 13.5px; line-height: 1.85; color: #3A4260; }
+  .note .t { font-weight: 700; color: var(--text); }
+  .note a { color: var(--blue); text-decoration: none; word-break: break-all; }
+  .note a:hover { text-decoration: underline; }
+  .note ul { list-style: none; margin: 2px 0 0; padding: 0; }
+  .note li { padding-left: 14px; text-indent: -14px; }
+  .note li::before { content: "* "; color: var(--soft); }
+  .note li.dash::before { content: "- "; }
+  .note p { margin: 8px 0 0; }
+
+  .hist a { display: block; color: var(--blue); font-size: 14px; text-decoration: none; word-break: break-all; margin: 0 0 14px 18px; }
+  .hist a:hover { text-decoration: underline; }
+  .hist .lbl { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+  .hist .lbl .tri { color: var(--blue); margin-right: 6px; }
+
+  @media (max-width: 760px) {
+    .wrap { padding: 36px 16px 80px; }
+    h1 { font-size: 30px; }
+    .tiles { grid-template-columns: repeat(2, 1fr); }
+    .cell { min-height: 66px; padding: 5px 4px; align-items: center; }
+    .ctop { flex-direction: column; align-items: center; gap: 0; }
+    .lun { font-size: 9px; }
+    .chips { display: none; }
+    .dots { display: flex; justify-content: center; }
+    .monthlabel { font-size: 19px; min-width: 0; flex: 1; }
+    .navbar { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .navbar .navgroup:nth-child(2) { order: -1; grid-column: 1 / -1; }
+    .navgroup { justify-content: space-between; }
+    .navbar .navgroup:nth-child(3) { justify-content: flex-end; }
+    .btn { padding: 8px 10px; font-size: 12px; }
+    .drow, .lrow { grid-template-columns: 82px 1fr; }
+    .card { padding: 18px 16px; }
+    table.dd th:nth-child(1), table.dd td:nth-child(1) { padding-left: 4px; }
+    .today-line { font-size: 18px; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back-link" href="/">&larr; KIM SANG YUK</a>
+  <p class="eyebrow">PYARCHER’S <span>&mdash;</span> <span class="blue">CALENDAR</span></p>
+  <h1>Pyarcher’s Calendar</h1>
+  <p class="subtitle">양력 · 음력 · 24절기 · 공휴일 · 기념일 · 울산 기념일 · 울산 장날</p>
+
+  <section id="s-today" style="margin-top:36px">
+    <div class="sec-head"><span class="sec-name">♠ TODAY</span><span class="sec-line"></span></div>
+    <div id="today"></div>
+  </section>
+
+  <section id="s-month">
+    <div class="sec-head"><span class="sec-name">MONTHLY CALENDAR</span><span class="sec-line"></span></div>
+    <div class="navbar">
+      <div class="navgroup">
+        <button class="btn" id="py" type="button">◀ 이전 해</button>
+        <button class="btn" id="pm" type="button">◁ 이전 달</button>
+      </div>
+      <div class="navgroup" style="flex:1;justify-content:center">
+        <span class="monthlabel" id="mlabel" aria-live="polite"></span>
+        <button class="btn primary" id="tod" type="button">오늘</button>
+      </div>
+      <div class="navgroup">
+        <button class="btn" id="nm" type="button">다음 달 ▷</button>
+        <button class="btn" id="ny" type="button">다음 해 ▶</button>
+      </div>
+    </div>
+    <div class="filters" id="filters"></div>
+    <div class="cal">
+      <div class="dows"><div>SUN</div><div>MON</div><div>TUE</div><div>WED</div><div>THU</div><div>FRI</div><div>SAT</div></div>
+      <div class="days" id="days"></div>
+    </div>
+    <div class="card detail" id="detail"></div>
+  </section>
+
+  <section id="s-dday">
+    <div class="sec-head"><span class="sec-name">▷ D-DAY</span><span class="sec-line"></span>
+      <div class="sec-tools"><button class="btn small" id="editbtn" type="button">편집</button></div>
+    </div>
+    <div class="card" id="dday"></div>
+  </section>
+
+  <section id="s-cele">
+    <div class="sec-head"><span class="sec-name">◆ CELEBRATION DAY</span><span class="sec-line"></span></div>
+    <div class="card" id="cele"></div>
+  </section>
+
+  <section id="s-ulsan">
+    <div class="sec-head"><span class="sec-name">♣ DAYS OF ULSAN</span><span class="sec-line"></span></div>
+    <div class="card" id="ulsan"></div>
+  </section>
+
+  <section id="s-market">
+    <div class="sec-head"><span class="sec-name">♥ ULSAN MARKET DAY</span><span class="sec-line"></span></div>
+    <div class="card" id="market"></div>
+  </section>
+
+  <section id="s-hist">
+    <div class="sec-head"><span class="sec-name">▣ TODAY IN HISTORY</span><span class="sec-line"></span></div>
+    <div class="card hist" id="hist"></div>
+  </section>
+</div>
+
+<script src="calendar-data.js"></script>
+<script>
+/* =====================================================================
+   설정 영역 — 여기만 고치면 됩니다
+   ===================================================================== */
+
+// D-DAY 공개 목록 (방문자에게 보이는 값). 날짜 형식: YYYY-MM-DD
+const EVENTS = [
+  { t: "중국 주석 선출",     d: "2028-03-05" },
+  { t: "23대 총선",          d: "2028-04-12" },
+  { t: "울산국제정원박람회", d: "2028-04-15" },
+  { t: "LA올림픽",           d: "2028-07-14" },
+  { t: "미국 대선",          d: "2028-11-07" },
+  { t: "22대 대선",          d: "2030-03-27" },
+  { t: "10회 지방선거",      d: "2030-06-12" }
+];
+
+// 편집 비밀번호의 SHA-256 해시. 비워 두면 처음 '편집'을 누를 때 이 브라우저에 비밀번호를 정합니다.
+const ADMIN_HASH = "";
+
+// 임시공휴일·선거일 등 (공휴일처럼 빨간색으로 표시). [날짜, 이름]
+const EXTRA_HOLIDAYS = [
+  ["2025-01-27", "임시공휴일"],
+  ["2025-06-03", "제21대 대통령선거일"],
+  ["2026-06-03", "제9회 전국동시지방선거일"],
+  ["2028-04-12", "제23대 국회의원선거일"],
+  ["2030-03-27", "제22대 대통령선거일"],
+  ["2030-06-12", "제10회 전국동시지방선거일"]
+];
+
+// 각종 기념일 등에 관한 규정 등의 기념일. [월, 일, 이름]  /  규칙형: [월, "nth", 요일(0=일), 몇째, 이름]
+const MEMORIALS = [
+  [2,28,"2·28민주운동기념일"], [3,8,"3·8민주의거기념일"], [3,15,"3·15의거기념일"],
+  [3,"nth",5,4,"서해수호의 날"],
+  [4,3,"제주4·3 희생자 추념일"], [4,5,"식목일"], [4,11,"대한민국임시정부수립기념일"],
+  [4,19,"4·19혁명기념일"], [4,20,"장애인의 날"], [4,21,"과학의 날"], [4,22,"새마을의 날"],
+  [4,28,"충무공 이순신 탄신일"],
+  [5,1,"노동절(근로자의 날)"], [5,8,"어버이날"], [5,10,"유권자의 날"], [5,15,"스승의 날"],
+  [5,18,"5·18민주화운동기념일"], [5,20,"발명의 날"], [5,21,"부부의 날"],
+  [5,"nth",1,3,"성년의 날"], [5,31,"바다의 날"],
+  [6,10,"6·10민주항쟁기념일"], [6,25,"6·25전쟁일"],
+  [8,14,"일본군 위안부 피해자 기림의 날"],
+  [10,1,"국군의 날"], [10,2,"노인의 날"], [10,15,"체육의 날"], [10,21,"경찰의 날"],
+  [10,25,"독도의 날"], [10,29,"지방자치의 날"],
+  [11,3,"학생독립운동기념일"], [11,9,"소방의 날"], [11,11,"농업인의 날"], [11,17,"순국선열의 날"]
+];
+
+// 울산의 기념일 (양력). [월, 일, 이름]
+const ULSAN_DAYS = [
+  [2,26,"울산 수소산업의 날"], [3,22,"울산 화학의 날"], [4,2,"언양 만세운동"], [4,4,"병영 만세운동"],
+  [4,8,"남창 만세운동"], [4,15,"울주군 군민의 날"], [4,25,"남구 고래의 날"], [5,15,"중구 구민의 날"],
+  [5,12,"울산 자동차의 날"], [6,28,"울산 조선해양의 날"], [7,5,"동구 현대엔진 노조 결성일"],
+  [7,15,"광역시 승격 기념일"], [7,15,"북구 구민의 날"], [10,1,"울산 시민의 날"], [10,19,"외솔 나신 날"]
+];
+
+/* =====================================================================
+   기본 도구
+   ===================================================================== */
+const KST = "Asia/Seoul";
+const pad = n => String(n).padStart(2, "0");
+const key = (y, m, d) => y + "-" + pad(m) + "-" + pad(d);
+const dowOf = (y, m, d) => new Date(Date.UTC(y, m - 1, d)).getUTCDay();
+const dimOf = (y, m) => new Date(Date.UTC(y, m, 0)).getUTCDate();
+const DOW_KO = ["일", "월", "화", "수", "목", "금", "토"];
+function addDays(y, m, d, n) { const t = new Date(Date.UTC(y, m - 1, d + n)); return [t.getUTCFullYear(), t.getUTCMonth() + 1, t.getUTCDate()]; }
+function parseKey(k) { const [y, m, d] = k.split("-").map(Number); return { y, m, d }; }
+function jdn(y, m, d) {
+  const a = Math.floor((14 - m) / 12), y2 = y + 4800 - a, m2 = m + 12 * a - 3;
+  return d + Math.floor((153 * m2 + 2) / 5) + 365 * y2 + Math.floor(y2 / 4) - Math.floor(y2 / 100) + Math.floor(y2 / 400) - 32045;
+}
+function daysBetween(a, b) { return Math.round((Date.UTC(b.y, b.m - 1, b.d) - Date.UTC(a.y, a.m - 1, a.d)) / 86400000); }
+function nthDow(y, m, dow, n) { const first = dowOf(y, m, 1); return 1 + ((dow - first + 7) % 7) + (n - 1) * 7; }
+function todayKST() {
+  const s = new Intl.DateTimeFormat("en-CA", { timeZone: KST, year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
+  const [y, m, d] = s.split("-").map(Number); return { y, m, d };
+}
+function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; }
+function link(href, text) { const a = el("a", "", text || href); a.href = href; a.target = "_blank"; a.rel = "noopener noreferrer"; return a; }
+
+/* =====================================================================
+   천문 계산 — 24절기(태양 황경), 간지
+   ===================================================================== */
+const STEM_K = "갑을병정무기경신임계", STEM_H = "甲乙丙丁戊己庚辛壬癸";
+const BR_K = "자축인묘진사오미신유술해", BR_H = "子丑寅卯辰巳午未申酉戌亥";
+const pillarK = i => STEM_K[i % 10] + BR_K[i % 12];
+const pillarH = i => STEM_H[i % 10] + BR_H[i % 12];
+
+function sunLon(jd) {
+  const T = (jd - 2451545) / 36525, r = Math.PI / 180;
+  const L0 = 280.46646 + 36000.76983 * T + 0.0003032 * T * T;
+  const M = (357.52911 + 35999.05029 * T - 0.0001537 * T * T) * r;
+  const C = (1.914602 - 0.004817 * T - 0.000014 * T * T) * Math.sin(M) + (0.019993 - 0.000101 * T) * Math.sin(2 * M) + 0.000289 * Math.sin(3 * M);
+  const om = (125.04 - 1934.136 * T) * r;
+  const lam = L0 + C - 0.00569 - 0.00478 * Math.sin(om);
+  return ((lam % 360) + 360) % 360;
+}
+const TERMS = [[315,"입춘"],[330,"우수"],[345,"경칩"],[0,"춘분"],[15,"청명"],[30,"곡우"],[45,"입하"],[60,"소만"],[75,"망종"],[90,"하지"],[105,"소서"],[120,"대서"],[135,"입추"],[150,"처서"],[165,"백로"],[180,"추분"],[195,"한로"],[210,"상강"],[225,"입동"],[240,"소설"],[255,"대설"],[270,"동지"],[285,"소한"],[300,"대한"]];
+const JIE_BRANCH = { 315: 2, 345: 3, 15: 4, 45: 5, 75: 6, 105: 7, 135: 8, 165: 9, 195: 10, 225: 11, 255: 0, 285: 1 };
+const YEAR_MS = 365.2422 * 86400000, TC = {};
+function termsOf(y) {
+  if (TC[y]) return TC[y];
+  const base = Date.UTC(y, 2, 20, 10), out = [];
+  for (const [lon, name] of TERMS) {
+    const lp = lon > 270 ? lon - 360 : lon;
+    let ms = base + (lp / 360) * YEAR_MS;
+    for (let i = 0; i < 6; i++) {
+      const diff = (((lon - sunLon(ms / 86400000 + 2440587.5)) + 540) % 360) - 180;
+      ms += (diff / 360) * YEAR_MS;
+    }
+    const k = new Date(ms + 9 * 3600000);
+    out.push({ lon, name, ms, y: k.getUTCFullYear(), m: k.getUTCMonth() + 1, d: k.getUTCDate() });
+  }
+  const O = OFFICIAL[y];
+  if (O && O.terms) for (const t of out) { const v = O.terms[t.name]; if (v) { t.m = v[0]; t.d = v[1]; } }
+  return (TC[y] = out);
+}
+const termKey = t => key(t.y, t.m, t.d);
+function yearPillar(y, m, d) {
+  const ip = termsOf(y).find(t => t.lon === 315);
+  const Y = key(y, m, d) < termKey(ip) ? y - 1 : y;
+  return ((Y - 4) % 60 + 60) % 60;
+}
+function monthPillar(y, m, d) {
+  const k = key(y, m, d);
+  let jie = [];
+  for (const yy of [y - 1, y, y + 1]) jie = jie.concat(termsOf(yy).filter(t => t.lon in JIE_BRANCH));
+  jie.sort((a, b) => a.ms - b.ms);
+  let cur = jie[0];
+  for (const t of jie) if (termKey(t) <= k) cur = t;
+  const br = JIE_BRANCH[cur.lon];
+  const sy = yearPillar(cur.y, cur.m, cur.d) % 10;
+  const start = (sy % 5) * 2 + 2;
+  return { stem: (start + ((br - 2 + 12) % 12)) % 10, br };
+}
+const dayPillar = (y, m, d) => (jdn(y, m, d) + 49) % 60;
+
+/* 우주항공청 월력요항 자료 (calendar-data.js). 없는 해는 계산값을 사용 */
+const OFFICIAL = (typeof window !== "undefined" && window.OFFICIAL_CAL) || {};
+const OFF_LUNAR = [];
+Object.keys(OFFICIAL).forEach(yr => (OFFICIAL[yr].lunar || []).forEach(r => {
+  OFF_LUNAR.push({ t: Date.UTC(r.s[0], r.s[1] - 1, r.s[2]) / 86400000, m: r.m, leap: !!r.leap, size: r.big ? 30 : 29 });
+}));
+OFF_LUNAR.sort((a, b) => a.t - b.t);
+function officialLunar(y, m, d) {
+  const t = Date.UTC(y, m - 1, d) / 86400000;
+  let hit = null;
+  for (const r of OFF_LUNAR) { if (r.t <= t) hit = r; else break; }
+  if (hit && t < hit.t + hit.size) return { m: hit.m, d: t - hit.t + 1, leap: hit.leap };
+  return null;
+}
+
+/* 음력 — 월력요항 자료 우선, 없으면 브라우저 내장 중국력(ICU) 사용 */
+const LF = new Intl.DateTimeFormat("en-u-ca-chinese", { timeZone: KST, month: "numeric", day: "numeric", year: "numeric" });
+const LC = {};
+function lunarOf(y, m, d) {
+  const k = key(y, m, d);
+  if (LC[k]) return LC[k];
+  const off = officialLunar(y, m, d);
+  if (off) return (LC[k] = off);
+  let mon = 0, day = 0, leap = false;
+  for (const p of LF.formatToParts(new Date(Date.UTC(y, m - 1, d, 3)))) {
+    if (p.type === "month") { mon = parseInt(p.value, 10); leap = /bis|leap|윤/i.test(p.value); }
+    if (p.type === "day") day = parseInt(p.value, 10);
+  }
+  return (LC[k] = { m: mon, d: day, leap });
+}
+function hijriYear(y, m, d) {
+  try {
+    const p = new Intl.DateTimeFormat("en-u-ca-islamic-umalqura", { timeZone: KST, year: "numeric" }).formatToParts(new Date(Date.UTC(y, m - 1, d, 3)));
+    const v = p.find(x => x.type === "year"); return v ? parseInt(v.value, 10) : null;
+  } catch (e) { return null; }
+}
+
+/* =====================================================================
+   연도별 기념일 데이터 만들기
+   ===================================================================== */
+const YC = {};
+function yearData(y) {
+  if (YC[y]) return YC[y];
+  const M = {};                                  // key -> {hol:[], folk:[], mem:[], ul:[], jesa:[], term:null}
+  const slot = k => (M[k] || (M[k] = { hol: [], folk: [], mem: [], ul: [], jesa: [], term: null }));
+  const offCount = k => (M[k] ? M[k].hol.filter(e => e.off).length : 0);
+  const find = (lm, ld) => {                     // 해당 양력 연도 안의 음력 월/일 (윤달 제외)
+    for (let m = 1; m <= 12; m++) for (let d = 1; d <= dimOf(y, m); d++) { const l = lunarOf(y, m, d); if (l.m === lm && l.d === ld && !l.leap) return [m, d]; }
+    return null;
+  };
+  const groups = [];
+
+  // 24절기
+  for (const t of termsOf(y)) if (t.y === y) slot(termKey(t)).term = t.name;
+  const prev = termsOf(y - 1).filter(t => t.y === y); for (const t of prev) slot(termKey(t)).term = t.name;
+
+  const OF = OFFICIAL[y];
+  if (OF) {
+    const NAT = ["3·1절", "제헌절", "광복절", "개천절", "한글날"];
+    for (const h of OF.hol) {
+      if (h.local) continue;                       // 특정 지방의 공휴일은 기념일 목록에 표시
+      const days = [];
+      if (h.m2) { const n = daysBetween({ y, m: h.m, d: h.d }, { y, m: h.m2, d: h.d2 }); for (let i = 0; i <= n; i++) days.push(addDays(y, h.m, h.d, i)); }
+      else days.push([y, h.m, h.d]);
+      days.forEach(([yy, mm, dd]) => {
+        let name = h.n.replace("(연휴)", "").replace("부처님 오신 날", "부처님오신날");
+        if (h.n.indexOf("(연휴)") >= 0) { const l = lunarOf(yy, mm, dd); if (!((l.m === 1 && l.d === 1) || (l.m === 8 && l.d === 15))) name += " 연휴"; }
+        const kind = h.n.startsWith("대체") ? "sub" : NAT.indexOf(h.n) >= 0 ? "nat" : "hol";
+        slot(key(yy, mm, dd)).hol.push({ n: name, kind, off: true });
+      });
+    }
+    // 2026년 법 개정으로 제헌절이 다시 공휴일 (월력요항 2026은 개정 전 공고)
+    if (y >= 2026 && !OF.hol.some(h => h.n === "제헌절")) slot(key(y, 7, 17)).hol.push({ n: "제헌절", kind: "nat", off: true });
+    const FK = { 정월대보름: "정월대보름", 한식: "한식", 단오: "단오", 칠석: "칠석", 초복: "초복", 중복: "중복", 말복: "말복" };
+    for (const n in OF.folk) if (FK[n]) slot(key(y, OF.folk[n][0], OF.folk[n][1])).folk.push({ n });
+    for (const r of OF.mem) if (!/\*$/.test(r[2])) slot(key(y, r[0], r[1])).mem.push({ n: r[2] });
+  } else {
+  const fixed = (m, d, n, kind, off, grp, since) => {
+    slot(key(y, m, d)).hol.push({ n, kind, off });
+    if (grp) groups.push({ keys: [key(y, m, d)], name: n, type: "single", since, kind: grp });
+  };
+  fixed(1, 1, "신정", "hol", true);
+  fixed(3, 1, "3·1절", "nat", true, "single", 2021);
+  fixed(5, 5, "어린이날", "hol", true, "single", 2014);
+  fixed(6, 6, "현충일", "hol", true);
+  fixed(7, 17, "제헌절", "nat", y >= 2026, y >= 2026 ? "single" : null, 2026);
+  fixed(8, 15, "광복절", "nat", true, "single", 2021);
+  fixed(10, 3, "개천절", "nat", true, "single", 2021);
+  fixed(10, 9, "한글날", "nat", true, "single", 2021);
+  fixed(12, 25, "기독탄신일", "hol", true, "single", 2023);
+
+  // 설날·추석 (음력)
+  const sl = find(1, 1);
+  if (sl) {
+    const kk = [-1, 0, 1].map(n => { const a = addDays(y, sl[0], sl[1], n); return key(a[0], a[1], a[2]); });
+    ["설날 연휴", "설날", "설날 연휴"].forEach((n, i) => slot(kk[i]).hol.push({ n, kind: "hol", off: true }));
+    groups.push({ keys: kk, name: "설날", type: "block", since: 2014 });
+  }
+  const cs = find(8, 15);
+  if (cs) {
+    const kk = [-1, 0, 1].map(n => { const a = addDays(y, cs[0], cs[1], n); return key(a[0], a[1], a[2]); });
+    ["추석 연휴", "추석", "추석 연휴"].forEach((n, i) => slot(kk[i]).hol.push({ n, kind: "hol", off: true }));
+    groups.push({ keys: kk, name: "추석", type: "block", since: 2014 });
+  }
+  const bd = find(4, 8);
+  if (bd) { const k = key(y, bd[0], bd[1]); slot(k).hol.push({ n: "부처님오신날", kind: "hol", off: true }); groups.push({ keys: [k], name: "부처님오신날", type: "single", since: 2023 }); }
+
+  // 임시공휴일·선거일
+  for (const [k, n] of EXTRA_HOLIDAYS) if (k.slice(0, 4) === String(y)) slot(k).hol.push({ n, kind: "hol", off: true });
+
+  // 대체공휴일 (달력순으로 처리)
+  const subFor = {};
+  groups.filter(g => y >= g.since).sort((a, b) => (a.keys[0] < b.keys[0] ? -1 : 1)).forEach(g => {
+    const days = g.keys.map(parseKey);
+    const weekend = g.type === "block" ? days.some(p => dowOf(p.y, p.m, p.d) === 0) : days.some(p => { const w = dowOf(p.y, p.m, p.d); return w === 0 || w === 6; });
+    const overlap = g.keys.filter(k => offCount(k) > 1);
+    const needOverlap = overlap.length > 0 && !overlap.every(k => subFor[k]);
+    if (!weekend && !needOverlap) return;
+    overlap.forEach(k => { subFor[k] = true; });
+    let p = days[days.length - 1];
+    for (let i = 0; i < 20; i++) {
+      const a = addDays(p.y, p.m, p.d, 1); p = { y: a[0], m: a[1], d: a[2] };
+      const w = dowOf(p.y, p.m, p.d), k = key(p.y, p.m, p.d);
+      if (w !== 0 && w !== 6 && offCount(k) === 0) { slot(k).hol.push({ n: "대체공휴일(" + g.name + ")", kind: "sub", off: true }); break; }
+    }
+  });
+
+  // 민속일
+  const folkAdd = (k, n) => slot(k).folk.push({ n });
+  const jm = find(1, 15); if (jm) folkAdd(key(y, jm[0], jm[1]), "정월대보름");
+  const dj = termsOf(y - 1).find(t => t.lon === 270);
+  { const a = addDays(dj.y, dj.m, dj.d, 105); if (a[0] === y) folkAdd(key(a[0], a[1], a[2]), "한식"); }
+  const dano = find(5, 5); if (dano) folkAdd(key(y, dano[0], dano[1]), "단오");
+  const chil = find(7, 7); if (chil) folkAdd(key(y, chil[0], chil[1]), "칠석");
+  const tt = termsOf(y), hj = tt.find(t => t.lon === 90), ic = tt.find(t => t.lon === 135);
+  const gyeong = (t) => { let p = { y: t.y, m: t.m, d: t.d }; for (let i = 0; i < 12; i++) { if (dayPillar(p.y, p.m, p.d) % 10 === 6) return p; const a = addDays(p.y, p.m, p.d, 1); p = { y: a[0], m: a[1], d: a[2] }; } return p; };
+  { const f = gyeong(hj); const c = addDays(f.y, f.m, f.d, 20), j = addDays(f.y, f.m, f.d, 30);
+    folkAdd(key(c[0], c[1], c[2]), "초복"); folkAdd(key(j[0], j[1], j[2]), "중복");
+    const m = gyeong(ic); folkAdd(key(m.y, m.m, m.d), "말복"); }
+
+  // 기념일 (공휴일과 겹치는 이름은 그대로 둠)
+  const latest = Object.keys(OFFICIAL).sort().pop();
+  if (latest) {                                   // 가장 최근 월력요항의 기념일 목록을 기준으로 사용
+    for (const r of OFFICIAL[latest].mem) {
+      if (/\*$/.test(r[2]) || r[2] === "서해수호의 날" || r[2] === "성년의 날") continue;
+      slot(key(y, r[0], r[1])).mem.push({ n: r[2] });
+    }
+    slot(key(y, 3, nthDow(y, 3, 5, 4))).mem.push({ n: "서해수호의 날" });
+    slot(key(y, 5, nthDow(y, 5, 1, 3))).mem.push({ n: "성년의 날" });
+    if (y >= 2027) fixed(5, 1, "노동절", "hol", true, "single", 2027); else slot(key(y, 5, 1)).mem.push({ n: "근로자의 날" });
+  } else
+  for (const r of MEMORIALS) {
+    if (r[1] === "nth") { const d = nthDow(y, r[0], r[2], r[3]); slot(key(y, r[0], d)).mem.push({ n: r[4] }); }
+    else slot(key(y, r[0], r[1])).mem.push({ n: r[2] });
+  }
+  }
+  // 울산 기념일
+  for (const r of ULSAN_DAYS) slot(key(y, r[0], r[1])).ul.push({ n: r[2] });
+
+  // 울산 제사일
+  const J = (k, n, rule) => slot(k).jesa.push({ n, rule });
+  J(key(y, 4, 4), "병영 사열사 위령제", "양력 4월 4일");
+  J(key(y, 4, 5), "병영 삼일사 추모제", "양력 4월 5일");
+  J(key(y, 4, nthDow(y, 4, 6, 1)), "치산서원 춘향례", "양력 4월 첫째 토요일");
+  J(key(y, 4, 15), "충의사 춘계향제", "양력 4월 15일");
+  J(key(y, 10, 15), "충의사 추계향제", "양력 10월 15일");
+  const LJ = [
+    [2, "상", "울산/언양향교 춘기석전", "음력 2월 상정일(上丁日)"],
+    [2, "중", "구강서원 춘기향례", "음력 2월 중정일(中丁日)"],
+    [2, "중", "석계서원 춘향례", "음력 2월 중정일(中丁日)"],
+    [3, "중", "학산서원 춘향례", "음력 3월 중정일(中丁日)"],
+    [8, "상", "울산/언양향교 추기석전", "음력 8월 상정일(上丁日)"],
+    [8, "중", "구강서원 추기향례", "음력 8월 중정일(中丁日)"]
+  ];
+  for (let m = 1; m <= 12; m++) for (let d = 1; d <= dimOf(y, m); d++) {
+    if (dayPillar(y, m, d) % 10 !== 3) continue;           // 정(丁)일
+    const l = lunarOf(y, m, d); if (l.leap) continue;
+    const kind = l.d <= 10 ? "상" : l.d <= 20 ? "중" : null; if (!kind) continue;
+    for (const r of LJ) if (r[0] === l.m && r[1] === kind) J(key(y, m, d), r[2], r[3]);
+  }
+  return (YC[y] = M);
+}
+
+/* 울산 장날·마트 휴업 */
+function marketOf(y, m, d) {
+  const w = dowOf(y, m, d), out = { five: [], weekly: [], mart: [] };
+  const FIVE = { 1: "다운·호계·웅촌·문현", 2: "덕하·언양·정자", 3: "남창", 4: "봉계", 5: "태화·덕신" };
+  if (d !== 31) { const r = d % 10; const g = FIVE[r === 0 ? 5 : r > 5 ? r - 5 : r]; if (g) out.five.push(g.replace(/·/g, "·") ); }
+  if (w === 3) out.weekly.push("반구장날");
+  if (w === 6) out.weekly.push("문현장날");
+  const nth = Math.ceil(d / 7);
+  if (w === 3 && nth === 2) out.mart.push("중구·남구·북구");
+  if (w === 0 && nth === 4) out.mart.push("중구·남구·북구");
+  if (w === 0 && (nth === 2 || nth === 4)) out.mart.push("동구");
+  return out;
+}
+function dayInfo(y, m, d) {
+  const D = yearData(y)[key(y, m, d)] || { hol: [], folk: [], mem: [], ul: [], jesa: [], term: null };
+  const w = dowOf(y, m, d);
+  return { y, m, d, w, lunar: lunarOf(y, m, d), hol: D.hol, folk: D.folk, mem: D.mem, ul: D.ul, jesa: D.jesa, term: D.term, mk: marketOf(y, m, d), off: w === 0 || D.hol.some(e => e.off) };
+}
+function ddayOf(ev) { const p = parseKey(ev.d); const n = daysBetween(todayKST(), p); return n; }
+function ddayLabel(n) { return n === 0 ? "D-DAY" : n > 0 ? "D-" + n : "D+" + (-n); }
+
+/* =====================================================================
+   D-DAY 데이터 (파일 목록 + 이 브라우저의 수정본)
+   ===================================================================== */
+const LS_EV = "pyarcher-dday-v1", LS_PW = "pyarcher-dday-pw-v1";
+function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+function lsSet(k, v) { try { localStorage.setItem(k, v); return true; } catch (e) { return false; } }
+function lsDel(k) { try { localStorage.removeItem(k); } catch (e) {} }
+function validDate(s) { return /^\d{4}-\d{2}-\d{2}$/.test(s) && !isNaN(Date.parse(s)); }
+let events = EVENTS.map(e => ({ ...e })), localEdited = false, editing = false, unlocked = false;
+(function loadLocal() {
+  const raw = lsGet(LS_EV); if (!raw) return;
+  try {
+    const arr = JSON.parse(raw);
+    if (Array.isArray(arr)) { events = arr.filter(e => e && typeof e.t === "string" && validDate(String(e.d))).map(e => ({ t: e.t, d: e.d })); localEdited = true; }
+  } catch (e) {}
+})();
+function saveEvents() { localEdited = true; lsSet(LS_EV, JSON.stringify(events)); }
+
+async function sha(s) {
+  if (!window.crypto || !crypto.subtle) throw new Error("nocrypto");
+  const b = await crypto.subtle.digest("SHA-256", new TextEncoder().encode("pyarcher-calendar:" + s));
+  return Array.from(new Uint8Array(b)).map(x => x.toString(16).padStart(2, "0")).join("");
+}
+
+/* =====================================================================
+   화면 상태
+   ===================================================================== */
+const T0 = todayKST();
+const view = { y: T0.y, m: T0.m }, sel = { y: T0.y, m: T0.m, d: T0.d };
+const FILTERS = [["solar", "양력"], ["lunar", "음력"], ["term", "절기"], ["mem", "기념일"], ["ul", "울산 기념일"], ["mk", "울산 장날"]];
+const flt = { solar: true, lunar: true, term: true, mem: true, ul: true, mk: true };
+
+/* ---------- TODAY ---------- */
+function renderToday() {
+  const t = todayKST(), root = document.getElementById("today");
+  root.textContent = "";
+  const info = dayInfo(t.y, t.m, t.d), l = info.lunar;
+  const line = el("p", "today-line"); line.append(el("span", "tri", "▷"), document.createTextNode("양력: " + t.y + "년 " + t.m + "월 " + t.d + "일(" + DOW_KO[info.w] + ")"));
+  root.append(line);
+  const yp = yearPillar(t.y, t.m, t.d), mp = monthPillar(t.y, t.m, t.d), dp = dayPillar(t.y, t.m, t.d);
+  const monthIdx = (() => { for (let i = 0; i < 60; i++) if (i % 10 === mp.stem && i % 12 === mp.br) return i; return 0; })();
+  const hj = hijriYear(t.y, t.m, t.d);
+  const tiles = [
+    ["회기", "Islamic Era", hj ? hj + "년" : "—", "Hijri"],
+    ["불기", "Buddhist Era", (t.y + 544) + "년", ""],
+    ["공기", "Confucius Era", (t.y + 551) + "년", ""],
+    ["단기", "Dangun Era", (t.y + 2333) + "년", ""],
+    ["음력", "Lunar Calendar", (l.leap ? "윤 " : "") + l.m + "월 " + l.d + "일", ""],
+    ["세차", "Yearly Cycle", pillarK(yp) + "년", pillarH(yp) + "年"],
+    ["월건", "Monthly Cycle", pillarK(monthIdx) + "월", pillarH(monthIdx) + "月"],
+    ["일진", "Daily Cycle", pillarK(dp) + "일", pillarH(dp) + "日"]
+  ];
+  const grid = el("div", "tiles");
+  for (const [a, b, v, s] of tiles) {
+    const c = el("div", "tile");
+    c.append(el("div", "lab", a + " (" + b + ")"), el("div", "val", v), el("div", "sub", s));
+    grid.append(c);
+  }
+  root.append(grid);
+  const parts = [];
+  if (info.term) parts.push("오늘은 " + info.term);
+  info.hol.forEach(e => parts.push(e.n)); info.folk.forEach(e => parts.push(e.n));
+  if (parts.length) root.append(el("div", "today-note", "오늘: " + parts.join(" · ")));
+}
+
+/* ---------- 월간 달력 ---------- */
+function renderFilters() {
+  const box = document.getElementById("filters"); box.textContent = "";
+  for (const [k, label] of FILTERS) {
+    const lab = el("label"), inp = el("input"); inp.type = "checkbox"; inp.checked = flt[k];
+    inp.addEventListener("change", () => { flt[k] = inp.checked; renderGrid(); renderDetail(); });
+    lab.append(inp, document.createTextNode(label)); box.append(lab);
+  }
+}
+function evOn(y, m, d) { const k = key(y, m, d); return events.filter(e => e.d === k); }
+function renderGrid() {
+  const { y, m } = view, host = document.getElementById("days");
+  document.getElementById("mlabel").textContent = y + "년 " + m + "월";
+  host.textContent = "";
+  const first = dowOf(y, m, 1), dim = dimOf(y, m);
+  const total = Math.ceil((first + dim) / 7) * 7;
+  for (let i = 0; i < total; i++) {
+    const a = addDays(y, m, 1, i - first), [cy, cm, cd] = a, out = cm !== m;
+    const info = dayInfo(cy, cm, cd), btn = el("button", "cell" + (out ? " out" : ""));
+    btn.type = "button";
+    if (cy === sel.y && cm === sel.m && cd === sel.d) btn.classList.add("sel");
+    const isToday = cy === T0.y && cm === T0.m && cd === T0.d;
+    const top = el("div", "ctop");
+    const num = el("span", "num" + (isToday ? " today" : info.w === 0 || info.off ? " off" : info.w === 6 ? " sat" : ""), flt.solar ? String(cd) : "");
+    top.append(num);
+    if (flt.lunar) { const l = info.lunar; top.append(el("span", "lun", l.d === 1 ? (l.leap ? "윤" : "") + l.m + "월" : (l.leap ? "윤" : "") + l.m + "." + l.d)); }
+    btn.append(top);
+    const chips = el("div", "chips"), dots = el("div", "dots");
+    const add = (cls, txt, dcls) => { chips.append(el("span", "chip " + cls, txt)); dots.append(el("span", "dot " + dcls)); };
+    info.hol.forEach(e => add("c-hol", e.n, "d-hol"));
+    if (flt.term && info.term) add("c-term", info.term, "d-term");
+    if (flt.mem) { info.folk.forEach(e => add("c-folk", e.n, "d-folk")); info.mem.forEach(e => add("c-mem", e.n, "d-mem")); }
+    if (flt.ul) { info.ul.forEach(e => add("c-ul", e.n, "d-ul")); info.jesa.forEach(e => add("c-ul", e.n, "d-ul")); }
+    if (flt.mk) {
+      const mk = info.mk;
+      if (mk.five.length) add("c-mk", mk.five[0] + "장", "d-mk");
+      mk.weekly.forEach(n => add("c-mk", n, "d-mk"));
+      if (mk.mart.length) add("c-mk", "마트휴업 " + mk.mart.join("·"), "d-mk");
+    }
+    evOn(cy, cm, cd).forEach(e => add("c-dd", "☑ " + e.t, "d-dd"));
+    btn.append(chips, dots);
+    btn.setAttribute("aria-label", cy + "년 " + cm + "월 " + cd + "일 " + DOW_KO[info.w] + "요일");
+    btn.addEventListener("click", () => { sel.y = cy; sel.m = cm; sel.d = cd; if (out) { view.y = cy; view.m = cm; } renderAll(false); });
+    host.append(btn);
+  }
+}
+function row(k, parts) {
+  const r = el("div", "drow"); r.append(el("div", "k", k));
+  const v = el("div", "v");
+  if (!parts.length) v.append(el("span", "none", "—"));
+  parts.forEach((p, i) => { if (i) v.append(document.createTextNode(" · ")); if (typeof p === "string") v.append(document.createTextNode(p)); else v.append(p); });
+  r.append(v); return r;
+}
+function renderDetail() {
+  const box = document.getElementById("detail"); box.textContent = "";
+  const { y, m, d } = sel, info = dayInfo(y, m, d), l = info.lunar;
+  box.append(el("h3", "", y + "년 " + m + "월 " + d + "일 (" + DOW_KO[info.w] + ")"));
+  const red = t => { const s = el("span", "red", t); return s; };
+  const yp = yearPillar(y, m, d), mp = monthPillar(y, m, d), dp = dayPillar(y, m, d);
+  const mi = (() => { for (let i = 0; i < 60; i++) if (i % 10 === mp.stem && i % 12 === mp.br) return i; return 0; })();
+  box.append(row("음력", [(l.leap ? "윤" : "") + l.m + "월 " + l.d + "일"]));
+  box.append(row("간지", ["세차 " + pillarK(yp) + "년(" + pillarH(yp) + ")", "월건 " + pillarK(mi) + "월(" + pillarH(mi) + ")", "일진 " + pillarK(dp) + "일(" + pillarH(dp) + ")"]));
+  box.append(row("절기", info.term ? [info.term] : []));
+  box.append(row("공휴일·국경일", info.hol.map(e => (e.off ? red(e.n) : e.n))));
+  box.append(row("민속일·기념일", info.folk.map(e => e.n).concat(info.mem.map(e => e.n))));
+  box.append(row("울산 기념일", info.ul.map(e => e.n)));
+  box.append(row("울산 제사일", info.jesa.map(e => e.n + " (" + e.rule + ")")));
+  const mk = [];
+  if (info.mk.five.length) mk.push("5일장: " + info.mk.five[0] + "장날");
+  info.mk.weekly.forEach(n => mk.push("요일장: " + n));
+  if (info.mk.mart.length) mk.push("마트 휴업: " + info.mk.mart.join("·"));
+  if (d === 31) mk.push("31일은 5일장이 없음");
+  box.append(row("울산 장날", mk));
+  box.append(row("D-DAY", evOn(y, m, d).map(e => "☑ " + e.t)));
+}
+
+/* ---------- D-DAY ---------- */
+function sortedEvents() { return events.map((e, i) => ({ e, i })).sort((a, b) => (a.e.d < b.e.d ? -1 : a.e.d > b.e.d ? 1 : 0)); }
+function fmtDate(s) { const p = parseKey(s); return p.y + ", " + p.m + ", " + p.d; }
+function renderDday() {
+  const box = document.getElementById("dday"); box.textContent = "";
+  document.getElementById("editbtn").textContent = editing ? "편집 종료" : "편집";
+  if (editing && !unlocked) { renderLogin(box); return; }
+  const tbl = el("table", "dd"), thead = el("thead"), hr = el("tr");
+  ["EVENT", "DATE", "D-DAY"].concat(editing ? [""] : []).forEach(h => hr.append(el("th", "", h)));
+  thead.append(hr); tbl.append(thead);
+  const tb = el("tbody");
+  for (const { e, i } of sortedEvents()) {
+    const n = ddayOf(e), tr = el("tr", n < 0 ? "past" : n === 0 ? "today" : "");
+    if (!editing) {
+      tr.append(el("td", "", "☑ " + e.t), el("td", "date", fmtDate(e.d)), el("td", "dday", ddayLabel(n)));
+    } else {
+      const t1 = el("td"), ti = el("input"); ti.type = "text"; ti.value = e.t; ti.maxLength = 80; ti.setAttribute("aria-label", "행사명");
+      ti.addEventListener("change", () => { events[i].t = ti.value.trim() || e.t; saveEvents(); renderAll(false); });
+      t1.append(ti);
+      const t2 = el("td"), di = el("input"); di.type = "date"; di.value = e.d; di.setAttribute("aria-label", "날짜");
+      di.addEventListener("change", () => { if (validDate(di.value)) { events[i].d = di.value; saveEvents(); renderAll(false); } });
+      t2.append(di);
+      const t3 = el("td", "dday", ddayLabel(n));
+      const t4 = el("td"), del = el("button", "btn small danger", "삭제"); del.type = "button";
+      del.addEventListener("click", () => {
+        if (del.dataset.arm === "1") { events.splice(i, 1); saveEvents(); renderAll(false); }
+        else { del.dataset.arm = "1"; del.textContent = "정말 삭제"; setTimeout(() => { if (del.isConnected) { del.dataset.arm = ""; del.textContent = "삭제"; } }, 3000); }
+      });
+      t4.append(del);
+      tr.append(t1, t2, t3, t4);
+    }
+    tb.append(tr);
+  }
+  if (!events.length) { const tr = el("tr"), td = el("td", "", "등록된 D-DAY가 없습니다."); td.colSpan = 4; tr.append(td); tb.append(tr); }
+  tbl.append(tb); box.append(tbl);
+  if (editing) {
+    const bar = el("div", "editbar");
+    const add = el("button", "btn small primary", "+ 추가"); add.type = "button";
+    add.addEventListener("click", () => { const t = todayKST(); events.push({ t: "새 행사", d: key(t.y, t.m, t.d) }); saveEvents(); renderAll(false); });
+    const copy = el("button", "btn small", "공개용 코드 복사"); copy.type = "button";
+    const msg = el("span", "msg ok");
+    copy.addEventListener("click", async () => {
+      const code = "const EVENTS = [\n" + sortedEvents().map(x => "  { t: " + JSON.stringify(x.e.t) + ", d: " + JSON.stringify(x.e.d) + " }").join(",\n") + "\n];";
+      try { await navigator.clipboard.writeText(code); msg.textContent = "복사했습니다. calendar.html의 EVENTS 부분을 이 내용으로 바꾸세요."; }
+      catch (e) { window.prompt("아래 내용을 복사해 calendar.html의 EVENTS 부분을 바꾸세요.", code); }
+    });
+    const reset = el("button", "btn small danger", "파일 값으로 되돌리기"); reset.type = "button";
+    reset.addEventListener("click", () => { if (reset.dataset.arm === "1") { lsDel(LS_EV); events = EVENTS.map(e => ({ ...e })); localEdited = false; renderAll(false); } else { reset.dataset.arm = "1"; reset.textContent = "정말 되돌리기"; setTimeout(() => { if (reset.isConnected) { reset.dataset.arm = ""; reset.textContent = "파일 값으로 되돌리기"; } }, 3000); } });
+    const hbtn = el("button", "btn small", "비밀번호 해시 보기"); hbtn.type = "button";
+    hbtn.addEventListener("click", () => { const h = ADMIN_HASH || lsGet(LS_PW) || ""; msg.textContent = h ? "해시: " + h + " (calendar.html의 ADMIN_HASH에 붙여넣으면 모든 기기에서 같은 비밀번호)" : "설정된 비밀번호가 없습니다."; });
+    bar.append(add, copy, reset, hbtn, msg); box.append(bar);
+    box.append(el("p", "hint", "수정 내용은 이 브라우저에만 저장됩니다. 방문자에게 공개하려면 ‘공개용 코드 복사’ 후 calendar.html의 EVENTS를 바꿔 GitHub에 커밋하세요."));
+  } else if (localEdited) {
+    box.append(el("p", "hint", "이 브라우저에서 수정한 목록을 표시 중입니다. (방문자에게는 파일에 들어 있는 목록이 보입니다.)"));
+  }
+}
+function renderLogin(box) {
+  const stored = ADMIN_HASH || lsGet(LS_PW) || "";
+  const wrap = el("div", "pw"), msg = el("span", "msg");
+  const p1 = el("input"); p1.type = "password"; p1.autocomplete = stored ? "current-password" : "new-password"; p1.placeholder = stored ? "비밀번호" : "새 비밀번호 (6자 이상)"; p1.setAttribute("aria-label", "비밀번호");
+  let p2 = null;
+  if (!stored) { p2 = el("input"); p2.type = "password"; p2.autocomplete = "new-password"; p2.placeholder = "비밀번호 확인"; p2.setAttribute("aria-label", "비밀번호 확인"); }
+  const go = el("button", "btn primary small", stored ? "확인" : "비밀번호 정하기"); go.type = "button";
+  const submit = async () => {
+    msg.textContent = "";
+    try {
+      if (stored) {
+        const h = await sha(p1.value);
+        if (h === stored) { unlocked = true; renderDday(); } else { msg.textContent = "비밀번호가 맞지 않습니다."; }
+      } else {
+        if (p1.value.length < 6) { msg.textContent = "6자 이상으로 정해 주세요."; return; }
+        if (p1.value !== p2.value) { msg.textContent = "두 비밀번호가 다릅니다."; return; }
+        lsSet(LS_PW, await sha(p1.value)); unlocked = true; renderDday();
+      }
+    } catch (e) { msg.textContent = "이 환경에서는 비밀번호 확인을 할 수 없습니다 (HTTPS 필요)."; }
+  };
+  go.addEventListener("click", submit);
+  [p1, p2].forEach(i => i && i.addEventListener("keydown", ev => { if (ev.key === "Enter") submit(); }));
+  wrap.append(p1); if (p2) wrap.append(p2); wrap.append(go, msg); box.append(wrap);
+  box.append(el("p", "hint", "D-DAY의 추가·수정·삭제는 관리자만 할 수 있습니다."));
+  setTimeout(() => p1.focus(), 0);
+}
+document.getElementById("editbtn").addEventListener("click", () => { editing = !editing; if (!editing) unlocked = false; renderDday(); });
+
+/* ---------- CELEBRATION DAY ---------- */
+function monthList() {
+  const { y, m } = view, out = { term: [], nat: [], hol: [], folk: [], mem: [], ul: [], jesa: [] };
+  for (let d = 1; d <= dimOf(y, m); d++) {
+    const i = dayInfo(y, m, d), tag = m + "월 " + d + "일(" + DOW_KO[i.w] + ")";
+    if (i.term) out.term.push(tag + " " + i.term);
+    i.hol.forEach(e => { if (e.kind === "nat") out.nat.push(tag + " " + e.n); if (e.off && i.w !== 0 && i.w !== 6) out.hol.push(tag + " " + e.n); });
+    i.folk.forEach(e => out.folk.push(tag + " " + e.n));
+    i.mem.forEach(e => out.mem.push(tag + " " + e.n));
+    i.ul.forEach(e => out.ul.push(tag + " " + e.n));
+    i.jesa.forEach(e => out.jesa.push(tag + " " + e.n));
+  }
+  return out;
+}
+function lrow(k, arr) {
+  const r = el("div", "lrow"); r.append(el("div", "k", "▷ " + k));
+  const v = el("div", "v"); if (!arr.length) v.append(el("span", "none", "—")); else v.textContent = arr.join(", ");
+  r.append(v); return r;
+}
+function noteBlock(title, items, opts) {
+  const n = el("div", "note"); n.append(el("div", "t", "※ " + title));
+  const ul = el("ul");
+  for (const it of items) {
+    const li = el("li", opts && opts.dash ? "dash" : "");
+    if (it.url) { li.append(document.createTextNode(it.text), link(it.url)); } else li.append(document.createTextNode(it));
+    ul.append(li);
+  }
+  n.append(ul); return n;
+}
+function renderCele() {
+  const box = document.getElementById("cele"); box.textContent = "";
+  const L = monthList();
+  box.append(lrow("24절기", L.term), lrow("국경일", L.nat), lrow("공휴일", L.hol), lrow("민속일", L.folk), lrow("기념일", L.mem));
+  box.append(el("p", "hint", view.y + "년 " + view.m + "월 기준 · 공휴일은 토·일을 제외하고 표시합니다. · " + (OFFICIAL[view.y] ? "우주항공청 " + view.y + "년 월력요항 기준" : view.y + "년은 월력요항 미반영(계산값)")));
+  const n = noteBlock("관련법령", [
+    { text: "천문법(한국천문연구원 월력요항) ", url: "https://astro.kasi.re.kr/kor/life/post/calendarData" },
+    "국경일에 관한 법률/공휴일에 관한 법률",
+    "관공서의 공휴일에 관한 규정",
+    "각종 기념일 등에 관한 규정",
+    "지방공휴일에 관한 규정"
+  ]);
+  box.append(n);
+}
+
+/* ---------- DAYS OF ULSAN ---------- */
+function renderUlsan() {
+  const box = document.getElementById("ulsan"); box.textContent = "";
+  const L = monthList();
+  box.append(lrow("기념일", L.ul), lrow("제사일", L.jesa));
+  box.append(noteBlock("울산의 기념일", ULSAN_DAYS_TEXT));
+  box.append(noteBlock("울산의 제사일", JESA_TEXT));
+}
+const ULSAN_DAYS_TEXT = ULSAN_DAYS.map(r => r[2] + ": 양력 " + r[0] + "월 " + r[1] + "일");
+const JESA_TEXT = [
+  "울산/언양향교 춘기석전: 음력 2월 상정일(上丁日)",
+  "구강서원 춘기향례: 음력 2월 중정일(中丁日)",
+  "석계서원 춘향례: 음력 2월 중정일(中丁日)",
+  "학산서원 춘향례: 음력 3월 중정일(中丁日)",
+  "병영 사열사 위령제: 양력 4월 4일",
+  "병영 삼일사 추모제: 양력 4월 5일",
+  "치산서원 춘향례: 양력 4월 첫째 토요일",
+  "충의사 춘계향제: 양력 4월 15일",
+  "울산/언양향교 추기석전: 음력 8월 상정일(上丁日)",
+  "구강서원 추기향례: 음력 8월 중정일(中丁日)",
+  "충의사 추계향제: 양력 10월 15일"
+];
+
+/* ---------- ULSAN MARKET DAY ---------- */
+function renderMarket() {
+  const box = document.getElementById("market"); box.textContent = "";
+  const { y, m } = view, five = [], mart = [];
+  for (let d = 1; d <= dimOf(y, m); d++) {
+    const k = marketOf(y, m, d), w = dowOf(y, m, d), tag = m + "월 " + d + "일(" + DOW_KO[w] + ")";
+    if (k.five.length) five.push(m + "/" + d + " " + k.five[0]);
+    if (k.mart.length) mart.push(tag + " " + k.mart.join("·"));
+  }
+  const s = marketOf(sel.y, sel.m, sel.d);
+  const sd = sel.m + "월 " + sel.d + "일(" + DOW_KO[dowOf(sel.y, sel.m, sel.d)] + ")";
+  const todayTxt = [];
+  if (s.five.length) todayTxt.push("5일장 " + s.five[0] + "장날");
+  s.weekly.forEach(n => todayTxt.push(n));
+  box.append(lrow("5일장", [sd + " — " + (todayTxt.length ? todayTxt.join(", ") : "장날 없음")]));
+  box.append(lrow("휴업일", mart.length ? [m + "월: " + mart.join(", ")] : []));
+  const n1 = el("div", "note"); n1.append(el("div", "t", "※ 울산의 5일장 및 요일장"));
+  const p1 = el("ul");
+  const mk = (cls, t) => p1.append(el("li", cls, t));
+  mk("dash", "5일장은 양력 일자 끝 숫자 기준. 단, 31일은 장날이 없음");
+  mk("", "1일과 6일: 다운장날, 호계장날, 웅촌장날, 문현장날.");
+  mk("", "2일과 7일: 덕하장날, 언양장날, 정자장날.");
+  mk("", "3일과 8일: 남창장날.");
+  mk("", "4일과 9일: 봉계장날.");
+  mk("", "5일과 10일: 태화장날, 덕신장날.");
+  mk("dash", "요일장은 7주일에 한번 개장");
+  mk("", "매주 수요일은 반구장날.");
+  mk("", "매주 토요일은 문현장날.");
+  n1.append(p1); box.append(n1);
+  box.append(noteBlock("울산의 마트 의무휴업일", [
+    "중구, 남구, 북구: 매월 둘째 주 수요일, 넷째 주 일요일",
+    "동구: 매월 둘째 주 일요일, 넷째 주 일요일",
+    "울주군: 지정하지 않음"
+  ]));
+}
+
+/* ---------- TODAY IN HISTORY ---------- */
+const HIST = [
+  ["한국천문연구원 음양력 변환(BCE60 ~ CE2050)", "https://astro.kasi.re.kr/kor/life/pageView/8"],
+  ["한국고전종합DB 한중일 연호검색", "https://db.itkc.or.kr/extra/yonHoPop"],
+  ["HANHUB 동양연표", "https://chronology.hanhub.click/?year=-140"],
+  ["時間規範檢索(中韓日)", "https://authority.dila.edu.tw/time/"],
+  ["兩千年中西曆轉換", "https://sinocal.sinica.edu.tw/"]
+];
+function renderHist() {
+  const box = document.getElementById("hist"); box.textContent = "";
+  for (const [t, u] of HIST) {
+    const l = el("div", "lbl"); l.append(el("span", "tri", "▷"), document.createTextNode(t));
+    box.append(l, link(u));
+  }
+}
+
+/* ---------- 전체 ---------- */
+function renderAll(full) {
+  renderGrid(); renderDetail(); renderDday(); renderCele(); renderUlsan(); renderMarket();
+  if (full !== false) { renderToday(); renderHist(); }
+}
+function go(dy, dm) {
+  let y = view.y + dy, m = view.m + dm;
+  while (m < 1) { m += 12; y--; } while (m > 12) { m -= 12; y++; }
+  y = Math.min(2099, Math.max(1901, y));
+  view.y = y; view.m = m;
+  const dd = Math.min(sel.d, dimOf(y, m)); sel.y = y; sel.m = m; sel.d = dd;
+  renderAll(false);
+}
+document.getElementById("py").addEventListener("click", () => go(-1, 0));
+document.getElementById("pm").addEventListener("click", () => go(0, -1));
+document.getElementById("nm").addEventListener("click", () => go(0, 1));
+document.getElementById("ny").addEventListener("click", () => go(1, 0));
+document.getElementById("tod").addEventListener("click", () => { const t = todayKST(); view.y = sel.y = t.y; view.m = sel.m = t.m; sel.d = t.d; renderAll(false); });
+
+renderFilters();
+renderAll(true);
+setInterval(() => { const t = todayKST(); if (t.d !== T0.d || t.m !== T0.m) location.reload(); else renderToday(); }, 60000);
+</script>
+</body>
+</html>
