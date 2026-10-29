@@ -605,7 +605,7 @@ async function sha(s) {
 const T0 = todayKST();
 const view = { y: T0.y, m: T0.m }, sel = { y: T0.y, m: T0.m, d: T0.d };
 const FILTERS = [["solar", "양력"], ["lunar", "음력"], ["term", "절기"], ["mem", "기념일"], ["ul", "울산 기념일"], ["mk", "울산 장날"]];
-const flt = { solar: true, lunar: true, term: true, mem: true, ul: true, mk: true };
+const flt = { solar: true, lunar: true, term: true, mem: true, ul: true, mk: false };
 
 /* ---------- TODAY ---------- */
 function renderToday() {
