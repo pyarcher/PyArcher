@@ -43,8 +43,8 @@
   .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 12px; }
   .tile { background: #fff; border-radius: 14px; padding: 14px 16px; box-shadow: 0 8px 22px rgba(20,30,70,.08); }
   .tile .lab { font-size: 11px; font-weight: 700; color: var(--soft); letter-spacing: .04em; line-height: 1.4; }
-  .tile .val { font-size: 20px; font-weight: 800; margin-top: 6px; }
-  .tile .sub { font-size: 12px; color: var(--muted); margin-top: 2px; min-height: 16px; }
+  .tile .val { font-size: 13px; font-weight: 800; margin-top: 6px; }
+  .tile .sub { font-size: 10px; color: var(--muted); margin-top: 2px; min-height: 14px; }
   .today-note { font-size: 13px; color: var(--muted); margin-top: 6px; line-height: 1.7; }
 
   /* nav + filters */
@@ -205,7 +205,6 @@
       <div class="dows"><div>SUN</div><div>MON</div><div>TUE</div><div>WED</div><div>THU</div><div>FRI</div><div>SAT</div></div>
       <div class="days" id="days"></div>
     </div>
-    <div class="card detail" id="detail"></div>
   </section>
 
   <section id="s-dday">
@@ -646,7 +645,7 @@ function renderFilters() {
   const box = document.getElementById("filters"); box.textContent = "";
   for (const [k, label] of FILTERS) {
     const lab = el("label"), inp = el("input"); inp.type = "checkbox"; inp.checked = flt[k];
-    inp.addEventListener("change", () => { flt[k] = inp.checked; renderGrid(); renderDetail(); });
+    inp.addEventListener("change", () => { flt[k] = inp.checked; renderGrid(); });
     lab.append(inp, document.createTextNode(label)); box.append(lab);
   }
 }
@@ -906,7 +905,7 @@ function renderMarket() {
 
 /* ---------- TODAY IN HISTORY ---------- */
 const HIST = [
-  ["한국천문연구원 음양력 변환(BCE60 ~ CE2050)", "https://astro.kasi.re.kr/kor/life/pageView/8"],
+  ["한국천문연구원 음양력 변환", "https://astro.kasi.re.kr/kor/life/pageView/8"],
   ["한국고전종합DB 한중일 연호검색", "https://db.itkc.or.kr/extra/yonHoPop"],
   ["HANHUB 동양연표", "https://chronology.hanhub.click/?year=-140"],
   ["時間規範檢索(中韓日)", "https://authority.dila.edu.tw/time/"],
@@ -922,7 +921,7 @@ function renderHist() {
 
 /* ---------- 전체 ---------- */
 function renderAll(full) {
-  renderGrid(); renderDetail(); renderDday(); renderCele(); renderUlsan(); renderMarket();
+  renderGrid(); renderDday(); renderCele(); renderUlsan(); renderMarket();
   if (full !== false) { renderToday(); renderHist(); }
 }
 function go(dy, dm) {
