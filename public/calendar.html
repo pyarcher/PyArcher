@@ -24,7 +24,7 @@
     color: #4A5170; font-size: 13px; font-weight: 600; margin-bottom: 40px; transition: color .15s ease;
   }
   .back-link:hover { color: var(--blue); }
-  .eyebrow { font-weight: 700; font-size: 13px; letter-spacing: .14em; margin: 0 0 12px; }
+  .eyebrow { font-weight: 700; font-size: 13px; letter-spacing: .14em; margin: 0; }
   .eyebrow .blue { color: var(--blue); }
   h1 { font-size: 40px; line-height: 1.1; margin: 0 0 14px; font-weight: 800; letter-spacing: -0.02em; }
   .subtitle { font-size: 14px; color: var(--muted); margin: 0 0 8px; line-height: 1.6; }
@@ -97,7 +97,7 @@
   .c-ul { background: #E8EEFD; color: var(--blue); }
   .c-mk { background: #FFF3DC; color: var(--amber); }
   .c-dd { background: #0B1220; color: #fff; }
-  .dots { display: none; gap: 3px; flex-wrap: wrap; }
+  .dots { display: none; }
   .dot { width: 6px; height: 6px; border-radius: 50%; }
   .d-hol { background: var(--red); } .d-term { background: var(--teal); } .d-mem { background: #8A90A8; }
   .d-folk { background: var(--purple); } .d-ul { background: var(--blue); } .d-mk { background: #D79A2B; } .d-dd { background: #0B1220; }
@@ -145,20 +145,21 @@
   .note li.dash::before { content: "- "; }
   .note p { margin: 8px 0 0; }
 
-  .hist a { display: block; color: var(--blue); font-size: 14px; text-decoration: none; word-break: break-all; margin: 0 0 14px 18px; }
+  .hist a { color: var(--blue); text-decoration: none; }
   .hist a:hover { text-decoration: underline; }
-  .hist .lbl { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+  .hist .lbl { font-size: 15px; font-weight: 700; margin: 0 0 14px; }
+  .hist .lbl:last-child { margin-bottom: 0; }
   .hist .lbl .tri { color: var(--blue); margin-right: 6px; }
 
   @media (max-width: 760px) {
     .wrap { padding: 36px 16px 80px; }
     h1 { font-size: 30px; }
     .tiles { grid-template-columns: repeat(2, 1fr); }
-    .cell { min-height: 66px; padding: 5px 4px; align-items: center; }
+    .cell { min-height: 84px; padding: 4px 2px; align-items: stretch; }
     .ctop { flex-direction: column; align-items: center; gap: 0; }
     .lun { font-size: 9px; }
-    .chips { display: none; }
-    .dots { display: flex; justify-content: center; }
+    .chip { font-size: 9px; padding: 1px 3px; border-radius: 3px; white-space: normal; overflow: visible; word-break: keep-all; overflow-wrap: anywhere; line-height: 1.25; }
+    .chips { gap: 2px; }
     .monthlabel { font-size: 19px; min-width: 0; flex: 1; }
     .navbar { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .navbar .navgroup:nth-child(2) { order: -1; grid-column: 1 / -1; }
@@ -177,10 +178,8 @@
 <div class="wrap">
   <a class="back-link" href="/">&larr; KIM SANG YUK</a>
   <p class="eyebrow">PYARCHER’S <span>&mdash;</span> <span class="blue">CALENDAR</span></p>
-  <h1>Pyarcher’s Calendar</h1>
-  <p class="subtitle">양력 · 음력 · 24절기 · 공휴일 · 기념일 · 울산 기념일 · 울산 장날</p>
 
-  <section id="s-today" style="margin-top:36px">
+  <section id="s-today" style="margin-top:28px">
     <div class="sec-head"><span class="sec-name">♠ TODAY</span><span class="sec-line"></span></div>
     <div id="today"></div>
   </section>
@@ -669,8 +668,8 @@ function renderGrid() {
     top.append(num);
     if (flt.lunar) { const l = info.lunar; top.append(el("span", "lun", l.d === 1 ? (l.leap ? "윤" : "") + l.m + "월" : (l.leap ? "윤" : "") + l.m + "." + l.d)); }
     btn.append(top);
-    const chips = el("div", "chips"), dots = el("div", "dots");
-    const add = (cls, txt, dcls) => { chips.append(el("span", "chip " + cls, txt)); dots.append(el("span", "dot " + dcls)); };
+    const chips = el("div", "chips");
+    const add = (cls, txt) => { chips.append(el("span", "chip " + cls, txt)); };
     info.hol.forEach(e => add("c-hol", e.n, "d-hol"));
     if (flt.term && info.term) add("c-term", info.term, "d-term");
     if (flt.mem) { info.folk.forEach(e => add("c-folk", e.n, "d-folk")); info.mem.forEach(e => add("c-mem", e.n, "d-mem")); }
@@ -682,7 +681,7 @@ function renderGrid() {
       if (mk.mart.length) add("c-mk", "마트휴업 " + mk.mart.join("·"), "d-mk");
     }
     evOn(cy, cm, cd).forEach(e => add("c-dd", "☑ " + e.t, "d-dd"));
-    btn.append(chips, dots);
+    btn.append(chips);
     btn.setAttribute("aria-label", cy + "년 " + cm + "월 " + cd + "일 " + DOW_KO[info.w] + "요일");
     btn.addEventListener("click", () => { sel.y = cy; sel.m = cm; sel.d = cd; if (out) { view.y = cy; view.m = cm; } renderAll(false); });
     host.append(btn);
@@ -826,7 +825,7 @@ function noteBlock(title, items, opts) {
   const ul = el("ul");
   for (const it of items) {
     const li = el("li", opts && opts.dash ? "dash" : "");
-    if (it.url) { li.append(document.createTextNode(it.text), link(it.url)); } else li.append(document.createTextNode(it));
+    if (it.url) { li.append(link(it.url, it.text)); } else li.append(document.createTextNode(it));
     ul.append(li);
   }
   n.append(ul); return n;
@@ -837,7 +836,7 @@ function renderCele() {
   box.append(lrow("24절기", L.term), lrow("국경일", L.nat), lrow("공휴일", L.hol), lrow("민속일", L.folk), lrow("기념일", L.mem));
   box.append(el("p", "hint", view.y + "년 " + view.m + "월 기준 · 공휴일은 토·일을 제외하고 표시합니다. · " + (OFFICIAL[view.y] ? "우주항공청 " + view.y + "년 월력요항 기준" : view.y + "년은 월력요항 미반영(계산값)")));
   const n = noteBlock("관련법령", [
-    { text: "천문법(한국천문연구원 월력요항) ", url: "https://astro.kasi.re.kr/kor/life/post/calendarData" },
+    { text: "천문법(한국천문연구원 월력요항)", url: "https://astro.kasi.re.kr/kor/life/post/calendarData" },
     "국경일에 관한 법률/공휴일에 관한 법률",
     "관공서의 공휴일에 관한 규정",
     "각종 기념일 등에 관한 규정",
@@ -916,8 +915,8 @@ const HIST = [
 function renderHist() {
   const box = document.getElementById("hist"); box.textContent = "";
   for (const [t, u] of HIST) {
-    const l = el("div", "lbl"); l.append(el("span", "tri", "▷"), document.createTextNode(t));
-    box.append(l, link(u));
+    const l = el("div", "lbl"); l.append(el("span", "tri", "▷"), link(u, t));
+    box.append(l);
   }
 }
 
