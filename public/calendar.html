@@ -718,7 +718,13 @@ function renderDetail() {
 
 /* ---------- D-DAY ---------- */
 function sortedEvents() { return events.map((e, i) => ({ e, i })).sort((a, b) => (a.e.d < b.e.d ? -1 : a.e.d > b.e.d ? 1 : 0)); }
-function fmtDate(s) { const p = parseKey(s); return p.y + ", " + p.m + ", " + p.d; }
+function fmtDate(s) { const p = parseKey(s); return p.y + ". " + p.m + ". " + p.d + "."; }
+function parseDateInput(str) {                      // "2028. 3. 5." / "2028-3-5" / "2028 3 5" 모두 허용
+  const m = /^\s*(\d{4})\D+(\d{1,2})\D+(\d{1,2})\D*$/.exec(str); if (!m) return null;
+  const y = +m[1], mo = +m[2], d = +m[3];
+  if (y < 1900 || y > 2200 || mo < 1 || mo > 12 || d < 1 || d > dimOf(y, mo)) return null;
+  return key(y, mo, d);
+}
 function renderDday() {
   const box = document.getElementById("dday"); box.textContent = "";
   document.getElementById("editbtn").textContent = editing ? "편집 종료" : "편집";
@@ -733,12 +739,17 @@ function renderDday() {
       tr.append(el("td", "", "☑ " + e.t), el("td", "date", fmtDate(e.d)), el("td", "dday", ddayLabel(n)));
     } else {
       const t1 = el("td"), ti = el("input"); ti.type = "text"; ti.value = e.t; ti.maxLength = 80; ti.setAttribute("aria-label", "행사명");
-      ti.addEventListener("change", () => { events[i].t = ti.value.trim() || e.t; saveEvents(); renderAll(false); });
+      ti.addEventListener("change", () => { events[i].t = ti.value.trim() || events[i].t; ti.value = events[i].t; saveEvents(); renderGrid(); });
       t1.append(ti);
-      const t2 = el("td"), di = el("input"); di.type = "date"; di.value = e.d; di.setAttribute("aria-label", "날짜");
-      di.addEventListener("change", () => { if (validDate(di.value)) { events[i].d = di.value; saveEvents(); renderAll(false); } });
-      t2.append(di);
-      const t3 = el("td", "dday", ddayLabel(n));
+      const t2 = el("td"), di = el("input"); di.type = "text"; di.value = fmtDate(e.d); di.placeholder = "2028. 3. 5."; di.maxLength = 14; di.setAttribute("aria-label", "날짜 (년. 월. 일.)");
+      const dmsg = el("div", "msg"), t3 = el("td", "dday", ddayLabel(n));
+      di.addEventListener("input", () => { dmsg.textContent = ""; });
+      di.addEventListener("change", () => {
+        const k = parseDateInput(di.value);
+        if (!k) { dmsg.textContent = "예: 2028. 3. 5."; return; }
+        events[i].d = k; di.value = fmtDate(k); t3.textContent = ddayLabel(ddayOf(events[i])); saveEvents(); renderGrid();   // 표 순서는 '편집 종료' 때 정렬
+      });
+      t2.append(di, dmsg);
       const t4 = el("td"), del = el("button", "btn small danger", "삭제"); del.type = "button";
       del.addEventListener("click", () => {
         if (del.dataset.arm === "1") { events.splice(i, 1); saveEvents(); renderAll(false); }
