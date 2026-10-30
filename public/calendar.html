@@ -67,7 +67,6 @@
   .filters input { accent-color: var(--blue); width: 15px; height: 15px; margin: 0; }
 
   /* grid */
-  .cal { touch-action: pan-y; }
   .days { transform-origin: 50% 0; }
   .days.flip-next { animation: flipNext .38s ease; }
   .days.flip-prev { animation: flipPrev .38s ease; }
@@ -984,6 +983,7 @@ function go(dy, dm) {
   box.addEventListener("touchend", e => {
     if (!on) return; on = false;
     const t = e.changedTouches[0], dx = t.clientX - x0, dy = t.clientY - y0;
+    if (window.visualViewport && window.visualViewport.scale > 1.02) return;      // 확대 중에는 넘기지 않고 화면 이동만
     if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) go(0, dx < 0 ? 1 : -1);
   }, { passive: true });
 })();

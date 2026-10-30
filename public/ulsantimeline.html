@@ -36,7 +36,7 @@
   .mtabs button:hover { background:var(--hover); color:var(--blue); border-color:var(--blue); }
   .mtabs button.on { background:var(--blue); color:#fff; border-color:var(--blue); }
   .mcount { font-size:12px; color:var(--soft); margin:0 0 10px 2px; }
-  .cal { background:#fff; border-radius:16px; box-shadow:0 20px 50px rgba(20,30,70,.14); overflow:hidden; touch-action:pan-y; }
+  .cal { background:#fff; border-radius:16px; box-shadow:0 20px 50px rgba(20,30,70,.14); overflow:hidden; }
   .dows, .days { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); }
   .dows div { text-align:center; font-size:12px; font-weight:800; letter-spacing:.08em; padding:11px 0; color:#4A5170; border-bottom:1px solid var(--border); background:#F7F8FD; }
   .dows div:first-child { color:var(--red); }
@@ -1001,6 +1001,7 @@ var EV = [[1963,1,1,"울주군 서생면을 동래군에 편입"],[1964,1,1,"울
   box.addEventListener("touchend", function (e) {
     if (!on) return; on = false;
     var t = e.changedTouches[0], dx = t.clientX - x0, dy = t.clientY - y0;
+    if (window.visualViewport && window.visualViewport.scale > 1.02) return;      // 확대 중에는 넘기지 않고 화면 이동만
     if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) go(dx < 0 ? 1 : -1);
   }, { passive: true });
 
