@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>울산연대표 — Kim Sang Yuk</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+  :root { --text:#0B1220; --muted:#6B7290; --soft:#8A90A8; --border:#D7DCEE; --line:#E7EAF4; --blue:#2F5FE0; --purple:#6D4FE0; --red:#D64545; --hover:#EEF1FA; }
+  * { box-sizing: border-box; }
+  body { margin:0; min-height:100vh; background:linear-gradient(180deg,#EEF1FA 0%,#E7EBF7 100%); font-family:'Inter','Apple SD Gothic Neo','Malgun Gothic',sans-serif; color:var(--text); }
+  .wrap { max-width:1180px; margin:0 auto; padding:56px 32px 100px; }
+  .back-link { display:inline-flex; align-items:center; gap:6px; text-decoration:none; color:#4A5170; font-size:13px; font-weight:600; margin-bottom:40px; transition:color .15s ease; }
+  .back-link:hover { color:var(--blue); }
+  .eyebrow { font-weight:700; font-size:13px; letter-spacing:.14em; margin:0 0 12px; }
+  .eyebrow .blue { color:var(--blue); }
+  h1 { font-size:36px; line-height:1.15; margin:0 0 6px; font-weight:800; letter-spacing:-0.02em; }
+  .subtitle { font-size:14px; color:var(--muted); margin:0 0 28px; line-height:1.6; }
+  .sec-head { display:flex; align-items:baseline; gap:12px; margin-bottom:14px; }
+  .sec-name { font-weight:800; font-size:13px; color:var(--purple); letter-spacing:.1em; white-space:nowrap; }
+  .sec-name.ko { font-size:15px; letter-spacing:.04em; }
+  .sec-line { flex:1; height:1px; background:var(--border); }
+  .cnt { font-size:12px; color:var(--soft); font-weight:600; }
+  .btn { font:inherit; font-size:13px; font-weight:700; color:#4A5170; background:#fff; border:1px solid var(--border); border-radius:999px; padding:8px 14px; cursor:pointer; transition:background .15s,color .15s,border-color .15s; }
+  .btn:hover { background:var(--hover); color:var(--blue); border-color:var(--blue); }
+  .btn.primary { background:var(--blue); color:#fff; border-color:var(--blue); }
+  .btn.primary:hover { background:#2450c4; color:#fff; }
+  .btn:focus-visible, .cell:focus-visible, a:focus-visible, input:focus-visible { outline:2px solid var(--blue); outline-offset:2px; }
+
+  /* month calendar */
+  .navbar { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:12px; flex-wrap:wrap; }
+  .navgroup { display:flex; gap:8px; align-items:center; }
+  .monthlabel { font-size:24px; font-weight:800; letter-spacing:-0.01em; min-width:110px; text-align:center; }
+  .mtabs { display:flex; flex-wrap:wrap; gap:6px; margin:0 0 12px; }
+  .mtabs button { font:inherit; font-size:12px; font-weight:700; color:#4A5170; background:#fff; border:1px solid var(--border); border-radius:999px; padding:5px 11px; cursor:pointer; }
+  .mtabs button:hover { background:var(--hover); color:var(--blue); border-color:var(--blue); }
+  .mtabs button.on { background:var(--blue); color:#fff; border-color:var(--blue); }
+  .mcount { font-size:12px; color:var(--soft); margin:0 0 10px 2px; }
+  .cal { background:#fff; border-radius:16px; box-shadow:0 20px 50px rgba(20,30,70,.14); overflow:hidden; touch-action:pan-y; }
+  .dows, .days { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); }
+  .dows div { text-align:center; font-size:12px; font-weight:800; letter-spacing:.08em; padding:11px 0; color:#4A5170; border-bottom:1px solid var(--border); background:#F7F8FD; }
+  .dows div:first-child { color:var(--red); }
+  .dows div:last-child { color:var(--blue); }
+  .days { transform-origin:50% 0; }
+  .days.flip-next { animation:flipNext .38s ease; }
+  .days.flip-prev { animation:flipPrev .38s ease; }
+  @keyframes flipNext { from { opacity:.25; transform:perspective(900px) rotateY(-14deg) translateX(36px); } to { opacity:1; transform:none; } }
+  @keyframes flipPrev { from { opacity:.25; transform:perspective(900px) rotateY(14deg) translateX(-36px); } to { opacity:1; transform:none; } }
+  .cell { background:#fff; border-right:1px solid var(--line); border-bottom:1px solid var(--line); min-height:118px; padding:7px 7px 6px; display:flex; flex-direction:column; gap:3px; min-width:0; }
+  .cell:nth-child(7n) { border-right:0; }
+  .cell.out { background:#FBFBFE; }
+  .cell.out .num { opacity:.4; }
+  .num { font-size:14px; font-weight:800; min-width:24px; height:24px; display:inline-flex; align-items:center; justify-content:center; border-radius:999px; align-self:flex-start; }
+  .num.sun { color:var(--red); } .num.sat { color:var(--blue); }
+  .num.today { background:var(--blue); color:#fff; }
+  .chips { display:flex; flex-direction:column; gap:2px; min-width:0; }
+  .chip { font-size:10.5px; font-weight:600; line-height:1.35; padding:2px 5px; border-radius:5px; background:#E8EEFD; color:#27407f; word-break:keep-all; overflow-wrap:anywhere; }
+  .chip b { font-weight:800; color:var(--blue); margin-right:3px; }
+
+  /* list */
+  .gsearch { position:sticky; top:0; z-index:6; background:linear-gradient(180deg,#EEF1FA 80%,rgba(238,241,250,0)); padding:10px 0 14px; margin:0 0 6px; }
+  .tools { margin-bottom:10px; }
+  .gsearch .count a { color:var(--blue); font-weight:700; text-decoration:none; margin-left:8px; }
+  .gsearch .count a:hover { text-decoration:underline; }
+  .mtabs .bd { display:inline-block; margin-left:5px; min-width:16px; padding:0 5px; border-radius:999px; background:#FFF0B3; color:#6b5200; font-size:11px; line-height:16px; }
+  .mtabs button.on .bd { background:#fff; color:var(--blue); }
+  .mtabs button.zero { opacity:.45; }
+  .chip.hit { background:#FFF3C4; color:#4a3a00; }
+  .chip.dim { opacity:.3; }
+  .search { width:100%; font:inherit; font-size:14px; padding:10px 14px; border:1px solid var(--border); border-radius:999px; background:#fff; color:var(--text); }
+  .nav { display:flex; flex-wrap:wrap; gap:6px 8px; margin-top:10px; }
+  .nav a { font-size:12px; font-weight:700; color:#4A5170; text-decoration:none; background:#fff; border:1px solid var(--border); border-radius:999px; padding:5px 11px; transition:background .15s,color .15s,border-color .15s; }
+  .nav a:hover { background:var(--hover); color:var(--blue); border-color:var(--blue); }
+  .count { font-size:12px; color:var(--soft); margin:8px 0 0 4px; min-height:16px; }
+  .nav { margin-top:0; }
+  .listwrap { max-width:980px; margin:0 auto; }
+  .dec { margin-top:40px; scroll-margin-top:130px; }
+  ul.tl { list-style:none; margin:0; padding:8px 22px; background:#fff; border-radius:16px; box-shadow:0 12px 30px rgba(20,30,70,.10); }
+  .it { display:grid; grid-template-columns:52px 76px 1fr; gap:10px; padding:9px 0; border-top:1px solid var(--line); font-size:14px; line-height:1.65; }
+  .it:first-child { border-top:0; }
+  .yy { font-weight:800; color:var(--blue); }
+  .dt { color:var(--muted); font-weight:600; white-space:nowrap; }
+  .tx { color:#1B2236; }
+  .it.hide { display:none; }
+  mark { background:#FFF0B3; color:inherit; border-radius:3px; padding:0 1px; }
+  section.list { margin-top:64px; }
+
+  @media (max-width:760px) {
+    .wrap { padding:36px 16px 80px; }
+    h1 { font-size:28px; }
+    .monthlabel { font-size:19px; min-width:0; flex:1; }
+    .navbar { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .navbar .navgroup:nth-child(2) { order:-1; grid-column:1 / -1; justify-content:center; }
+    .navbar .navgroup:nth-child(3) { justify-content:flex-end; }
+    .cell { min-height:84px; padding:4px 2px; }
+    .num { align-self:center; }
+    .chip { font-size:9px; padding:1px 3px; border-radius:3px; line-height:1.25; }
+    ul.tl { padding:6px 14px; }
+    .it { grid-template-columns:44px 1fr; row-gap:0; }
+    .tx { grid-column:1 / -1; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition:none !important; animation:none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back-link" href="/">&larr; KIM SANG YUK</a>
+  <p class="eyebrow">ULSAN <span>&mdash;</span> <span class="blue">TIMELINE</span></p>
+  <h1>울산연대표</h1>
+  <p class="subtitle">(2025 시정백서)</p>
+
+  <div class="gsearch">
+    <input class="search" id="q" type="search" placeholder="키워드 검색 (예: 울산시 승격, 태화강, 1962) — 단어 여러 개는 띄어 쓰세요" aria-label="울산연대표 키워드 검색" autocomplete="off" />
+    <div class="count" id="cnt"></div>
+  </div>
+
+  <section>
+    <div class="sec-head"><span class="sec-name ko">이날의 울산</span><span class="sec-line"></span></div>
+    <div class="navbar">
+      <div class="navgroup"><button class="btn" id="pm" type="button">◁ 이전 달</button></div>
+      <div class="navgroup" style="flex:1;justify-content:center">
+        <span class="monthlabel" id="mlabel" aria-live="polite"></span>
+        <button class="btn primary" id="tod" type="button">오늘</button>
+      </div>
+      <div class="navgroup"><button class="btn" id="nm" type="button">다음 달 ▷</button></div>
+    </div>
+    <div class="mtabs" id="mtabs"></div>
+    <div class="mcount" id="mcount"></div>
+    <div class="cal">
+      <div class="dows"><div>SUN</div><div>MON</div><div>TUE</div><div>WED</div><div>THU</div><div>FRI</div><div>SAT</div></div>
+      <div class="days" id="days"></div>
+    </div>
+  </section>
+
+  <section class="list" id="list">
+    <div class="listwrap">
+      <div class="sec-head"><span class="sec-name ko">연대별 전체 목록</span><span class="sec-line"></span></div>
+      <div class="tools"><div class="nav"><a href="#d1940">1940년대</a><a href="#d1950">1950년대</a><a href="#d1960">1960년대</a><a href="#d1970">1970년대</a><a href="#d1980">1980년대</a><a href="#d1990">1990년대</a><a href="#d2000">2000년대</a><a href="#d2010">2010년대</a><a href="#d2020">2020년대</a></div></div>
+<section class="dec" id="d1940"><div class="sec-head"><span class="sec-name">1940s</span><span class="sec-line"></span><span class="cnt">9</span></div><ul class="tl">
+<li class="it"><span class="yy" data-y="1945">1945</span><span class="dt">8.</span><span class="tx">중앙관상대 울산측후소 발족</span></li>
+<li class="it"><span class="yy" data-y="1945"></span><span class="dt">8. 15.</span><span class="tx">광복, 울산의용소방대 설립, 울산비행장 폐쇄</span></li>
+<li class="it"><span class="yy" data-y="1945"></span><span class="dt">10. 21.</span><span class="tx">울산경찰서 창설</span></li>
+<li class="it"><span class="yy" data-y="1945"></span><span class="dt">10. 25.</span><span class="tx">미군정이 최동룡을 초대 울산군수로 임명</span></li>
+<li class="it"><span class="yy" data-y="1946">1946</span><span class="dt">8. 1.</span><span class="tx">울산상공회 조직</span></li>
+<li class="it"><span class="yy" data-y="1946"></span><span class="dt">12. 1.</span><span class="tx">울산소방대 설치</span></li>
+<li class="it"><span class="yy" data-y="1947">1947</span><span class="dt">4. 15.</span><span class="tx">삼남면 면양장에 귀환동포 입주 시작</span></li>
+<li class="it"><span class="yy" data-y="1948">1948</span><span class="dt">10.</span><span class="tx">울산공설운동장 준공</span></li>
+<li class="it"><span class="yy" data-y="1949">1949</span><span class="dt">8. 15.</span><span class="tx">지방자치법 시행으로 시․읍․면이 지방자치단체가 됨</span></li>
+</ul></section>
+<section class="dec" id="d1950"><div class="sec-head"><span class="sec-name">1950s</span><span class="sec-line"></span><span class="cnt">6</span></div><ul class="tl">
+<li class="it"><span class="yy" data-y="1950">1950</span><span class="dt">1. 12.</span><span class="tx">울산우편국을 울산우체국으로 개칭</span></li>
+<li class="it"><span class="yy" data-y="1952">1952</span><span class="dt">6. 1.</span><span class="tx">교육자치제 실시, 울산교육구청 개청</span></li>
+<li class="it"><span class="yy" data-y="1955">1955</span><span class="dt">1.</span><span class="tx">울산최초 대규모공장인 삼양사 제당공장 준공</span></li>
+<li class="it"><span class="yy" data-y="1955"></span><span class="dt">7. 1.</span><span class="tx">지방직제 변경으로 소방서를 폐지, 의용소방대 편성</span></li>
+<li class="it"><span class="yy" data-y="1955"></span><span class="dt">12. 12.</span><span class="tx">부산지방해무청 방어진출장소 개설</span></li>
+<li class="it"><span class="yy" data-y="1956">1956</span><span class="dt">6. 20.</span><span class="tx">보건진료소 설치</span></li>
+</ul></section>
+<section class="dec" id="d1960"><div class="sec-head"><span class="sec-name">1960s</span><span class="sec-line"></span><span class="cnt">48</span></div><ul class="tl">
+<li class="it"><span class="yy" data-y="1961">1961</span><span class="dt">7. 29.</span><span class="tx">농협중앙회 울주군지부 개설</span></li>
+<li class="it"><span class="yy" data-y="1961"></span><span class="dt">9. 1.</span><span class="tx">읍․면의회 해산, 읍․면 자치제 폐지, 군이 지방자치단체가 됨</span></li>
+<li class="it"><span class="yy" data-y="1962">1962</span><span class="dt">1. 27.</span><span class="tx">울산 특정공업지구 결정 공포(각령 제304호)</span></li>
+<li class="it"><span class="yy" data-y="1962"></span><span class="dt">2. 3.</span><span class="tx">울산공업센터 종합기공식 거행(울산군 대현면 납도)</span></li>
+<li class="it"><span class="yy" data-y="1962"></span><span class="dt">2. 7.</span><span class="tx">울산개발위원회 울산개발 계획본부 설치</span></li>
+<li class="it"><span class="yy" data-y="1962"></span><span class="dt">3. 7.</span><span class="tx">울산특별건설국 설치(각령 제540호)</span></li>
+<li class="it"><span class="yy" data-y="1962"></span><span class="dt">5. 14.</span><span class="tx">울산 인구 50만을 목표로 한 도시계획 수립</span></li>
+<li class="it"><span class="yy" data-y="1962"></span><span class="dt">6. 1.</span><span class="tx">울산시 승격(법령 제1068호), 홍승순 초대 울산시장 취임</span></li>
+<li class="it"><span class="yy" data-y="1962"></span><span class="dt">6. 18.</span><span class="tx">김철년 초대 울주군수 취임</span></li>
+<li class="it"><span class="yy" data-y="1962"></span><span class="dt">7. 2.</span><span class="tx">부산세관 울산출장소 승격</span></li>
+<li class="it"><span class="yy" data-y="1962"></span><span class="dt">12. 31.</span><span class="tx">울산 첫 수출(26만 달러)</span></li>
+<li class="it"><span class="yy" data-y="1963">1963</span><span class="dt">1. 1.</span><span class="tx">울주군 서생면을 동래군에 편입</span></li>
+<li class="it"><span class="yy" data-y="1963"></span><span class="dt">1. 21.</span><span class="tx">망해사지 승탑, 석남사 승탑, 간월사지 석조여래좌성, 청송사지 삼층석탑 보물 지정</span></li>
+<li class="it"><span class="yy" data-y="1963"></span><span class="dt">8.</span><span class="tx">태화강 취수탑 준공</span></li>
+<li class="it"><span class="yy" data-y="1963"></span><span class="dt">9. 1.</span><span class="tx">울산항 개항</span></li>
+<li class="it"><span class="yy" data-y="1963"></span><span class="dt">9. 2.</span><span class="tx">울산상공회의소 창립총회 개최</span></li>
+<li class="it"><span class="yy" data-y="1963"></span><span class="dt">10. 1.</span><span class="tx">울산항을 출입국항으로 지정 공포</span></li>
+<li class="it"><span class="yy" data-y="1963"></span><span class="dt">11. 1.</span><span class="tx">울산 중앙출장소 설치</span></li>
+<li class="it"><span class="yy" data-y="1963"></span><span class="dt">12.</span><span class="tx">정유공장 준공</span></li>
+<li class="it"><span class="yy" data-y="1963"></span><span class="dt">12. 28.</span><span class="tx">신정~야음 간선가로 준공</span></li>
+<li class="it"><span class="yy" data-y="1964">1964</span><span class="dt">1.</span><span class="tx">부산전매지청 울산전매서 발족</span></li>
+<li class="it"><span class="yy" data-y="1964"></span><span class="dt">1. 1.</span><span class="tx">울산시교육청과 울주군교육청 발족</span></li>
+<li class="it"><span class="yy" data-y="1964"></span><span class="dt">1. 16.</span><span class="tx">법무부 부산출입국관리사무소 울산출장소 개소</span></li>
+<li class="it"><span class="yy" data-y="1964"></span><span class="dt">4.</span><span class="tx">울산적십사부녀봉사대 발족</span></li>
+<li class="it"><span class="yy" data-y="1964"></span><span class="dt">4. 20.</span><span class="tx">부산지방해운국 울산출장소 개설</span></li>
+<li class="it"><span class="yy" data-y="1964"></span><span class="dt">6. 27.</span><span class="tx">울산문화원 창립총회 개최</span></li>
+<li class="it"><span class="yy" data-y="1964"></span><span class="dt">12. 11.</span><span class="tx">대한석유공사 울산정유공장 준공</span></li>
+<li class="it"><span class="yy" data-y="1965">1965</span><span class="dt">1.</span><span class="tx">울산특별건설국 야음동 새청사 건립 이전(현 울산세관)</span></li>
+<li class="it"><span class="yy" data-y="1965"></span><span class="dt">12. 27.</span><span class="tx">사연댐 준공</span></li>
+<li class="it"><span class="yy" data-y="1966">1966</span><span class="dt">3. 29.</span><span class="tx">태화교 준공</span></li>
+<li class="it"><span class="yy" data-y="1966"></span><span class="dt">3. 31.</span><span class="tx">태화사지 십이지상 사리탑을 보물 제441호로 지정</span></li>
+<li class="it"><span class="yy" data-y="1966"></span><span class="dt">5. 7.</span><span class="tx">울산세관 승격</span></li>
+<li class="it"><span class="yy" data-y="1966"></span><span class="dt">5. 22.</span><span class="tx">울산항 제1부두 준공</span></li>
+<li class="it"><span class="yy" data-y="1966"></span><span class="dt">7. 20.</span><span class="tx">울산 특정 공업지역 확장 지정고시</span></li>
+<li class="it"><span class="yy" data-y="1966"></span><span class="dt">12.</span><span class="tx">석유화학공업 개발계획 확정, 울산전신전화국 설립 및 업무개시</span></li>
+<li class="it"><span class="yy" data-y="1966"></span><span class="dt">12. 31.</span><span class="tx">부두 진입도로 준공</span></li>
+<li class="it"><span class="yy" data-y="1967">1967</span><span class="dt">2. 28.</span><span class="tx">선암정수장 준공, 제1회 울산공업축제 개최</span></li>
+<li class="it"><span class="yy" data-y="1967"></span><span class="dt">8.</span><span class="tx">영남화력(G/T#1-4호기) 준공</span></li>
+<li class="it"><span class="yy" data-y="1967"></span><span class="dt">11. 29.</span><span class="tx">울산소방서 개청1675</span></li>
+<li class="it"><span class="yy" data-y="1968">1968</span><span class="dt">4. 10.</span><span class="tx">울산민간방송(UBC) 정규방송 시작</span></li>
+<li class="it"><span class="yy" data-y="1968"></span><span class="dt">8. 1.</span><span class="tx">울산산재보험사무소 울산직업안전소 설치</span></li>
+<li class="it"><span class="yy" data-y="1968"></span><span class="dt">10. 10.</span><span class="tx">현대자동차 울산공장 준공</span></li>
+<li class="it"><span class="yy" data-y="1968"></span><span class="dt">10. 29.</span><span class="tx">일본 하기시와 자매결연</span></li>
+<li class="it"><span class="yy" data-y="1969">1969</span><span class="dt">4. 25.</span><span class="tx">『울산문학』 창간</span></li>
+<li class="it"><span class="yy" data-y="1969"></span><span class="dt">10. 31.</span><span class="tx">제2부두 준공</span></li>
+<li class="it"><span class="yy" data-y="1969"></span><span class="dt">12. 6.</span><span class="tx">국립부산검역소 울산지소가 국립울산검역소로 승격</span></li>
+<li class="it"><span class="yy" data-y="1969"></span><span class="dt">12. 30.</span><span class="tx">사연교 준공</span></li>
+<li class="it"><span class="yy" data-y="1969"></span><span class="dt">12. 31.</span><span class="tx">대암댐 준공 및 방어진 정수장 준공</span></li>
+</ul></section>
+<section class="dec" id="d1970"><div class="sec-head"><span class="sec-name">1970s</span><span class="sec-line"></span><span class="cnt">40</span></div><ul class="tl">
+<li class="it"><span class="yy" data-y="1970">1970</span><span class="dt">1. 1.</span><span class="tx">울산시청사 학산동 123 → 신정동 646-4 이전, 국제(局制) 시행</span></li>
+<li class="it"><span class="yy" data-y="1970"></span><span class="dt">3. 16.</span><span class="tx">울산공과대학 개교식 및 제1회 입학식</span></li>
+<li class="it"><span class="yy" data-y="1970"></span><span class="dt">4. 1.</span><span class="tx">울산어음교환소 개설</span></li>
+<li class="it"><span class="yy" data-y="1970"></span><span class="dt">5. 8.</span><span class="tx">종합운동장 메인스타디움 1식 완공</span></li>
+<li class="it"><span class="yy" data-y="1970"></span><span class="dt">8.</span><span class="tx">「울산의 노래」제정(박목월 작사, 박시춘 작곡)</span></li>
+<li class="it"><span class="yy" data-y="1970"></span><span class="dt">10. 3.</span><span class="tx">울산~서울간 고속버스 운행</span></li>
+<li class="it"><span class="yy" data-y="1970"></span><span class="dt">10. 21.</span><span class="tx">울산비행장 준공, 울산~서울 1일 2회 왕복 21인승 소형 단발비행기 취항</span></li>
+<li class="it"><span class="yy" data-y="1970"></span><span class="dt">12. 25.</span><span class="tx">언양면 천전리 강안 암벽에서 암각화 발견</span></li>
+<li class="it"><span class="yy" data-y="1971">1971</span><span class="dt">8. 20.</span><span class="tx">강변도로 준공</span></li>
+<li class="it"><span class="yy" data-y="1971"></span><span class="dt">12. 17.</span><span class="tx">제3부두 준공</span></li>
+<li class="it"><span class="yy" data-y="1971"></span><span class="dt">12. 25.</span><span class="tx">언양면 대곡리 강안 암벽에서 암각화 발견</span></li>
+<li class="it"><span class="yy" data-y="1972">1972</span><span class="dt">3. 10.</span><span class="tx">울산공과대학 병설 공업전문학교 개교</span></li>
+<li class="it"><span class="yy" data-y="1972"></span><span class="dt">3. 23.</span><span class="tx">현대조선 울산공장 착공</span></li>
+<li class="it"><span class="yy" data-y="1972"></span><span class="dt">8. 1.</span><span class="tx">울산시 수산업협동조합 개설</span></li>
+<li class="it"><span class="yy" data-y="1972"></span><span class="dt">9. 8.</span><span class="tx">교통부 울산지방해운국 개국</span></li>
+<li class="it"><span class="yy" data-y="1972"></span><span class="dt">10.</span><span class="tx">석유화학공단 종합준공식(8개 공장)</span></li>
+<li class="it"><span class="yy" data-y="1972"></span><span class="dt">12. 30.</span><span class="tx">울주군교육청을 울산시교육청으로 통합</span></li>
+<li class="it"><span class="yy" data-y="1973">1973</span><span class="dt">1. 23.</span><span class="tx">한국예총 울산지부 창립총회 개최</span></li>
+<li class="it"><span class="yy" data-y="1973"></span><span class="dt">4. 13.</span><span class="tx">비철금속제련사업 육성계획 발표</span></li>
+<li class="it"><span class="yy" data-y="1973"></span><span class="dt">4. 20.</span><span class="tx">건설부, 울산 어업전진기지 착공</span></li>
+<li class="it"><span class="yy" data-y="1973"></span><span class="dt">5. 4.</span><span class="tx">천전리 각석을 국보 제147호로 지정</span></li>
+<li class="it"><span class="yy" data-y="1973"></span><span class="dt">6. 1.</span><span class="tx">울산외항(미포항) 개항</span></li>
+<li class="it"><span class="yy" data-y="1975">1975</span><span class="dt">2. 18.</span><span class="tx">울산전신전화국 신설</span></li>
+<li class="it"><span class="yy" data-y="1975"></span><span class="dt">3. 10.</span><span class="tx">남목정수장 준공</span></li>
+<li class="it"><span class="yy" data-y="1975"></span><span class="dt">4.</span><span class="tx">주식회사 현대미포조선소 설립</span></li>
+<li class="it"><span class="yy" data-y="1975"></span><span class="dt">5. 2.</span><span class="tx">남목정수장 통수식</span></li>
+<li class="it"><span class="yy" data-y="1975"></span><span class="dt">6. 1.</span><span class="tx">시민의 날 제정 및 시화(배꽃)․시목(은행) 제정</span></li>
+<li class="it"><span class="yy" data-y="1975"></span><span class="dt">12. 26.</span><span class="tx">울산시에 건설국 신설</span></li>
+<li class="it"><span class="yy" data-y="1976">1976</span><span class="dt">3. 13.</span><span class="tx">울산지방 항만관리청 개청</span></li>
+<li class="it"><span class="yy" data-y="1976"></span><span class="dt">10. 6.</span><span class="tx">울산시 새마을부녀회 결성</span></li>
+<li class="it"><span class="yy" data-y="1977">1977</span><span class="dt">7. 19.</span><span class="tx">울산부녀의용소방대 발대</span></li>
+<li class="it"><span class="yy" data-y="1977"></span><span class="dt">9. 28.</span><span class="tx">종하실내체육관 개관</span></li>
+<li class="it"><span class="yy" data-y="1977"></span><span class="dt">11. 28.</span><span class="tx">울산시 위생처리장관리소 설치</span></li>
+<li class="it"><span class="yy" data-y="1977"></span><span class="dt">12. 16.</span><span class="tx">울산지방 해운항만청 개청</span></li>
+<li class="it"><span class="yy" data-y="1977"></span><span class="dt">12. 31.</span><span class="tx">울산 10억달러 수출 달성</span></li>
+<li class="it"><span class="yy" data-y="1978">1978</span><span class="dt">2. 1.</span><span class="tx">울산공과대학 병설 공업전문학교가 전문대학으로 승격</span></li>
+<li class="it"><span class="yy" data-y="1978"></span><span class="dt">9. 16.</span><span class="tx">동울산우체국 개설</span></li>
+<li class="it"><span class="yy" data-y="1978"></span><span class="dt">11.</span><span class="tx">고려아연 아연제련소 준공</span></li>
+<li class="it"><span class="yy" data-y="1979">1979</span><span class="dt">10. 16.</span><span class="tx">울산남부경찰서 개청</span></li>
+<li class="it"><span class="yy" data-y="1979"></span><span class="dt">11. 26.</span><span class="tx">태화호텔 개관</span></li>
+</ul></section>
+<section class="dec" id="d1980"><div class="sec-head"><span class="sec-name">1980s</span><span class="sec-line"></span><span class="cnt">28</span></div><ul class="tl">
+<li class="it"><span class="yy" data-y="1980">1980</span><span class="dt">1. 1.</span><span class="tx">울산용수관리사무소 설치</span></li>
+<li class="it"><span class="yy" data-y="1980"></span><span class="dt">5. 27.</span><span class="tx">한국은행 울산지점 개설</span></li>
+<li class="it"><span class="yy" data-y="1981">1981</span><span class="dt">6. 13.</span><span class="tx">동강병원 개원</span></li>
+<li class="it"><span class="yy" data-y="1981"></span><span class="dt">6. 19.</span><span class="tx">대만 화롄시와 자매결연</span></li>
+<li class="it"><span class="yy" data-y="1982">1982</span><span class="dt">4. 10.</span><span class="tx">변방시동인회 동인지『변방』창간</span></li>
+<li class="it"><span class="yy" data-y="1982"></span><span class="dt">6. 8.</span><span class="tx">울산 YMCA 창설</span></li>
+<li class="it"><span class="yy" data-y="1982"></span><span class="dt">11. 18.</span><span class="tx">방어진순환도로 준공</span></li>
+<li class="it"><span class="yy" data-y="1983">1983</span><span class="dt">1.</span><span class="tx">울산수필동인회 수필동인지 『개운수필』 창간</span></li>
+<li class="it"><span class="yy" data-y="1983"></span><span class="dt">1. 1.</span><span class="tx">동울산전화국 개설</span></li>
+<li class="it"><span class="yy" data-y="1983"></span><span class="dt">2. 15.</span><span class="tx">양산군 서생면을 울주군에 편입</span></li>
+<li class="it"><span class="yy" data-y="1983"></span><span class="dt">12.</span><span class="tx">울산문화원, 향토지 『울산문화』 창간</span></li>
+<li class="it"><span class="yy" data-y="1983"></span><span class="dt">12. 31.</span><span class="tx">삼산로 개설</span></li>
+<li class="it"><span class="yy" data-y="1984">1984</span><span class="dt">8. 3.</span><span class="tx">시립도서관 개관</span></li>
+<li class="it"><span class="yy" data-y="1984"></span><span class="dt">10. 6.</span><span class="tx">울산공과대학이 울산대학교로 승격 인가</span></li>
+<li class="it"><span class="yy" data-y="1984"></span><span class="dt">12. 16.</span><span class="tx">한국방송공사 울산방송국 개국</span></li>
+<li class="it"><span class="yy" data-y="1985">1985</span><span class="dt"></span><span class="tx">울산~밀양간 도로 개통</span></li>
+<li class="it"><span class="yy" data-y="1985"></span><span class="dt">7.</span><span class="tx">울산측후소 산하 울산공항기상관측소 창설, 중앙관상대 울산측후소 설치</span></li>
+<li class="it"><span class="yy" data-y="1985"></span><span class="dt">7. 15.</span><span class="tx">울산시 구제(區制) 실시(중․남 2개구 설치), 방어진출장소 설치</span></li>
+<li class="it"><span class="yy" data-y="1985"></span><span class="dt">12. 3.</span><span class="tx">국립식물검역소 부산지소 울산출장소 승격</span></li>
+<li class="it"><span class="yy" data-y="1986">1986</span><span class="dt">1. 6.</span><span class="tx">울산시 이주지원사업소 설치</span></li>
+<li class="it"><span class="yy" data-y="1987">1987</span><span class="dt">11.</span><span class="tx">제1회 고복수가요제 개최</span></li>
+<li class="it"><span class="yy" data-y="1987"></span><span class="dt">11. 20.</span><span class="tx">미국 포틀랜드시와 자매결연</span></li>
+<li class="it"><span class="yy" data-y="1987"></span><span class="dt">12. 30.</span><span class="tx">『울산시사』발간</span></li>
+<li class="it"><span class="yy" data-y="1988">1988</span><span class="dt">1. 1.</span><span class="tx">울산시방어진출장소를 동구로 승격</span></li>
+<li class="it"><span class="yy" data-y="1988"></span><span class="dt">1. 4.</span><span class="tx">남구보건소 개소</span></li>
+<li class="it"><span class="yy" data-y="1988"></span><span class="dt">12. 20.</span><span class="tx">울산향토사연구회 회보 『향토사보』 창간</span></li>
+<li class="it"><span class="yy" data-y="1989">1989</span><span class="dt">12. 3.</span><span class="tx">울산공업전문대학이 울산대학교에서 독립, 울산전문대학으로 교명 변경</span></li>
+<li class="it"><span class="yy" data-y="1989"></span><span class="dt">5. 23.</span><span class="tx">이종주 고신왕지 및 이임 무과홍패를 보물 제1006호로 지정</span></li>
+</ul></section>
+<section class="dec" id="d1990"><div class="sec-head"><span class="sec-name">1990s</span><span class="sec-line"></span><span class="cnt">56</span></div><ul class="tl">
+<li class="it"><span class="yy" data-y="1990">1990</span><span class="dt">9. 4.</span><span class="tx">번영교 개통</span></li>
+<li class="it"><span class="yy" data-y="1990"></span><span class="dt">10. 30.</span><span class="tx">시 근로청소년복지회관 설립</span></li>
+<li class="it"><span class="yy" data-y="1991">1991</span><span class="dt">1. 1.</span><span class="tx">울주군을 울산군으로 개칭</span></li>
+<li class="it"><span class="yy" data-y="1991"></span><span class="dt">1. 29.</span><span class="tx">울산시 주차장관리공단 설립</span></li>
+<li class="it"><span class="yy" data-y="1991"></span><span class="dt">4. 15.</span><span class="tx">초대 울산시의회, 울산군의회 개원</span></li>
+<li class="it"><span class="yy" data-y="1991"></span><span class="dt">5. 29.</span><span class="tx">동구보건소 개소</span></li>
+<li class="it"><span class="yy" data-y="1991"></span><span class="dt">6. 1.</span><span class="tx">처용문화제 개최(울산공업축제를 처용문화제로 명칭변경)</span></li>
+<li class="it"><span class="yy" data-y="1991"></span><span class="dt">12. 2.</span><span class="tx">동부경찰서 개청</span></li>
+<li class="it"><span class="yy" data-y="1992">1992</span><span class="dt">5.</span><span class="tx">제1회 오영수문학상 시상(수상자 이동하)</span></li>
+<li class="it"><span class="yy" data-y="1992"></span><span class="dt">5. 6.</span><span class="tx">시 여성회관 설치</span></li>
+<li class="it"><span class="yy" data-y="1992"></span><span class="dt">6.</span><span class="tx">울산상공회의소, 『울산공업30년사』 발간</span></li>
+<li class="it"><span class="yy" data-y="1992"></span><span class="dt">9. 29.</span><span class="tx">울산시 여성회관 중구 복산2동에서 개관</span></li>
+<li class="it"><span class="yy" data-y="1992"></span><span class="dt">12. 31.</span><span class="tx">울산 수출 100억달러 달성</span></li>
+<li class="it"><span class="yy" data-y="1994">1994</span><span class="dt">3. 15.</span><span class="tx">중국 창춘시와 자매결연</span></li>
+<li class="it"><span class="yy" data-y="1994"></span><span class="dt">9. 2.</span><span class="tx">2002 월드컵 유치 신청</span></li>
+<li class="it"><span class="yy" data-y="1995">1995</span><span class="dt">1. 1.</span><span class="tx">울산시-울산군 통합, 산군을 울주구로 개편</span></li>
+<li class="it"><span class="yy" data-y="1995"></span><span class="dt">1. 5.</span><span class="tx">시청 제2청사 준공</span></li>
+<li class="it"><span class="yy" data-y="1995"></span><span class="dt">1. 10.</span><span class="tx">통합 울산시 의회 개원</span></li>
+<li class="it"><span class="yy" data-y="1995"></span><span class="dt">2. 16.</span><span class="tx">2002년 월드컵 축구대회 울산경기유치위원회 조직</span></li>
+<li class="it"><span class="yy" data-y="1995"></span><span class="dt">5. 4.</span><span class="tx">근로복지공단 울산지사 개소</span></li>
+<li class="it"><span class="yy" data-y="1995"></span><span class="dt">6. 23.</span><span class="tx">반구대 암각화를 국보 제285호로 지정</span></li>
+<li class="it"><span class="yy" data-y="1995"></span><span class="dt">7. 1.</span><span class="tx">민선 초대 심완구 울산시장 취임</span></li>
+<li class="it"><span class="yy" data-y="1995"></span><span class="dt">7. 11.</span><span class="tx">민선 제2대 울산시의회 개원</span></li>
+<li class="it"><span class="yy" data-y="1995"></span><span class="dt">8. 31.</span><span class="tx">울산광역시 승격 추진위원회 발족</span></li>
+<li class="it"><span class="yy" data-y="1995"></span><span class="dt">9. 27.</span><span class="tx">경부고속철도 울산역 유치 준비위원회 발족</span></li>
+<li class="it"><span class="yy" data-y="1995"></span><span class="dt">10. 5.</span><span class="tx">울산종합문화예술회관 개관</span></li>
+<li class="it"><span class="yy" data-y="1995"></span><span class="dt">12. 22.</span><span class="tx">울산광역시추진기획단 발족</span></li>
+<li class="it"><span class="yy" data-y="1996">1996</span><span class="dt">1. 10.</span><span class="tx">제16회 시의회 임시회 - 울산광역시 승격행정절차 이행 요청</span></li>
+<li class="it"><span class="yy" data-y="1996"></span><span class="dt">9. 11.</span><span class="tx">제125회 도의회 임시회 - 울산광역시 승격건의안 가결</span></li>
+<li class="it"><span class="yy" data-y="1996"></span><span class="dt">12. 4.</span><span class="tx">울산시 노인복지회관 신설</span></li>
+<li class="it"><span class="yy" data-y="1996"></span><span class="dt">12. 26.</span><span class="tx">제182차 임시국회에서 울산광역시 승격 법률안 통과</span></li>
+<li class="it"><span class="yy" data-y="1996"></span><span class="dt">12. 27.</span><span class="tx">울산문인협회, 제1회 울산문학상 시상</span></li>
+<li class="it"><span class="yy" data-y="1996"></span><span class="dt">12. 30.</span><span class="tx">해안도로(아산로) 개통</span></li>
+<li class="it"><span class="yy" data-y="1997">1997</span><span class="dt">6. 26.</span><span class="tx">울산대교 및 접속도로 건설 기본계획 수립</span></li>
+<li class="it"><span class="yy" data-y="1997"></span><span class="dt">7. 11.</span><span class="tx">2016년 울산도시기본계획 수립(인구150만 기준)</span></li>
+<li class="it"><span class="yy" data-y="1997"></span><span class="dt">7. 15.</span><span class="tx">울산광역시 승격, 북구 신설</span></li>
+<li class="it"><span class="yy" data-y="1997"></span><span class="dt">7. 15.</span><span class="tx">시로고 선정</span></li>
+<li class="it"><span class="yy" data-y="1997"></span><span class="dt">7. 21.</span><span class="tx">울산광역시 선거관리위원회 개청</span></li>
+<li class="it"><span class="yy" data-y="1997"></span><span class="dt">9. 1.</span><span class="tx">ubc울산방송국 개국</span></li>
+<li class="it"><span class="yy" data-y="1997"></span><span class="dt">10. 10.</span><span class="tx">울산대공원 기공</span></li>
+<li class="it"><span class="yy" data-y="1997"></span><span class="dt">12. 19.</span><span class="tx">울산시, 2002월드컵 개최도시로 결정</span></li>
+<li class="it"><span class="yy" data-y="1997"></span><span class="dt">12. 30.</span><span class="tx">북부순환도로 개통</span></li>
+<li class="it"><span class="yy" data-y="1998">1998</span><span class="dt">3. 1.</span><span class="tx">부산지검울산지청이 울산지방검찰청으로 승격</span></li>
+<li class="it"><span class="yy" data-y="1998"></span><span class="dt">4. 29.</span><span class="tx">시립박물관건립 추진위원회 구성</span></li>
+<li class="it"><span class="yy" data-y="1998"></span><span class="dt">6. 10.</span><span class="tx">명촌교 확장 개통</span></li>
+<li class="it"><span class="yy" data-y="1998"></span><span class="dt">7. 1.</span><span class="tx">민선 제2대 심완구 울산광역시장 취임</span></li>
+<li class="it"><span class="yy" data-y="1998"></span><span class="dt">7. 9.</span><span class="tx">민선 제2대 울산광역시의회 개원</span></li>
+<li class="it"><span class="yy" data-y="1998"></span><span class="dt">10. 13.</span><span class="tx">울산광역시 외자통상본부 서울사무소(현. 울산광역시 서울사무소) 개소</span></li>
+<li class="it"><span class="yy" data-y="1998"></span><span class="dt">12. 4.</span><span class="tx">울산환경선언 및 푸른울산21 선포</span></li>
+<li class="it"><span class="yy" data-y="1998"></span><span class="dt">12. 19.</span><span class="tx">2002 월드컵 축구전용경기장(문수축구경기장) 건설공사 착공</span></li>
+<li class="it"><span class="yy" data-y="1999">1999</span><span class="dt">1. 4.</span><span class="tx">동부소방서 개청(임시청사)</span></li>
+<li class="it"><span class="yy" data-y="1999"></span><span class="dt">7. 2.</span><span class="tx">울산지방경찰청 개청</span></li>
+<li class="it"><span class="yy" data-y="1999"></span><span class="dt">8. 24.</span><span class="tx">울산시외버스터미널 삼산동으로 이전</span></li>
+<li class="it"><span class="yy" data-y="1999"></span><span class="dt">9. 6.</span><span class="tx">유엔아동기금(UNICEF, 유니세프) 협력도시 조인식</span></li>
+<li class="it"><span class="yy" data-y="1999"></span><span class="dt">11. 26.</span><span class="tx">달천농공단지 준공</span></li>
+<li class="it"><span class="yy" data-y="1999"></span><span class="dt">12. 29.</span><span class="tx">울산신항 착공</span></li>
+</ul></section>
+<section class="dec" id="d2000"><div class="sec-head"><span class="sec-name">2000s</span><span class="sec-line"></span><span class="cnt">104</span></div><ul class="tl">
+<li class="it"><span class="yy" data-y="2000">2000</span><span class="dt">2. 15.</span><span class="tx">천전리 선사유적지에서 공룡발자국 발견</span></li>
+<li class="it"><span class="yy" data-y="2000"></span><span class="dt">3. 17.</span><span class="tx">울산과학대학 동부캠퍼스 개교</span></li>
+<li class="it"><span class="yy" data-y="2000"></span><span class="dt">3. 28.</span><span class="tx">중국 광저우시와 우호협력 조인</span></li>
+<li class="it"><span class="yy" data-y="2000"></span><span class="dt">4. 11.</span><span class="tx">울산기능대학교 개교</span></li>
+<li class="it"><span class="yy" data-y="2000"></span><span class="dt">9.</span><span class="tx">동천실내체육관 완공(6,049석)</span></li>
+<li class="it"><span class="yy" data-y="2000"></span><span class="dt">9. 8.</span><span class="tx">경부고속도로 서(西)울산 IC 개통</span></li>
+<li class="it"><span class="yy" data-y="2000"></span><span class="dt">11. 18.</span><span class="tx">제1회 망양리 옹기축제 개최(‘11년부터 울산옹기축제로 명칭 변경)</span></li>
+<li class="it"><span class="yy" data-y="2000"></span><span class="dt">12. 1.</span><span class="tx">시립무용단 창단</span></li>
+<li class="it"><span class="yy" data-y="2001">2001</span><span class="dt">1. 17.</span><span class="tx">울산보건환경연구원 개원</span></li>
+<li class="it"><span class="yy" data-y="2001"></span><span class="dt">2. 7.</span><span class="tx">울산고속버스터미널 준공</span></li>
+<li class="it"><span class="yy" data-y="2001"></span><span class="dt">2. 21.</span><span class="tx">울산발전연구원 개원</span></li>
+<li class="it"><span class="yy" data-y="2001"></span><span class="dt">4. 28.</span><span class="tx">울산체육공원 및 문수축구경기장 개장</span></li>
+<li class="it"><span class="yy" data-y="2001"></span><span class="dt">6. 9.</span><span class="tx">대륙간컵 축구대회 개최</span></li>
+<li class="it"><span class="yy" data-y="2001"></span><span class="dt">6. 22.</span><span class="tx">북구 신청사 개청</span></li>
+<li class="it"><span class="yy" data-y="2001"></span><span class="dt">7. 15.</span><span class="tx">방어진 체육공원 개장</span></li>
+<li class="it"><span class="yy" data-y="2001"></span><span class="dt">7. 30.</span><span class="tx">오토밸리로(산업로 배면도로) 1공구 착공</span></li>
+<li class="it"><span class="yy" data-y="2001"></span><span class="dt">10. 6.</span><span class="tx">울산 시티투어 운영 개시</span></li>
+<li class="it"><span class="yy" data-y="2001"></span><span class="dt">10. 8.</span><span class="tx">울산시가 제정</span></li>
+<li class="it"><span class="yy" data-y="2001"></span><span class="dt">10. 12.</span><span class="tx">제1회 시민의 날 행사 개최</span></li>
+<li class="it"><span class="yy" data-y="2001"></span><span class="dt">11. 8.</span><span class="tx">중국 옌타이시와 우호협력 조인</span></li>
+<li class="it"><span class="yy" data-y="2001"></span><span class="dt">12. 20.</span><span class="tx">신복로터리 고가도로 개통</span></li>
+<li class="it"><span class="yy" data-y="2002">2002</span><span class="dt">2. 7.</span><span class="tx">매곡지방산업단지(울산 최초 지방산업단지) 착공</span></li>
+<li class="it"><span class="yy" data-y="2002"></span><span class="dt">2. 28.</span><span class="tx">울산 롯데호텔 개관</span></li>
+<li class="it"><span class="yy" data-y="2002"></span><span class="dt">3. 27.</span><span class="tx">중소기업종합지원센터 개원</span></li>
+<li class="it"><span class="yy" data-y="2002"></span><span class="dt">4. 25.</span><span class="tx">국제여객터미널 개장 및 여객선 취항</span></li>
+<li class="it"><span class="yy" data-y="2002"></span><span class="dt">4. 30.</span><span class="tx">울산대공원 1차 시설 개장</span></li>
+<li class="it"><span class="yy" data-y="2002"></span><span class="dt">6. 1.</span><span class="tx">2002월드컵 울산지역 첫경기(우루과이-덴마크 전) 개최</span></li>
+<li class="it"><span class="yy" data-y="2002"></span><span class="dt">6. 2.</span><span class="tx">터키 코자엘리시와 자매결연</span></li>
+<li class="it"><span class="yy" data-y="2002"></span><span class="dt">6. 3.</span><span class="tx">브라질 산토스시와자매결연</span></li>
+<li class="it"><span class="yy" data-y="2002"></span><span class="dt">6. 20.</span><span class="tx">베트남 칸호아성과 자매결연</span></li>
+<li class="it"><span class="yy" data-y="2002"></span><span class="dt">6. 27.</span><span class="tx">『울산광역시사』 발간</span></li>
+<li class="it"><span class="yy" data-y="2002"></span><span class="dt">7. 2.</span><span class="tx">민선 제3대 박맹우 울산광역시장 취임</span></li>
+<li class="it"><span class="yy" data-y="2002"></span><span class="dt">7. 9.</span><span class="tx">제3대 울산광역시의회 개원</span></li>
+<li class="it"><span class="yy" data-y="2002"></span><span class="dt">12. 24.</span><span class="tx">울산12경 선정</span></li>
+<li class="it"><span class="yy" data-y="2003">2003</span><span class="dt">7. 4.</span><span class="tx">울산광역시노사정협의회 출범</span></li>
+<li class="it"><span class="yy" data-y="2003"></span><span class="dt">7. 10.</span><span class="tx">달동문화공원 개장</span></li>
+<li class="it"><span class="yy" data-y="2003"></span><span class="dt">3. 6.</span><span class="tx">(재)울산산업진흥재단(현, 울산테크노파크) 개원</span></li>
+<li class="it"><span class="yy" data-y="2003"></span><span class="dt">9. 25.</span><span class="tx">북구 문화예술회관 개관</span></li>
+<li class="it"><span class="yy" data-y="2003"></span><span class="dt">11. 12.</span><span class="tx">러시아 톰스크시와 자매결연</span></li>
+<li class="it"><span class="yy" data-y="2003"></span><span class="dt">12. 1.</span><span class="tx">온산소방서 개청</span></li>
+<li class="it"><span class="yy" data-y="2004">2004</span><span class="dt">3. 30.</span><span class="tx">기독교방송(CBS) 울산방송 개국</span></li>
+<li class="it"><span class="yy" data-y="2004"></span><span class="dt">4. 1.</span><span class="tx">동울산세무서 개청</span></li>
+<li class="it"><span class="yy" data-y="2004"></span><span class="dt">6. 9.</span><span class="tx">에코폴리스 울산선언</span></li>
+<li class="it"><span class="yy" data-y="2004"></span><span class="dt">6. 16.</span><span class="tx">울산시립노인병원 개원</span></li>
+<li class="it"><span class="yy" data-y="2004"></span><span class="dt">7. 14.</span><span class="tx">브랜드슬로건 선포(Ulsan for you)</span></li>
+<li class="it"><span class="yy" data-y="2004"></span><span class="dt">11. 5.</span><span class="tx">동해-1 가스전 준공</span></li>
+<li class="it"><span class="yy" data-y="2004"></span><span class="dt">12. 22.</span><span class="tx">태화강 생태공원(1단계) 개장</span></li>
+<li class="it"><span class="yy" data-y="2005">2005</span><span class="dt">1. 28.</span><span class="tx">동천국민체육센터 개관</span></li>
+<li class="it"><span class="yy" data-y="2005"></span><span class="dt">2. 2.</span><span class="tx">울산 교통관리센터 준공</span></li>
+<li class="it"><span class="yy" data-y="2005"></span><span class="dt">5. 31.</span><span class="tx">장생포고래박물관 개관</span></li>
+<li class="it"><span class="yy" data-y="2005"></span><span class="dt">6. 17.</span><span class="tx">대곡댐 준공</span></li>
+<li class="it"><span class="yy" data-y="2005"></span><span class="dt">6. 20.</span><span class="tx">제57차 IWC(국제포경위원회) 총회 개막</span></li>
+<li class="it"><span class="yy" data-y="2005"></span><span class="dt">8. 25.</span><span class="tx">종합운동장 준공</span></li>
+<li class="it"><span class="yy" data-y="2005"></span><span class="dt">8. 27.</span><span class="tx">문수실내수영장 준공</span></li>
+<li class="it"><span class="yy" data-y="2005"></span><span class="dt">10. 14.</span><span class="tx">제86회 전국체육대회 개최</span></li>
+<li class="it"><span class="yy" data-y="2005"></span><span class="dt">11. 22.</span><span class="tx">울산대종 준공</span></li>
+<li class="it"><span class="yy" data-y="2005"></span><span class="dt">11. 21.</span><span class="tx">이예 선생 공적비 쓰시마에 건립</span></li>
+<li class="it"><span class="yy" data-y="2006">2006</span><span class="dt">3. 9.</span><span class="tx">울산자동차부품혁신센터 개원</span></li>
+<li class="it"><span class="yy" data-y="2006"></span><span class="dt">3. 18.</span><span class="tx">현대중공업(주) 용연공장 준공</span></li>
+<li class="it"><span class="yy" data-y="2006"></span><span class="dt">3. 24.</span><span class="tx">국립수산과학원 고래연구소 울산 이전</span></li>
+<li class="it"><span class="yy" data-y="2006"></span><span class="dt">4. 13.</span><span class="tx">울산대공원 2차시설 개장</span></li>
+<li class="it"><span class="yy" data-y="2006"></span><span class="dt">6. 14.</span><span class="tx">울산시립노인복지관 준공</span></li>
+<li class="it"><span class="yy" data-y="2006"></span><span class="dt">6. 17.</span><span class="tx">제35회 전국소년체육대회 및 제1회 태화강 물축제 개최</span></li>
+<li class="it"><span class="yy" data-y="2006"></span><span class="dt">7. 3.</span><span class="tx">민선 제4대 박맹우 울산광역시장 취임</span></li>
+<li class="it"><span class="yy" data-y="2006"></span><span class="dt">7. 1.</span><span class="tx">민선 제4대 울산광역시의회 개원</span></li>
+<li class="it"><span class="yy" data-y="2006"></span><span class="dt">8. 27.</span><span class="tx">중국 우시와 우호협력 조인</span></li>
+<li class="it"><span class="yy" data-y="2006"></span><span class="dt">9. 12.</span><span class="tx">제26회 전국장애인체육대회 개최</span></li>
+<li class="it"><span class="yy" data-y="2006"></span><span class="dt">9. 21.</span><span class="tx">일본 니이가타시와 우호협력 조인</span></li>
+<li class="it"><span class="yy" data-y="2006"></span><span class="dt">10. 16.</span><span class="tx">제1회 울산산업주간 행사</span></li>
+<li class="it"><span class="yy" data-y="2006"></span><span class="dt">12. 14.</span><span class="tx">울산벤처빌딩 개소</span></li>
+<li class="it"><span class="yy" data-y="2007">2007</span><span class="dt">2. 7.</span><span class="tx">울산광역시도시공사 설립</span></li>
+<li class="it"><span class="yy" data-y="2007"></span><span class="dt">2. 12.</span><span class="tx">시 캐릭터(해울이) 선정</span></li>
+<li class="it"><span class="yy" data-y="2007"></span><span class="dt">3. 15.</span><span class="tx">울주군립도서관 개관</span></li>
+<li class="it"><span class="yy" data-y="2007"></span><span class="dt">3. 22.</span><span class="tx">한국화학시험연구원 영남지역본부 설립</span></li>
+<li class="it"><span class="yy" data-y="2007"></span><span class="dt">6. 1.</span><span class="tx">울산대공원 곤충생태관 개관</span></li>
+<li class="it"><span class="yy" data-y="2007"></span><span class="dt">7. 5.</span><span class="tx">울산항만공사 출범</span></li>
+<li class="it"><span class="yy" data-y="2007"></span><span class="dt">7. 13.</span><span class="tx">울산광역시 10년 기념백서 발간</span></li>
+<li class="it"><span class="yy" data-y="2007"></span><span class="dt">10. 30.</span><span class="tx">대우버스(주) 울산공장 준공</span></li>
+<li class="it"><span class="yy" data-y="2007"></span><span class="dt">12. 26.</span><span class="tx">울산혁신도시 기공</span></li>
+<li class="it"><span class="yy" data-y="2008">2008</span><span class="dt">1. 30.</span><span class="tx">박상진 의사 생가 전시관 개관</span></li>
+<li class="it"><span class="yy" data-y="2008"></span><span class="dt">1. 31.</span><span class="tx">선바위교 개통, 선암댐 수변공원 준공</span></li>
+<li class="it"><span class="yy" data-y="2008"></span><span class="dt">4. 24.</span><span class="tx">시 자원봉사센터 개소</span></li>
+<li class="it"><span class="yy" data-y="2008"></span><span class="dt">5. 1.</span><span class="tx">북구 중앙도서관 개관</span></li>
+<li class="it"><span class="yy" data-y="2008"></span><span class="dt">5. 30.</span><span class="tx">울산암각화전시관 개관</span></li>
+<li class="it"><span class="yy" data-y="2008"></span><span class="dt">6. 23.</span><span class="tx">울산 폐기물 소각장 폐에너지 자원화시설 준공</span></li>
+<li class="it"><span class="yy" data-y="2008"></span><span class="dt">7. 25.</span><span class="tx">울산 장생포 ‘고래문화특구’ 지정</span></li>
+<li class="it"><span class="yy" data-y="2008"></span><span class="dt">9. 19.</span><span class="tx">충렬공 박제상 기념관 개관</span></li>
+<li class="it"><span class="yy" data-y="2008"></span><span class="dt">9. 24.</span><span class="tx">울산 응원가 선정</span></li>
+<li class="it"><span class="yy" data-y="2008"></span><span class="dt">10. 30.</span><span class="tx">회야하수처리장 고도처리시설공사 준공</span></li>
+<li class="it"><span class="yy" data-y="2008"></span><span class="dt">12. 8.</span><span class="tx">울산자유무역지역 지정 확정 고시․발표</span></li>
+<li class="it"><span class="yy" data-y="2008"></span><span class="dt">12. 29.</span><span class="tx">울산~부산간 고속도로 개통</span></li>
+<li class="it"><span class="yy" data-y="2009">2009</span><span class="dt">2. 18.</span><span class="tx">시청 신청사 개청식</span></li>
+<li class="it"><span class="yy" data-y="2009"></span><span class="dt">2. 24.</span><span class="tx">태화강 전망대 및 십리대밭교 준공</span></li>
+<li class="it"><span class="yy" data-y="2009"></span><span class="dt">3. 2.</span><span class="tx">울산과학기술대학교(UNIST) 첫 입학식(5.12 개교식)</span></li>
+<li class="it"><span class="yy" data-y="2009"></span><span class="dt">3. 19.</span><span class="tx">(재)울산테크노파크 개원</span></li>
+<li class="it"><span class="yy" data-y="2009"></span><span class="dt">5. 29.</span><span class="tx">울산농수산물종합유통센터 개장</span></li>
+<li class="it"><span class="yy" data-y="2009"></span><span class="dt">6. 24.</span><span class="tx">대곡박물관 개관</span></li>
+<li class="it"><span class="yy" data-y="2009"></span><span class="dt">8. 3.</span><span class="tx">중국 칭다오시와 우호협력 조인</span></li>
+<li class="it"><span class="yy" data-y="2009"></span><span class="dt">9. 1.</span><span class="tx">제45회 세계양궁선수권대회 개최</span></li>
+<li class="it"><span class="yy" data-y="2009"></span><span class="dt">9. 30.</span><span class="tx">외솔 최현배 선생 기념관 준공</span></li>
+<li class="it"><span class="yy" data-y="2009"></span><span class="dt">10. 30.</span><span class="tx">용연하수처리장 고도처리시설공사 준공</span></li>
+<li class="it"><span class="yy" data-y="2009"></span><span class="dt">11. 3.</span><span class="tx">외고산 옹기마을 사업 준공 및 옹기문화관 개관</span></li>
+<li class="it"><span class="yy" data-y="2009"></span><span class="dt">11. 24.</span><span class="tx">장생포 고래생태체험관 개관</span></li>
+<li class="it"><span class="yy" data-y="2009"></span><span class="dt">11. 30.</span><span class="tx">울산대교 착공</span></li>
+</ul></section>
+<section class="dec" id="d2010"><div class="sec-head"><span class="sec-name">2010s</span><span class="sec-line"></span><span class="cnt">264</span></div><ul class="tl">
+<li class="it"><span class="yy" data-y="2010">2010</span><span class="dt">4. 22.</span><span class="tx">카자흐스탄 카라간디주와 우호협력 조인</span></li>
+<li class="it"><span class="yy" data-y="2010"></span><span class="dt">4. 26.</span><span class="tx">일본 구마모토시와 우호협력 조인</span></li>
+<li class="it"><span class="yy" data-y="2010"></span><span class="dt">5. 19.</span><span class="tx">정부석유비축기지 준공</span></li>
+<li class="it"><span class="yy" data-y="2010"></span><span class="dt">6. 25.</span><span class="tx">태화강 대공원 준공</span></li>
+<li class="it"><span class="yy" data-y="2010"></span><span class="dt">7. 1.</span><span class="tx">민선 제5대 박맹우 울산광역시장 취임</span></li>
+<li class="it"><span class="yy" data-y="2010"></span><span class="dt">7. 1.</span><span class="tx">민선 제5대 울산광역시의회 개원</span></li>
+<li class="it"><span class="yy" data-y="2010"></span><span class="dt">9. 30.</span><span class="tx">2010 울산세계옹기문화엑스포 개막</span></li>
+<li class="it"><span class="yy" data-y="2010"></span><span class="dt">10. 28.</span><span class="tx">KTX 울산역 개통</span></li>
+<li class="it"><span class="yy" data-y="2010"></span><span class="dt">11. 10.</span><span class="tx">SB리모티브 전지공장 준공</span></li>
+<li class="it"><span class="yy" data-y="2011">2011</span><span class="dt">1. 17.</span><span class="tx">공업탑 리모델링 준공</span></li>
+<li class="it"><span class="yy" data-y="2011"></span><span class="dt">1. 26.</span><span class="tx">하수슬러지 처리시설 준공(남구 성암동 139-4번지)</span></li>
+<li class="it"><span class="yy" data-y="2011"></span><span class="dt">2. 23.</span><span class="tx">울산광역시 보훈회관 준공</span></li>
+<li class="it"><span class="yy" data-y="2011"></span><span class="dt">3. 25.</span><span class="tx">국도변 화물자동차정류장(휴게소) 준공</span></li>
+<li class="it"><span class="yy" data-y="2011"></span><span class="dt">6. 1.</span><span class="tx">KIER(한국에너지기술연구원)-UNIST 울산 차세대 전지 원천기술센터 개소</span></li>
+<li class="it"><span class="yy" data-y="2011"></span><span class="dt">6. 22.</span><span class="tx">울산박물관 개관</span></li>
+<li class="it"><span class="yy" data-y="2011"></span><span class="dt">7. 21.</span><span class="tx">용암 폐수종말처리장 준공</span></li>
+<li class="it"><span class="yy" data-y="2011"></span><span class="dt">10. 5.</span><span class="tx">이라크 바스라주와 우호협력 체결</span></li>
+<li class="it"><span class="yy" data-y="2011"></span><span class="dt">10. 20.</span><span class="tx">S-oil 온산공장 확장</span></li>
+<li class="it"><span class="yy" data-y="2011"></span><span class="dt">12. 28.</span><span class="tx">수출 1천억 달러 달성</span></li>
+<li class="it"><span class="yy" data-y="2012">2012</span><span class="dt">1. 27.</span><span class="tx">울산공업센터 지정 50주년 기념 「울산도약 제2선언문비」 제막</span></li>
+<li class="it"><span class="yy" data-y="2012"></span><span class="dt">2. 3.</span><span class="tx">울산공업센터 지정 50주년 기념식 개최 및 KTX 울산역 광장「번영탑」준공</span></li>
+<li class="it"><span class="yy" data-y="2012"></span><span class="dt">3. 16.</span><span class="tx">국립울산검역소 신청사 준공</span></li>
+<li class="it"><span class="yy" data-y="2012"></span><span class="dt">3. 22.</span><span class="tx">한국화학연구원 신화학실용화센터 개소</span></li>
+<li class="it"><span class="yy" data-y="2012"></span><span class="dt">3. 29.</span><span class="tx">2차전지 핵심소재 생산공장 준공((주)엘바텍)</span></li>
+<li class="it"><span class="yy" data-y="2012"></span><span class="dt">5. 1.</span><span class="tx">영남알프스 하늘억새길 준공</span></li>
+<li class="it"><span class="yy" data-y="2012"></span><span class="dt">6. 5.</span><span class="tx">한국생산기술연구원 친환경청정기술센터 개소</span></li>
+<li class="it"><span class="yy" data-y="2012"></span><span class="dt">6. 12.</span><span class="tx">울산-우루과이 몬테비데오시 우호협력도시 협약</span></li>
+<li class="it"><span class="yy" data-y="2012"></span><span class="dt">7. 16.</span><span class="tx">울산공업센터 지정 50주년 기념 「울산경제 50년사」 발간</span></li>
+<li class="it"><span class="yy" data-y="2012"></span><span class="dt">8. 15.</span><span class="tx">고헌 박상진 의사 기념비 제막</span></li>
+<li class="it"><span class="yy" data-y="2012"></span><span class="dt">9. 25.</span><span class="tx">강동하수처리장 준공</span></li>
+<li class="it"><span class="yy" data-y="2012"></span><span class="dt">9. 26.</span><span class="tx">울산평생교육진흥원 개원</span></li>
+<li class="it"><span class="yy" data-y="2012"></span><span class="dt">10. 15.</span><span class="tx">굴화하수처리장 준공</span></li>
+<li class="it"><span class="yy" data-y="2012"></span><span class="dt">10. 31.</span><span class="tx">자원회수시설 민간투자사업 준공(성암동 환경자원사업소 내)</span></li>
+<li class="it"><span class="yy" data-y="2012"></span><span class="dt">11. 5.</span><span class="tx">서덕출 전시관 개관</span></li>
+<li class="it"><span class="yy" data-y="2012"></span><span class="dt">12. 6.</span><span class="tx">광역 스마트 스팀 네트워크 구축사업 준공</span></li>
+<li class="it"><span class="yy" data-y="2012"></span><span class="dt">12. 14.</span><span class="tx">울산대학교병원 암센터 준공</span></li>
+<li class="it"><span class="yy" data-y="2013">2013</span><span class="dt">2. 6.</span><span class="tx">(주)바커케미칼코리아 울산공장 증설 준공</span></li>
+<li class="it"><span class="yy" data-y="2013"></span><span class="dt">2. 18.</span><span class="tx">고용노동부 고객상담센터(혁신도시 이전 공공기관) 신청사 개소</span></li>
+<li class="it"><span class="yy" data-y="2013"></span><span class="dt">2. 20.</span><span class="tx">고분자․나노융합소재가공기술센터 개소</span></li>
+<li class="it"><span class="yy" data-y="2013"></span><span class="dt">2. 28.</span><span class="tx">울산하늘공원 개장</span></li>
+<li class="it"><span class="yy" data-y="2013"></span><span class="dt">4. 7.</span><span class="tx">문수스쿼시경기장 준공</span></li>
+<li class="it"><span class="yy" data-y="2013"></span><span class="dt">4. 12.</span><span class="tx">동서석유화학(주) 울산공장 증설 준공</span></li>
+<li class="it"><span class="yy" data-y="2013"></span><span class="dt">5. 23.</span><span class="tx">농소 수질복원사업소 기공식 개최</span></li>
+<li class="it"><span class="yy" data-y="2013"></span><span class="dt">5. 27.</span><span class="tx">시정 홍보관 개관</span></li>
+<li class="it"><span class="yy" data-y="2013"></span><span class="dt">5. 30.</span><span class="tx">태화루 건립 상량식 개최</span></li>
+<li class="it"><span class="yy" data-y="2013"></span><span class="dt">6. 15.</span><span class="tx">영남알프스 둘레길 준공</span></li>
+<li class="it"><span class="yy" data-y="2013"></span><span class="dt">6. 23.</span><span class="tx">2013 국제산업생태학회(ISIE) 콘퍼런스 개최</span></li>
+<li class="it"><span class="yy" data-y="2013"></span><span class="dt">7. 9.</span><span class="tx">수소타운 조성사업 준공식 개최</span></li>
+<li class="it"><span class="yy" data-y="2013"></span><span class="dt">7. 11.</span><span class="tx">울산 봉계일반산업단지 준공</span></li>
+<li class="it"><span class="yy" data-y="2013"></span><span class="dt">7. 24.</span><span class="tx">울산대학교병원, 권역외상센터로 선정</span></li>
+<li class="it"><span class="yy" data-y="2013"></span><span class="dt">8. 1.</span><span class="tx">신일반산업단지 조성 공사 준공</span></li>
+<li class="it"><span class="yy" data-y="2013"></span><span class="dt">9. 12.</span><span class="tx">오토밸리로 2공구(송정 IC~농소2 IC)개설 기공식 개최</span></li>
+<li class="it"><span class="yy" data-y="2013"></span><span class="dt">9. 27.</span><span class="tx">울산-중국 우시시 자매도시 협정 조인식 개최</span></li>
+<li class="it"><span class="yy" data-y="2013"></span><span class="dt">10. 2.</span><span class="tx">미포국가산업단지 진입도로 개설공사 준공식 개최</span></li>
+<li class="it"><span class="yy" data-y="2013"></span><span class="dt">10. 2.</span><span class="tx">언양읍성 남문(영화루) 준공</span></li>
+<li class="it"><span class="yy" data-y="2013"></span><span class="dt">10. 4.</span><span class="tx">융복합기술센터 기공식 개최</span></li>
+<li class="it"><span class="yy" data-y="2013"></span><span class="dt">10. 10.</span><span class="tx">울산신항 남항부두 조성사업 준공</span></li>
+<li class="it"><span class="yy" data-y="2013"></span><span class="dt">10. 12.</span><span class="tx">태화강 100리길 준공식 및 준공기념 걷기대회</span></li>
+<li class="it"><span class="yy" data-y="2013"></span><span class="dt">10. 15.</span><span class="tx">노벨리스코리아 울산 열간압연공장 준공</span></li>
+<li class="it"><span class="yy" data-y="2013"></span><span class="dt">10. 18.</span><span class="tx">박맹우 울산시장, 제7대 전국시도지사협의회장 선임</span></li>
+<li class="it"><span class="yy" data-y="2013"></span><span class="dt">11. 5.</span><span class="tx">바이오화학실용화센터 건립 기공 및 비전 선포식</span></li>
+<li class="it"><span class="yy" data-y="2013"></span><span class="dt">11. 11.</span><span class="tx">울산 스팀 하이웨이 구축사업 준공식 개최</span></li>
+<li class="it"><span class="yy" data-y="2013"></span><span class="dt">11. 14.</span><span class="tx">울산-체코 모라비아 실레지아 주 ‘우호협력도시’ MOU 체결</span></li>
+<li class="it"><span class="yy" data-y="2013"></span><span class="dt">12. 5.</span><span class="tx">태화강 ‘전국 12대 생태관광지역’ 선정</span></li>
+<li class="it"><span class="yy" data-y="2013"></span><span class="dt">12. 17.</span><span class="tx">시 새 상징물 ‘대나무․장미․백로’ 선정</span></li>
+<li class="it"><span class="yy" data-y="2013"></span><span class="dt">12. 19.</span><span class="tx">울산가정법원 2018년 설치 확정</span></li>
+<li class="it"><span class="yy" data-y="2013"></span><span class="dt">12. 19.</span><span class="tx">삼호철새공원(삼호지구 하천환경정비사업) 준공식 개최</span></li>
+<li class="it"><span class="yy" data-y="2014">2014</span><span class="dt">1. 15.</span><span class="tx">국외관광홍보 및 투자설명회 개최</span></li>
+<li class="it"><span class="yy" data-y="2014"></span><span class="dt">1. 17.</span><span class="tx">지역항공사 설립 타당성 분석 연구용역 최종보고회</span></li>
+<li class="it"><span class="yy" data-y="2014"></span><span class="dt">1. 27.</span><span class="tx">화학재난 합동방재센터 개소</span></li>
+<li class="it"><span class="yy" data-y="2014"></span><span class="dt">2. 9.</span><span class="tx">명장의 전당 등재식 개최</span></li>
+<li class="it"><span class="yy" data-y="2014"></span><span class="dt">2. 27.</span><span class="tx">온산 바이오에너지센터 준공</span></li>
+<li class="it"><span class="yy" data-y="2014"></span><span class="dt">2. 28.</span><span class="tx">산업기술박물관 울산건립추진위원회 개최</span></li>
+<li class="it"><span class="yy" data-y="2014"></span><span class="dt">3. 4.</span><span class="tx">주전항 정비사업 준공식</span></li>
+<li class="it"><span class="yy" data-y="2014"></span><span class="dt">3. 12.</span><span class="tx">대한적십자봉사회 전국대회 개최</span></li>
+<li class="it"><span class="yy" data-y="2014"></span><span class="dt">3. 13.</span><span class="tx">울산광역시 여성인력개발센터 개관</span></li>
+<li class="it"><span class="yy" data-y="2014"></span><span class="dt">3. 24.</span><span class="tx">언양하수관거부설 임대형 민자사업 준공</span></li>
+<li class="it"><span class="yy" data-y="2014"></span><span class="dt">3. 26.</span><span class="tx">신항만부두 연결도로 개설공사 준공</span></li>
+<li class="it"><span class="yy" data-y="2014"></span><span class="dt">3. 27.</span><span class="tx">6․25 및 월남전 참전기념탑 제막행사</span></li>
+<li class="it"><span class="yy" data-y="2014"></span><span class="dt">4. 3.</span><span class="tx">울산대교 상량식 개최</span></li>
+<li class="it"><span class="yy" data-y="2014"></span><span class="dt">4. 24.</span><span class="tx">울산 ~ 장춘 자매결연 20주년 기념행사 대표단 파견</span></li>
+<li class="it"><span class="yy" data-y="2014"></span><span class="dt">5. 22.</span><span class="tx">해양안전벨트 구축 업무협약 체결</span></li>
+<li class="it"><span class="yy" data-y="2014"></span><span class="dt">6. 4.</span><span class="tx">제6회 전국지방동시선거 실시</span></li>
+<li class="it"><span class="yy" data-y="2014"></span><span class="dt">7. 22.</span><span class="tx">「울산안전포럼」심포지엄 개최</span></li>
+<li class="it"><span class="yy" data-y="2014"></span><span class="dt">7. 30.</span><span class="tx">남구을 국회의원 보궐선거 실시</span></li>
+<li class="it"><span class="yy" data-y="2014"></span><span class="dt">8. 12.</span><span class="tx">제1차 울산 생활권발전협의회 개최</span></li>
+<li class="it"><span class="yy" data-y="2014"></span><span class="dt">8. 27.</span><span class="tx">동북아시아지역자치단체연합(NEAR) 국제포럼 참가</span></li>
+<li class="it"><span class="yy" data-y="2014"></span><span class="dt">9. 18.</span><span class="tx">동아시아경제교류추진기구(OEAED) 관광부회 참가</span></li>
+<li class="it"><span class="yy" data-y="2014"></span><span class="dt">9. 19.</span><span class="tx">제17회 인천아시아경기대회 개회식 참석</span></li>
+<li class="it"><span class="yy" data-y="2014"></span><span class="dt">10. 15.</span><span class="tx">SK Advanced PHD plant 기공식</span></li>
+<li class="it"><span class="yy" data-y="2014"></span><span class="dt">10. 17.</span><span class="tx">2014년 국정감사(안전행정위원회) 수감</span></li>
+<li class="it"><span class="yy" data-y="2014"></span><span class="dt">10. 30.</span><span class="tx">창조경제협의회 출범식 및 전체회의 개최</span></li>
+<li class="it"><span class="yy" data-y="2014"></span><span class="dt">11. 6.</span><span class="tx">울산화력발전소 4복합화력 준공</span></li>
+<li class="it"><span class="yy" data-y="2014"></span><span class="dt">11. 26.</span><span class="tx">강동권 개발사업 투자설명회</span></li>
+<li class="it"><span class="yy" data-y="2014"></span><span class="dt">12. 15.</span><span class="tx">유라시아 교류확대를 위한 실무대표단 파견</span></li>
+<li class="it"><span class="yy" data-y="2015">2015</span><span class="dt">1. 8.</span><span class="tx">독일 프라운호퍼 화학기술연구소 MOU 체결</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">1. 26.</span><span class="tx">주민참여예산제 활성화 관련 시민토론회</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">1. 28.</span><span class="tx">「인터넷중독 대응센터」 개소식</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">2. 3.</span><span class="tx">울산광역시 민원콜센터(울산 120 해울이콜센터) 개소식</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">2. 13.</span><span class="tx">노사민정협의회</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">3. 3.</span><span class="tx">울산과학기술대, 과학기술원으로 전환 확정</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">3. 23.</span><span class="tx">여성가족개발원 개원식</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">3. 24.</span><span class="tx">창조시정을 위한 「시민과의 대화」</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">3. 31.</span><span class="tx">울산여성기업종합지원센터 확장 개소</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">4. 2.</span><span class="tx">청량율리 공공주택지구 조성사업 준공</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">4. 6.</span><span class="tx">방사선비상계획구역 30km로 잠정결정</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">4. 8.</span><span class="tx">울산시-ETRI 공동연구실 개소</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">4. 10.</span><span class="tx">「울산 엔젤투자 매칭펀드」 업무협약 체결</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">4. 20.</span><span class="tx">울산시-울산상의-세계한인무역협회 ‘경제협력 MOU’</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">4. 27.</span><span class="tx">저차원탄소혁신소재 연구센터 개원식</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">4. 28.</span><span class="tx">제2장애인체육관 개관</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">5. 1.</span><span class="tx">원자력업무 강화 ‘시민안전실’ 신설</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">5. 13.</span><span class="tx">강동리조트(워터파크) 조성을 위한 업무협약</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">5. 20.</span><span class="tx">에너지경제연구원 울산청사 이전</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">5. 21.</span><span class="tx">규제개혁 평가 전국 ‘최우수’ 지자체 선정</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">5. 29.</span><span class="tx">울산대교 준공</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">6. 1.</span><span class="tx">공동주택관리지원센터 개소</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">6. 1.</span><span class="tx">제33회 전국연극제</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">6. 3.</span><span class="tx">UNISDR 방재안전도시 인증 업무협약 체결</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">6. 19.</span><span class="tx">울주 공동차고지 준공</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">6. 25.</span><span class="tx">교향악단 미국 뉴욕 연주회</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">6. 26.</span><span class="tx">아시아 첫 3D프린팅 전기차 생산공장 울산 건립 업무협약</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">7. 6.</span><span class="tx">울산광역정신건강증진센터 개소</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">7. 8.</span><span class="tx">시장과 함께하는 통통대화</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">7. 13.</span><span class="tx">울산시청자미디어센터 건립 기공식</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">7. 15.</span><span class="tx">창조경제혁신센터 개소식</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">7. 22.</span><span class="tx">울산 화물차공동차고지 준공</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">8. 1.</span><span class="tx">‘뼈로 만든 화살촉 박힌 고래뼈’ 울산 유형문화재 지정</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">8. 28.</span><span class="tx">울주세계산악영화제 프레세스티벌 개막</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">9. 4.</span><span class="tx">울산시 사진DB 구축 공개</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">9. 4.</span><span class="tx">울주 보삼마을 영화마을 기념관 개관</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">9. 11.</span><span class="tx">어린이집 CCTV 의무 설치</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">9. 17.</span><span class="tx">울산 권역외상센터 개소식</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">9. 21.</span><span class="tx">시-한국도로공사 업무협약 체결</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">10. 5.</span><span class="tx">제50회 전국기능경기대회 울산 개막</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">10. 5.</span><span class="tx">대학생과 함께하는 통통대화</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">10. 14.</span><span class="tx">2015 울산 UNWTO 산악관광회의</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">10. 23.</span><span class="tx">UNIST 스마트센서 연구센터 출범식</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">10. 28.</span><span class="tx">울산대 창조일자리센터 개소</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">11. 12.</span><span class="tx">울산자유무역지역 준공식</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">11. 17.</span><span class="tx">ULSAN EXPORT PLAZA 2015</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">11. 19.</span><span class="tx">테크노산단 기공식</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">11. 23.</span><span class="tx">공약이행평가 주민배심원제 도입</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">11. 24.</span><span class="tx">정주영 현대 창업자 탄생 100주년 기념행사</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">11. 27.</span><span class="tx">노사발전재단 중장년일자리희망센터 개소</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">12. 3.</span><span class="tx">국가예산 2조3천103억 역대 최대 확보</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">12. 4.</span><span class="tx">(가칭)‘동해안연구개발특구’공동추진 MOU 체결</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">12. 10.</span><span class="tx">울산 인구 120만명 돌파</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">12. 14.</span><span class="tx">여성과 함께하는 통통대화</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">12. 15.</span><span class="tx">KTX울산역 복합환승센터 개발사업 협약체결</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">12. 21.</span><span class="tx">울산국가산업단지(용연~청량IC) 연결도로 준공식</span></li>
+<li class="it"><span class="yy" data-y="2015"></span><span class="dt">12. 29.</span><span class="tx">울산~포항(동해) 고속도로 개통식1688</span></li>
+<li class="it"><span class="yy" data-y="2016">2016</span><span class="dt">1. 6.</span><span class="tx">국립재난안전연구원 울산 신청사 개청식</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">1. 8.</span><span class="tx">녹색포럼 창립총회 개최</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">1. 9.</span><span class="tx">‘차세대 촉매센터’ 출범식</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">1. 20.</span><span class="tx">‘차세대 에너지저장장치’ 보급 확대 협약 체결</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">1. 20.</span><span class="tx">울산시-쿠웨이트 PIC-SK가스, 1억달러 투자 MOU</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">2. 3.</span><span class="tx">「디지털 울산 문화대전」 편찬 협약 체결</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">2. 4.</span><span class="tx">해양플랜트 기자재 국산화 개발지원 MOU 체결</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">2. 4.</span><span class="tx">‘게놈 기반 바이오메디컬산업 육성사업’ 착수</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">2. 16.</span><span class="tx">창조경제혁신센터 3D프린팅 교육 MOU 체결</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">2. 26.</span><span class="tx">UNIST 3D프린팅 첨단기술 연구센터 출범식</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">2. 26.</span><span class="tx">울산 중부소방서 매곡 119안전센터 개소</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">3. 10.</span><span class="tx">농소하수처리시설 민간투자사업(BTO) 준공식</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">3. 11.</span><span class="tx">울산지방중소기업청 개청식</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">3. 14.</span><span class="tx">전통시장지원센터 개소식</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">3. 16.</span><span class="tx">대왕암공원 대왕교 교체공사 준공식</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">3. 29.</span><span class="tx">울산 온산 시가지 우회 공단 진입도로 개통</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">3. 30.</span><span class="tx">내일설계지원센터 개소식</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">4. 20.</span><span class="tx">창업가와 함께하는 통통대화</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">4. 22.</span><span class="tx">공공데이터 활용 창업지원을 위한 MOU 체결</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">4. 22.</span><span class="tx">세계한인무역협회(OKTA) 세계대표자대회 개최</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">5. 2.</span><span class="tx">울산시-미얀마 만달레이 우호도시 MOU</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">5. 9.</span><span class="tx">국가산단 지원 ‘울산종합비즈니스센터’ 준공</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">5. 9.</span><span class="tx">울산시-삼성SDI, 2차전지 3조원 투자 MOU</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">5. 23.</span><span class="tx">SK어드밴스드 PDH 플랜트 준공식</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">5. 26.</span><span class="tx">S-OIL 석유화학복합시설 프로젝트 기공식</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">6. 2.</span><span class="tx">육아종합지원센터 기공식</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">6. 3.</span><span class="tx">울산시·한국바스프, 안료사업 전담법인 신설 MOU</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">6. 3.</span><span class="tx">망양~덕신 간 도로 준공</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">6. 10.</span><span class="tx">울산시립도서관 건립 기공식</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">6. 16.</span><span class="tx">日쿠라레 자동차유리 필름 울산공장 증설</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">6. 23.</span><span class="tx">울산시·환경부, 물 순환 선도도시 조성 협약 체결</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">6. 28.</span><span class="tx">2016 UNIDO 제4차 녹색산업회의(GIC) 개최</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">6. 30.</span><span class="tx">울산·포항·경주 도시공동체 ‘해오름동맹’ 출범</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">7. 13.</span><span class="tx">건전한 스마트폰 사용을 위한 U-공감 토크콘서트 개최</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">7. 26.</span><span class="tx">울산광역시 중소기업제품 전시관 개관식</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">8. 2.</span><span class="tx">울산시-인도 첸나이시, 우호협력도시 MOU</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">8. 8.</span><span class="tx">영남알프스 통합 관광안내시스템 서비스 개시</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">8. 17.</span><span class="tx">울산 에너지포럼 출범식</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">8. 25.</span><span class="tx">‘건강도시 울산’ 홍보판 제막식</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">9. 7.</span><span class="tx">울산지역 이전공공기관 합동채용 설명회</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">9. 9.</span><span class="tx">울산정보산업진흥원 창립총회</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">10. 5.</span><span class="tx">2층 이하 건축물 내진보강 시 지방세 감면 확대</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">10. 11.</span><span class="tx">120 해울이 콜센터 ISO 9001 현판식</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">10. 18.</span><span class="tx">기술발전 거점&#x27; 울산과학기술진흥센터 개소</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">11. 2.</span><span class="tx">울산 남부권 산업로 확장공사 마무리</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">11. 15.</span><span class="tx">주거복지 부담 줄이는 ‘금융지원 업무협약&#x27; 체결</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">11. 18.</span><span class="tx">국가산단 지하매설배관 추가DB 구축 업무 협약 체결</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">12. 1.</span><span class="tx">신재생에너지 융·복합단지 구축사업 준공</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">12. 6.</span><span class="tx">정보산업진흥원 개원식 개최</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">12. 13.</span><span class="tx">수소택시 시범사업 발대식</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">12. 16.</span><span class="tx">울산시청자미디어센터 개관식</span></li>
+<li class="it"><span class="yy" data-y="2016"></span><span class="dt">12. 16.</span><span class="tx">울산 미포산업로 완전개통</span></li>
+<li class="it"><span class="yy" data-y="2018">2018</span><span class="dt">1. 16.</span><span class="tx">울주군 신청사 개청</span></li>
+<li class="it"><span class="yy" data-y="2018"></span><span class="dt">1. 31.</span><span class="tx">영․호남 시․도지사 협력회의</span></li>
+<li class="it"><span class="yy" data-y="2018"></span><span class="dt">2. 5.</span><span class="tx">울산고속도로 장검 진입로 개통</span></li>
+<li class="it"><span class="yy" data-y="2018"></span><span class="dt">2. 27.</span><span class="tx">신고리 원전 건설현장 일자리 연계 MOU 체결</span></li>
+<li class="it"><span class="yy" data-y="2018"></span><span class="dt">3. 16.</span><span class="tx">중소 및 창업기업 물류지원센터 준공</span></li>
+<li class="it"><span class="yy" data-y="2018"></span><span class="dt">3. 26.</span><span class="tx">울산가정법원 개원</span></li>
+<li class="it"><span class="yy" data-y="2018"></span><span class="dt">3. 27.</span><span class="tx">수소전기하우스 개소 및 넥소수소차 전달</span></li>
+<li class="it"><span class="yy" data-y="2018"></span><span class="dt">3. 27.</span><span class="tx">울산산학융합지구 준공</span></li>
+<li class="it"><span class="yy" data-y="2018"></span><span class="dt">4. 16.</span><span class="tx">어린이테마파크 준공</span></li>
+<li class="it"><span class="yy" data-y="2018"></span><span class="dt">4. 20.</span><span class="tx">매곡진입도로 확장공사 준공</span></li>
+<li class="it"><span class="yy" data-y="2018"></span><span class="dt">4. 26.</span><span class="tx">울산도서관 개관</span></li>
+<li class="it"><span class="yy" data-y="2018"></span><span class="dt">5. 11.</span><span class="tx">장생포순환도로 확장공사 준공</span></li>
+<li class="it"><span class="yy" data-y="2018"></span><span class="dt">6. 29.</span><span class="tx">민선 제6대 울산광역시장 이임</span></li>
+<li class="it"><span class="yy" data-y="2018"></span><span class="dt">7. 2.</span><span class="tx">제7대 울산광역시장 취임</span></li>
+<li class="it"><span class="yy" data-y="2018"></span><span class="dt">7. 13.</span><span class="tx">프로야구 올스타전 개최(7.13. ~ 7.14.)</span></li>
+<li class="it"><span class="yy" data-y="2018"></span><span class="dt">7. 26.</span><span class="tx">어린이테마파크 개관</span></li>
+<li class="it"><span class="yy" data-y="2018"></span><span class="dt">8. 28.</span><span class="tx">고등학교 전면 무상급식 확대지원 실시 협약식</span></li>
+<li class="it"><span class="yy" data-y="2018"></span><span class="dt">8. 30.</span><span class="tx">현대자동차 태양광 발전사업 협약식</span></li>
+<li class="it"><span class="yy" data-y="2018"></span><span class="dt">9. 1.</span><span class="tx">북부소방서 개서</span></li>
+<li class="it"><span class="yy" data-y="2018"></span><span class="dt">9. 4.</span><span class="tx">울산안전체험관 개관</span></li>
+<li class="it"><span class="yy" data-y="2018"></span><span class="dt">9. 10.</span><span class="tx">울산광역시 시민신문고위원회 출범</span></li>
+<li class="it"><span class="yy" data-y="2018"></span><span class="dt">9. 18.</span><span class="tx">한국소비자원 울산지원 개소</span></li>
+<li class="it"><span class="yy" data-y="2018"></span><span class="dt">9. 19.</span><span class="tx">대왕암 타워주차장 준공</span></li>
+<li class="it"><span class="yy" data-y="2018"></span><span class="dt">10. 2.</span><span class="tx">해오름동맹 원자력 혁신센터 개소</span></li>
+<li class="it"><span class="yy" data-y="2018"></span><span class="dt">10. 22.</span><span class="tx">수소선도도시 도약 업무협약 체결</span></li>
+<li class="it"><span class="yy" data-y="2018"></span><span class="dt">10. 24.</span><span class="tx">기업체 미세먼지 저감 자발적 협약</span></li>
+<li class="it"><span class="yy" data-y="2018"></span><span class="dt">11. 9.</span><span class="tx">울산 청년창업사관학교 개소</span></li>
+<li class="it"><span class="yy" data-y="2018"></span><span class="dt">11. 21.</span><span class="tx">버스정보시스템(BIS) 개선사업 완료</span></li>
+<li class="it"><span class="yy" data-y="2018"></span><span class="dt">12. 11.</span><span class="tx">십리대밭 먹거리단지 산책로 준공</span></li>
+<li class="it"><span class="yy" data-y="2018"></span><span class="dt">12. 22.</span><span class="tx">울산시민축구단 창단</span></li>
+<li class="it"><span class="yy" data-y="2019">2019</span><span class="dt">1. 10.</span><span class="tx">태화강백리대숲 시민 대토론회</span></li>
+<li class="it"><span class="yy" data-y="2019"></span><span class="dt">1. 30.</span><span class="tx">농수산물도매시장 임시영업장 개소식</span></li>
+<li class="it"><span class="yy" data-y="2019"></span><span class="dt">2. 14.</span><span class="tx">소상공인 행복드림센터 개소식</span></li>
+<li class="it"><span class="yy" data-y="2019"></span><span class="dt">2. 26.</span><span class="tx">수소도시 비젼선포 및 수소산업의날 지정선언</span></li>
+<li class="it"><span class="yy" data-y="2019"></span><span class="dt">3. 14.</span><span class="tx">울산중장년일자리희망센터 이전 개소식</span></li>
+<li class="it"><span class="yy" data-y="2019"></span><span class="dt">3. 21.</span><span class="tx">전통해안숲 보전 한*일*대만 국제심포지움</span></li>
+<li class="it"><span class="yy" data-y="2019"></span><span class="dt">4. 1.</span><span class="tx">남북교류 100분 토론회</span></li>
+<li class="it"><span class="yy" data-y="2019"></span><span class="dt">4. 26.</span><span class="tx">&#x27;책읽는 울산, 올해의 책&#x27; 선포식</span></li>
+<li class="it"><span class="yy" data-y="2019"></span><span class="dt">5. 15.</span><span class="tx">태화강 백리대숲 조성사업 참여 협약식</span></li>
+<li class="it"><span class="yy" data-y="2019"></span><span class="dt">5. 31.</span><span class="tx">제24회 바다의날 기념식</span></li>
+<li class="it"><span class="yy" data-y="2019"></span><span class="dt">6. 10.</span><span class="tx">3D프린팅산업 관련 기업체 대표와의 간담회</span></li>
+<li class="it"><span class="yy" data-y="2019"></span><span class="dt">6. 11.</span><span class="tx">제2실내종합체육관 건립 기공식</span></li>
+<li class="it"><span class="yy" data-y="2019"></span><span class="dt">6. 19.</span><span class="tx">2019 대한민국 수소엑스포</span></li>
+<li class="it"><span class="yy" data-y="2019"></span><span class="dt">7. 1.</span><span class="tx">울산광역시 청년센터 개소식</span></li>
+<li class="it"><span class="yy" data-y="2019"></span><span class="dt">7. 15.</span><span class="tx">농촌형교통모델 마실버스 개통식</span></li>
+<li class="it"><span class="yy" data-y="2019"></span><span class="dt">7. 15.</span><span class="tx">울산사랑상품권 MOU 체결</span></li>
+<li class="it"><span class="yy" data-y="2019"></span><span class="dt">7. 16.</span><span class="tx">노동복지센터 준공식</span></li>
+<li class="it"><span class="yy" data-y="2019"></span><span class="dt">7. 22.</span><span class="tx">태화강국가정원 지정서 헌정식</span></li>
+<li class="it"><span class="yy" data-y="2019"></span><span class="dt">8. 27.</span><span class="tx">전국최초 지자체 맞춤형 지진방재종합계획 수립 보고회</span></li>
+<li class="it"><span class="yy" data-y="2019"></span><span class="dt">8. 29.</span><span class="tx">시립미술관 기공식</span></li>
+<li class="it"><span class="yy" data-y="2019"></span><span class="dt">9. 10.</span><span class="tx">울산형 일자리 로드맵 발표</span></li>
+<li class="it"><span class="yy" data-y="2019"></span><span class="dt">9. 20.</span><span class="tx">울산프롬나드페스티벌</span></li>
+<li class="it"><span class="yy" data-y="2019"></span><span class="dt">9. 28.</span><span class="tx">염포부두 선박 화재</span></li>
+<li class="it"><span class="yy" data-y="2019"></span><span class="dt">10. 18.</span><span class="tx">2019 전국 우수시장박람회</span></li>
+<li class="it"><span class="yy" data-y="2019"></span><span class="dt">10. 18.</span><span class="tx">태화강국가정원 지정 선포식</span></li>
+<li class="it"><span class="yy" data-y="2019"></span><span class="dt">11. 13.</span><span class="tx">동북아오일가스허브 북항사업 투자협약식</span></li>
+<li class="it"><span class="yy" data-y="2019"></span><span class="dt">11. 19.</span><span class="tx">중고신입생 무상교복 전액지원 협약식</span></li>
+<li class="it"><span class="yy" data-y="2019"></span><span class="dt">12. 6.</span><span class="tx">신고리 3,4호기 준공기념행사</span></li>
+<li class="it"><span class="yy" data-y="2019"></span><span class="dt">12. 17.</span><span class="tx">열린시민대학 운영협력 MOU 체결</span></li>
+<li class="it"><span class="yy" data-y="2019"></span><span class="dt">12. 23.</span><span class="tx">아이낳고 키우기 좋은 직장 만들기 업무협약</span></li>
+</ul></section>
+<section class="dec" id="d2020"><div class="sec-head"><span class="sec-name">2020s</span><span class="sec-line"></span><span class="cnt">199</span></div><ul class="tl">
+<li class="it"><span class="yy" data-y="2020">2020</span><span class="dt">1. 16.</span><span class="tx">초대 민선 울산광역시체육회장 이·취임식</span></li>
+<li class="it"><span class="yy" data-y="2020"></span><span class="dt">1. 22.</span><span class="tx">용연하수처리구역 중계5펌프장 일원 차집관로 정비공사 준공</span></li>
+<li class="it"><span class="yy" data-y="2020"></span><span class="dt">2. 5.</span><span class="tx">울산광역자활센터 개소식</span></li>
+<li class="it"><span class="yy" data-y="2020"></span><span class="dt">2. 13.</span><span class="tx">울산경제 활성화를 위한 상생금융 업무협약</span></li>
+<li class="it"><span class="yy" data-y="2020"></span><span class="dt">3. 25.</span><span class="tx">율리~삼동간 도로개설 개통식</span></li>
+<li class="it"><span class="yy" data-y="2020"></span><span class="dt">4. 9.</span><span class="tx">코로나19 위기 극복을 위한 「울산 큰 두레」 창단 회의</span></li>
+<li class="it"><span class="yy" data-y="2020"></span><span class="dt">4. 21.</span><span class="tx">회야하수처리시설 증설사업 준공식</span></li>
+<li class="it"><span class="yy" data-y="2020"></span><span class="dt">4. 27.</span><span class="tx">화봉공원 공영주차장 준공식</span></li>
+<li class="it"><span class="yy" data-y="2020"></span><span class="dt">5. 11.</span><span class="tx">태화강 국가정원 실개천 유지수통수식</span></li>
+<li class="it"><span class="yy" data-y="2020"></span><span class="dt">5. 14.</span><span class="tx">수소산업 육성 3대사업 업무 협약식</span></li>
+<li class="it"><span class="yy" data-y="2020"></span><span class="dt">5. 18.</span><span class="tx">울산콘텐츠코리아랩 개소식</span></li>
+<li class="it"><span class="yy" data-y="2020"></span><span class="dt">6. 11.</span><span class="tx">UN방재안전도시 인증, 울산경제자유구역 지정</span></li>
+<li class="it"><span class="yy" data-y="2020"></span><span class="dt">6. 11.</span><span class="tx">故 심완구 전 울산광역시장 시민 영결식</span></li>
+<li class="it"><span class="yy" data-y="2020"></span><span class="dt">6. 25.</span><span class="tx">국가정원교하부 인도교 개통행사</span></li>
+<li class="it"><span class="yy" data-y="2020"></span><span class="dt">7. 6.</span><span class="tx">게놈서비스산업 규제자유특구 지정</span></li>
+<li class="it"><span class="yy" data-y="2020"></span><span class="dt">7. 8.</span><span class="tx">덕하공영차고지조성사업준공식</span></li>
+<li class="it"><span class="yy" data-y="2020"></span><span class="dt">8. 26.</span><span class="tx">원자력 및 원전해체 에너지산업융복합단지 지정</span></li>
+<li class="it"><span class="yy" data-y="2020"></span><span class="dt">8. 28.</span><span class="tx">감염병관리지원단 현판식</span></li>
+<li class="it"><span class="yy" data-y="2020"></span><span class="dt">9. 2.</span><span class="tx">울산 씨름 전승·발전을 위한 협력협약식</span></li>
+<li class="it"><span class="yy" data-y="2020"></span><span class="dt">9. 24.</span><span class="tx">반려동물 문화센터개관식</span></li>
+<li class="it"><span class="yy" data-y="2020"></span><span class="dt">10. 6.</span><span class="tx">WHO 고령친화도시인증</span></li>
+<li class="it"><span class="yy" data-y="2020"></span><span class="dt">10. 23.</span><span class="tx">태화강국가정원 은하수다리 명판 제막식</span></li>
+<li class="it"><span class="yy" data-y="2020"></span><span class="dt">10. 30.</span><span class="tx">석유화학공정기술교육원 개원식</span></li>
+<li class="it"><span class="yy" data-y="2020"></span><span class="dt">11. 3.</span><span class="tx">용암공공폐수처리시설 방류수 재이용 증설(2차)사업 준공식</span></li>
+<li class="it"><span class="yy" data-y="2020"></span><span class="dt">11. 13.</span><span class="tx">이산화탄소 자원화 규제자유특구 지정</span></li>
+<li class="it"><span class="yy" data-y="2020"></span><span class="dt">11. 14.</span><span class="tx">해수자원화기술 연구센터준공식</span></li>
+<li class="it"><span class="yy" data-y="2020"></span><span class="dt">11. 18.</span><span class="tx">노동인권센터 개소식</span></li>
+<li class="it"><span class="yy" data-y="2020"></span><span class="dt">12. 11.</span><span class="tx">함양울산고속도로 밀양-울산 구간 개통식</span></li>
+<li class="it"><span class="yy" data-y="2020"></span><span class="dt">12. 16.</span><span class="tx">공공보건의료지원단 현판식</span></li>
+<li class="it"><span class="yy" data-y="2020"></span><span class="dt">12. 22.</span><span class="tx">동천제방겸용도로개설공사 개통식</span></li>
+<li class="it"><span class="yy" data-y="2020"></span><span class="dt">12. 30.</span><span class="tx">투게더·덕하공영차고지 수소충전소 준공</span></li>
+<li class="it"><span class="yy" data-y="2021">2021</span><span class="dt">1. 1.</span><span class="tx">울산관광재단 출범</span></li>
+<li class="it"><span class="yy" data-y="2021"></span><span class="dt">1. 14.</span><span class="tx">울산경제자유구역청 개청식</span></li>
+<li class="it"><span class="yy" data-y="2021"></span><span class="dt">2. 17.</span><span class="tx">반구대암각화 세계유산 우선등재목록 선정</span></li>
+<li class="it"><span class="yy" data-y="2021"></span><span class="dt">2. 24.</span><span class="tx">3D프린팅 벤처집적 지식산업센터 개소식</span></li>
+<li class="it"><span class="yy" data-y="2021"></span><span class="dt">3. 1.</span><span class="tx">부산고등법원 울산재판부 개원</span></li>
+<li class="it"><span class="yy" data-y="2021"></span><span class="dt">3. 4.</span><span class="tx">인권센터 개소식</span></li>
+<li class="it"><span class="yy" data-y="2021"></span><span class="dt">4. 14.</span><span class="tx">2022년 제20차 세계한상(韓商)대회 개최지 선정</span></li>
+<li class="it"><span class="yy" data-y="2021"></span><span class="dt">4. 26.</span><span class="tx">한국인 만 명 게놈 해독완성 선언식</span></li>
+<li class="it"><span class="yy" data-y="2021"></span><span class="dt">4. 29.</span><span class="tx">울산전시컨벤션센터 개관식</span></li>
+<li class="it"><span class="yy" data-y="2021"></span><span class="dt">5. 3.</span><span class="tx">울산고용안정지원센터 개소식</span></li>
+<li class="it"><span class="yy" data-y="2021"></span><span class="dt">5. 6.</span><span class="tx">울주 반구천 일원 국가지정문화재 명승 지정</span></li>
+<li class="it"><span class="yy" data-y="2021"></span><span class="dt">5. 27.</span><span class="tx">자치경찰위원회 출범식</span></li>
+<li class="it"><span class="yy" data-y="2021"></span><span class="dt">6. 9.</span><span class="tx">울산·경남 지역혁신 플랫폼 출범식</span></li>
+<li class="it"><span class="yy" data-y="2021"></span><span class="dt">6. 24.</span><span class="tx">낙동강 유역 통합물관리방안 의결로 운문댐 안전한 먹는물 공급 확정</span></li>
+<li class="it"><span class="yy" data-y="2021"></span><span class="dt">7. 19.</span><span class="tx">울주소방서 개서식</span></li>
+<li class="it"><span class="yy" data-y="2021"></span><span class="dt">7. 29.</span><span class="tx">부울경 특별지방자치단체 합동추진단 개소식</span></li>
+<li class="it"><span class="yy" data-y="2021"></span><span class="dt">8. 9.</span><span class="tx">박상진 의사 순국 100주년 기념주간 선포식</span></li>
+<li class="it"><span class="yy" data-y="2021"></span><span class="dt">8. 25.</span><span class="tx">울산권역 장애인 구강진료센터 개소식</span></li>
+<li class="it"><span class="yy" data-y="2021"></span><span class="dt">9. 13.</span><span class="tx">옥동~농소 도로개설공사 중 북부순환도로~문수로 구간 부분 개통식</span></li>
+<li class="it"><span class="yy" data-y="2021"></span><span class="dt">9. 14.</span><span class="tx">문수체육관 준공식</span></li>
+<li class="it"><span class="yy" data-y="2021"></span><span class="dt">10. 6.</span><span class="tx">취약노동자 건강증진센터 개소식</span></li>
+<li class="it"><span class="yy" data-y="2021"></span><span class="dt">10. 22.</span><span class="tx">재난관리자원 통합관리센터 개소식</span></li>
+<li class="it"><span class="yy" data-y="2021"></span><span class="dt">11. 3.</span><span class="tx">제3차 한-러 지방협력 포럼</span></li>
+<li class="it"><span class="yy" data-y="2021"></span><span class="dt">11. 15.</span><span class="tx">울산재난안전산업지원센터 현판식</span></li>
+<li class="it"><span class="yy" data-y="2021"></span><span class="dt">11. 15.</span><span class="tx">울산국제개발협력센터 개소식</span></li>
+<li class="it"><span class="yy" data-y="2021"></span><span class="dt">11. 16.</span><span class="tx">전국체육대회·전국장애인체육대회 대회조직위원회 창립총회</span></li>
+<li class="it"><span class="yy" data-y="2021"></span><span class="dt">12. 17.</span><span class="tx">제1회 울산국제영화제 개막식</span></li>
+<li class="it"><span class="yy" data-y="2021"></span><span class="dt">12. 21.</span><span class="tx">산업로(신답교~경주시계) 확장공사 신답삼거리~중산교차로 구간 부분 개통식</span></li>
+<li class="it"><span class="yy" data-y="2021"></span><span class="dt">12. 22.</span><span class="tx">상수도사업본부 중부사업소 신축 준공식</span></li>
+<li class="it"><span class="yy" data-y="2021"></span><span class="dt">12. 28.</span><span class="tx">동남권 4개 철도건설사업 및 북울산(박상진생가)역 개통식</span></li>
+<li class="it"><span class="yy" data-y="2021"></span><span class="dt">12. 30.</span><span class="tx">동천제방겸용도로(우안제) 정비공사 준공식</span></li>
+<li class="it"><span class="yy" data-y="2022">2022</span><span class="dt">1. 6.</span><span class="tx">울산시립미술관 개관</span></li>
+<li class="it"><span class="yy" data-y="2022"></span><span class="dt">1. 20.</span><span class="tx">울산광역시사회서비스원 개원식</span></li>
+<li class="it"><span class="yy" data-y="2022"></span><span class="dt">1. 27.</span><span class="tx">울산공업센터 60주년 기념식</span></li>
+<li class="it"><span class="yy" data-y="2022"></span><span class="dt">2. 7.</span><span class="tx">아프가니스탄 특별기여자 동구 정착(입주)</span></li>
+<li class="it"><span class="yy" data-y="2022"></span><span class="dt">3. 3.</span><span class="tx">바이오데이터팜 개소</span></li>
+<li class="it"><span class="yy" data-y="2022"></span><span class="dt">3. 4.</span><span class="tx">산업로(신답교~경주시계) 확장 개통</span></li>
+<li class="it"><span class="yy" data-y="2022"></span><span class="dt">3. 17.</span><span class="tx">울산콘텐츠기업지원센터 개소</span></li>
+<li class="it"><span class="yy" data-y="2022"></span><span class="dt">3. 31.</span><span class="tx">남목도서관 개관</span></li>
+<li class="it"><span class="yy" data-y="2022"></span><span class="dt">4. 8.</span><span class="tx">중구야구장 준공</span></li>
+<li class="it"><span class="yy" data-y="2022"></span><span class="dt">4. 19.</span><span class="tx">부울경 특별연합 협약식</span></li>
+<li class="it"><span class="yy" data-y="2022"></span><span class="dt">5. 3.</span><span class="tx">대통령직인수위 울산지역 정책과제 대국민 보고회</span></li>
+<li class="it"><span class="yy" data-y="2022"></span><span class="dt">6. 24.</span><span class="tx">2022 세계관광산업컨퍼런스 개최(6. 24.~26.)</span></li>
+<li class="it"><span class="yy" data-y="2022"></span><span class="dt">6. 30.</span><span class="tx">제7대 울산광역시장 이임</span></li>
+<li class="it"><span class="yy" data-y="2022"></span><span class="dt">7. 1.</span><span class="tx">제8대 울산광역시장 취임</span></li>
+<li class="it"><span class="yy" data-y="2022"></span><span class="dt">7. 21.</span><span class="tx">울산광역시 장기요양요원 지원센터 개소</span></li>
+<li class="it"><span class="yy" data-y="2022"></span><span class="dt">8. 9.</span><span class="tx">울주 현장방사능방재지휘센터 준공</span></li>
+<li class="it"><span class="yy" data-y="2022"></span><span class="dt">9. 1.</span><span class="tx">태화강역~북울산역 광역철도 사업 기본계획 고시(국토교통부)</span></li>
+<li class="it"><span class="yy" data-y="2022"></span><span class="dt">9. 14.</span><span class="tx">수소연료전지 발전소 신설투자 업무협약 체결</span></li>
+<li class="it"><span class="yy" data-y="2022"></span><span class="dt">9. 15.</span><span class="tx">현대자동차 울산 전기차 전용공장 신설 투자양해각서 체결</span></li>
+<li class="it"><span class="yy" data-y="2022"></span><span class="dt">9. 29.</span><span class="tx">옥동~농소(이예로) 전구간 개통</span></li>
+<li class="it"><span class="yy" data-y="2022"></span><span class="dt">10. 7.</span><span class="tx">제103회 전국체육대회 개최(10. 7.~13.)</span></li>
+<li class="it"><span class="yy" data-y="2022"></span><span class="dt">10. 12.</span><span class="tx">부울경 초광역 경제동맹 출범 계획 발표</span></li>
+<li class="it"><span class="yy" data-y="2022"></span><span class="dt">10. 25.</span><span class="tx">3D프린팅 제조공정센터 개소</span></li>
+<li class="it"><span class="yy" data-y="2022"></span><span class="dt">10. 27.</span><span class="tx">울산 글로벌게임센터 및 웹툰캠퍼스 개소</span></li>
+<li class="it"><span class="yy" data-y="2022"></span><span class="dt">11. 1.</span><span class="tx">제20차 세계한상대회 개최(11. 1.~3.)</span></li>
+<li class="it"><span class="yy" data-y="2022"></span><span class="dt">11. 3.</span><span class="tx">자율운항선박 성능실증센터 준공</span></li>
+<li class="it"><span class="yy" data-y="2022"></span><span class="dt">11. 4.</span><span class="tx">고려아연 이차전지 소재 생산 공장 신·증설 투자 협약 체결</span></li>
+<li class="it"><span class="yy" data-y="2022"></span><span class="dt">11. 18.</span><span class="tx">울산화폐박람회 개최(11. 18.~20.)</span></li>
+<li class="it"><span class="yy" data-y="2022"></span><span class="dt">11. 29.</span><span class="tx">ICT융합 전기추진 스마트 선박 &#x27;울산태화&#x27;호 명명식</span></li>
+<li class="it"><span class="yy" data-y="2022"></span><span class="dt">12. 2.</span><span class="tx">울산광역시 탄소중립 지원센터 개소</span></li>
+<li class="it"><span class="yy" data-y="2022"></span><span class="dt">12. 6.</span><span class="tx">법정문화도시 지정</span></li>
+<li class="it"><span class="yy" data-y="2022"></span><span class="dt">12. 13.</span><span class="tx">청정(블루) 암모니아 세계 최초 울산항 입항</span></li>
+<li class="it"><span class="yy" data-y="2022"></span><span class="dt">12. 16.</span><span class="tx">S-OIL 석유화학복합시설 건설 투자 MOU 체결(샤힌 프로젝트)</span></li>
+<li class="it"><span class="yy" data-y="2022"></span><span class="dt">12. 24.</span><span class="tx">울산 공공 야외빙상장 개장</span></li>
+<li class="it"><span class="yy" data-y="2022"></span><span class="dt">12. 29.</span><span class="tx">염포산터널 통행료 전면 무료 발표(2023. 1. 1. 시행)</span></li>
+<li class="it"><span class="yy" data-y="2023">2023</span><span class="dt">1. 9.</span><span class="tx">울산복지가족진흥사회서비스원 출범</span></li>
+<li class="it"><span class="yy" data-y="2023"></span><span class="dt">1. 12.</span><span class="tx">울산관광기업지원센터 개소</span></li>
+<li class="it"><span class="yy" data-y="2023"></span><span class="dt">1. 16.</span><span class="tx">울산 디자인주도 제조혁신센터 개소</span></li>
+<li class="it"><span class="yy" data-y="2023"></span><span class="dt">2. 9.</span><span class="tx">동남권 미세먼지연구관리센터 개소</span></li>
+<li class="it"><span class="yy" data-y="2023"></span><span class="dt">2. 20.</span><span class="tx">부울경 개발제한구역 제도개선 공동건의문 발표</span></li>
+<li class="it"><span class="yy" data-y="2023"></span><span class="dt">2. 21.</span><span class="tx">북구 실버케어센터 개원</span></li>
+<li class="it"><span class="yy" data-y="2023"></span><span class="dt">3. 2.</span><span class="tx">울산역사연구소 개소</span></li>
+<li class="it"><span class="yy" data-y="2023"></span><span class="dt">3. 3.</span><span class="tx">권역정신응급의료센터 개소</span></li>
+<li class="it"><span class="yy" data-y="2023"></span><span class="dt">3. 9.</span><span class="tx">S-OIL 샤힌프로젝트 기공식</span></li>
+<li class="it"><span class="yy" data-y="2023"></span><span class="dt">3. 29.</span><span class="tx">산재전문 공공병원 건립 착공</span></li>
+<li class="it"><span class="yy" data-y="2023"></span><span class="dt">4. 7.</span><span class="tx">화물자동차 수소 충전소 구축사업 준공</span></li>
+<li class="it"><span class="yy" data-y="2023"></span><span class="dt">4. 12.</span><span class="tx">울산상천물류단지 조성사업 투자 업무협약</span></li>
+<li class="it"><span class="yy" data-y="2023"></span><span class="dt">4. 19.</span><span class="tx">고에너지정밀가공기술센터 개소</span></li>
+<li class="it"><span class="yy" data-y="2023"></span><span class="dt">4. 20.</span><span class="tx">자동차부품생산시설 신설 투자협약 체결</span></li>
+<li class="it"><span class="yy" data-y="2023"></span><span class="dt">5. 16.</span><span class="tx">제52회 전국소년체전(5.27.~30.) 및 제17회 전국장애학생체전(5.16.~19.) 개최</span></li>
+<li class="it"><span class="yy" data-y="2023"></span><span class="dt">5. 15.</span><span class="tx">중앙병원·울산병원 지역응급의료센터 추가지정</span></li>
+<li class="it"><span class="yy" data-y="2023"></span><span class="dt">5. 23.</span><span class="tx">울산성암소각장 1,2호기 재건립사업 기공식</span></li>
+<li class="it"><span class="yy" data-y="2023"></span><span class="dt">6. 1.</span><span class="tx">울산공업축제 개막</span></li>
+<li class="it"><span class="yy" data-y="2023"></span><span class="dt">6. 15.</span><span class="tx">태화강변 파크골프장 준공</span></li>
+<li class="it"><span class="yy" data-y="2023"></span><span class="dt">6. 19.</span><span class="tx">옥동 군부대 이전 합의각서 체결(울산시↔국방부)</span></li>
+<li class="it"><span class="yy" data-y="2023"></span><span class="dt">7. 4.</span><span class="tx">서울주 소방서 건립 기공식</span></li>
+<li class="it"><span class="yy" data-y="2023"></span><span class="dt">7. 11.</span><span class="tx">울산 수소전기차 검사센터 개소</span></li>
+<li class="it"><span class="yy" data-y="2023"></span><span class="dt">7. 20.</span><span class="tx">국가첨단전략산업 울산 첨단이차전지 특화단지 지정</span></li>
+<li class="it"><span class="yy" data-y="2023"></span><span class="dt">8. 7.</span><span class="tx">이차전지용 부품 생산공장 신설 투자협약 체결</span></li>
+<li class="it"><span class="yy" data-y="2023"></span><span class="dt">8. 17.</span><span class="tx">분산에너지 활성화 추진전략 발표</span></li>
+<li class="it"><span class="yy" data-y="2023"></span><span class="dt">8. 23.</span><span class="tx">울산도시철도 1호선 건설사업 기재부 타당성 재조사 통과</span></li>
+<li class="it"><span class="yy" data-y="2023"></span><span class="dt">9. 1.</span><span class="tx">울산경제일자리진흥원 출범</span></li>
+<li class="it"><span class="yy" data-y="2023"></span><span class="dt">9. 14.</span><span class="tx">지방시대 울산비전 선포식</span></li>
+<li class="it"><span class="yy" data-y="2023"></span><span class="dt">10. 6.</span><span class="tx">노동화합센터 개소</span></li>
+<li class="it"><span class="yy" data-y="2023"></span><span class="dt">10. 11.</span><span class="tx">울산 플라스틱 순환경제 상생협력 거버넌스 발대식</span></li>
+<li class="it"><span class="yy" data-y="2023"></span><span class="dt">10. 18.</span><span class="tx">이예로 전 구간 완전 개통</span></li>
+<li class="it"><span class="yy" data-y="2023"></span><span class="dt">11. 13.</span><span class="tx">울산대학교, 글로컬대학30 지정</span></li>
+<li class="it"><span class="yy" data-y="2023"></span><span class="dt">11. 13.</span><span class="tx">현대자동차 전기차 신공장 기공식</span></li>
+<li class="it"><span class="yy" data-y="2023"></span><span class="dt">12. 22.</span><span class="tx">남부권 광역관광 개발사업 추진 협약 체결</span></li>
+<li class="it"><span class="yy" data-y="2023"></span><span class="dt">12. 22.</span><span class="tx">2024년도 울산시 국가예산 역대 최대 확보 발표</span></li>
+<li class="it"><span class="yy" data-y="2024">2024</span><span class="dt">1. 11.</span><span class="tx">도심항공교통(UAM) 실증 및 사업기반 마련 업무협약</span></li>
+<li class="it"><span class="yy" data-y="2024"></span><span class="dt">1. 24.</span><span class="tx">삼성SDI㈜ 이차전지 생산공장 신설 투자양해각서 체결</span></li>
+<li class="it"><span class="yy" data-y="2024"></span><span class="dt">2. 16.</span><span class="tx">달빛어린이 병원 지정 및 운영 활성화 업무협약 체결</span></li>
+<li class="it"><span class="yy" data-y="2024"></span><span class="dt">2. 28.</span><span class="tx">교육발전특구 시범지역 지정</span></li>
+<li class="it"><span class="yy" data-y="2024"></span><span class="dt">2. 28.</span><span class="tx">국보 ‘울주 천전리 각석’ 명칭, ‘울주 천전리 명문과 암각화’로 변경</span></li>
+<li class="it"><span class="yy" data-y="2024"></span><span class="dt">3. 6.</span><span class="tx">꿀잼도시 울산, 산업경관 개선사업 업무협약 체결</span></li>
+<li class="it"><span class="yy" data-y="2024"></span><span class="dt">3. 29.</span><span class="tx">양성자치료센터 건립 공동혐력 업무협약 체결</span></li>
+<li class="it"><span class="yy" data-y="2024"></span><span class="dt">4. 24.</span><span class="tx">현대자동차(주) 하이퍼캐스팅 공장 신설 투자양해각서 체결</span></li>
+<li class="it"><span class="yy" data-y="2024"></span><span class="dt">4. 26.</span><span class="tx">2024 전국생활체육대축전 개회식</span></li>
+<li class="it"><span class="yy" data-y="2024"></span><span class="dt">5. 7.</span><span class="tx">성안동 청년희망주택 입주식</span></li>
+<li class="it"><span class="yy" data-y="2024"></span><span class="dt">5. 9.</span><span class="tx">전기차 모듈화 부품공장 신설 투자양해각서 체결</span></li>
+<li class="it"><span class="yy" data-y="2024"></span><span class="dt">5. 23.</span><span class="tx">울산시–창춘시, 자매도시 체결 30주년 기념식</span></li>
+<li class="it"><span class="yy" data-y="2024"></span><span class="dt">6. 7.</span><span class="tx">에코폴리스 울산선언 20주년 기념식</span></li>
+<li class="it"><span class="yy" data-y="2024"></span><span class="dt">6. 11.</span><span class="tx">시청 앞 시내버스 정류소 환경개선 사업 준공식</span></li>
+<li class="it"><span class="yy" data-y="2024"></span><span class="dt">6. 26.</span><span class="tx">부·울·경 광역철도 조속 추진 3개 시도지사 공동 건의</span></li>
+<li class="it"><span class="yy" data-y="2024"></span><span class="dt">7. 11.</span><span class="tx">울산 분산에너지 지원센터 현판식</span></li>
+<li class="it"><span class="yy" data-y="2024"></span><span class="dt">7. 18.</span><span class="tx">울산도시철도 1호선 건설사업 타당성 평가 완료</span></li>
+<li class="it"><span class="yy" data-y="2024"></span><span class="dt">7. 26.</span><span class="tx">지역기업 애로해결 현장간담회와 연계한 월간업무계획 보고회 개최</span></li>
+<li class="it"><span class="yy" data-y="2024"></span><span class="dt">8. 21.</span><span class="tx">2024 울산 세계명문대학 조정 페스티벌 개막식</span></li>
+<li class="it"><span class="yy" data-y="2024"></span><span class="dt">8. 22.</span><span class="tx">울산시립아이돌봄센터 개소식</span></li>
+<li class="it"><span class="yy" data-y="2024"></span><span class="dt">9. 1.</span><span class="tx">어린이 시내버스 요금 무료화 시행</span></li>
+<li class="it"><span class="yy" data-y="2024"></span><span class="dt">9. 5.</span><span class="tx">2028울산국제정원박람회 국제원예생산자협회(AIPA) 최종 승인</span></li>
+<li class="it"><span class="yy" data-y="2024"></span><span class="dt">9. 27.</span><span class="tx">선박통합데이터센터 개소식</span></li>
+<li class="it"><span class="yy" data-y="2024"></span><span class="dt">10. 10.</span><span class="tx">2024 울산공업축제 개최</span></li>
+<li class="it"><span class="yy" data-y="2024"></span><span class="dt">10. 21.</span><span class="tx">울산시 국정감사 실시</span></li>
+<li class="it"><span class="yy" data-y="2024"></span><span class="dt">10. 28.</span><span class="tx">전국 최초 수소시범도시 준공</span></li>
+<li class="it"><span class="yy" data-y="2024"></span><span class="dt">11. 2.</span><span class="tx">울산 기회발전특구 지정</span></li>
+<li class="it"><span class="yy" data-y="2024"></span><span class="dt">11. 7.</span><span class="tx">울산 도심융합특구 지정</span></li>
+<li class="it"><span class="yy" data-y="2024"></span><span class="dt">11. 7.</span><span class="tx">종하이노베이션센터 준공식</span></li>
+<li class="it"><span class="yy" data-y="2024"></span><span class="dt">11. 25.</span><span class="tx">울산시-광저우시-현대차 수소생태계 공동협력 추진 업무협약 체결</span></li>
+<li class="it"><span class="yy" data-y="2024"></span><span class="dt">12. 18.</span><span class="tx">제2시립노인복지관 준공식</span></li>
+<li class="it"><span class="yy" data-y="2024"></span><span class="dt">12. 19.</span><span class="tx">울산광역시 지역혁신중심 대학지원체계(RISE) 기본계획 수립</span></li>
+<li class="it"><span class="yy" data-y="2024"></span><span class="dt">12. 20.</span><span class="tx">KTX-이음 태화강역 첫 운행</span></li>
+<li class="it"><span class="yy" data-y="2024"></span><span class="dt">12. 21.</span><span class="tx">울산광역시 시내버스 노선 전면 개편</span></li>
+<li class="it"><span class="yy" data-y="2025">2025</span><span class="dt">1. 6.</span><span class="tx">동해석유가스자원개발 및 탄소중립을 위한 업무협약</span></li>
+<li class="it"><span class="yy" data-y="2025"></span><span class="dt">1. 14.</span><span class="tx">HD현대중공업(주) 차세대 스마트 조선소 구축 업무협약</span></li>
+<li class="it"><span class="yy" data-y="2025"></span><span class="dt">1. 23.</span><span class="tx">해오름동맹광역추진단 출범식</span></li>
+<li class="it"><span class="yy" data-y="2025"></span><span class="dt">2. 5.</span><span class="tx">친환경 울산 수소트램 기술 심포지엄</span></li>
+<li class="it"><span class="yy" data-y="2025"></span><span class="dt">2. 18.</span><span class="tx">2028울산국제정원박람회 조직위원회 구성 및 현판식</span></li>
+<li class="it"><span class="yy" data-y="2025"></span><span class="dt">2. 25.</span><span class="tx">울산 국가 지역전략사업 확정 발표</span></li>
+<li class="it"><span class="yy" data-y="2025"></span><span class="dt">3. 10.</span><span class="tx">북울산역 환승체계 개선사업 준공식</span></li>
+<li class="it"><span class="yy" data-y="2025"></span><span class="dt">3. 12.</span><span class="tx">서울주소방서 준공식</span></li>
+<li class="it"><span class="yy" data-y="2025"></span><span class="dt">3. 13.</span><span class="tx">제2시립노인복지관 개관식</span></li>
+<li class="it"><span class="yy" data-y="2025"></span><span class="dt">4. 2.</span><span class="tx">울산광역시 RISE 위원회 및 협약식</span></li>
+<li class="it"><span class="yy" data-y="2025"></span><span class="dt">4. 9.</span><span class="tx">현대자동차(주) 수소연료전지 공장 신설 업무협약</span></li>
+<li class="it"><span class="yy" data-y="2025"></span><span class="dt">4. 16.</span><span class="tx">울산어린이청소년도서관 개관식</span></li>
+<li class="it"><span class="yy" data-y="2025"></span><span class="dt">5. 9.</span><span class="tx">(주)카프로 수소출하센터 준공식</span></li>
+<li class="it"><span class="yy" data-y="2025"></span><span class="dt">5. 13.</span><span class="tx">국가산업단지 통합안전관리센터 준공식</span></li>
+<li class="it"><span class="yy" data-y="2025"></span><span class="dt">5. 21.</span><span class="tx">울산 암모니아벙커링 규제자유특구 지정</span></li>
+<li class="it"><span class="yy" data-y="2025"></span><span class="dt">5. 22.</span><span class="tx">분산에너지 특화지역 후보지 선정</span></li>
+<li class="it"><span class="yy" data-y="2025"></span><span class="dt">6. 16.</span><span class="tx">덕하시장~석유화학단지 및 덕정교차로~온산로 도로개설 준공식</span></li>
+<li class="it"><span class="yy" data-y="2025"></span><span class="dt">6. 20.</span><span class="tx">울산 AI 데이터센터 출범식</span></li>
+<li class="it"><span class="yy" data-y="2025"></span><span class="dt">7. 1.</span><span class="tx">울산 뉴비전 선포식</span></li>
+<li class="it"><span class="yy" data-y="2025"></span><span class="dt">7. 12.</span><span class="tx">반구천의 암각화 유네스코 세계유산 등재</span></li>
+<li class="it"><span class="yy" data-y="2025"></span><span class="dt">7. 24.</span><span class="tx">태화강수상스포츠센터 개장식</span></li>
+<li class="it"><span class="yy" data-y="2025"></span><span class="dt">8. 27.</span><span class="tx">(주)GS엔텍 해상풍력 관련 설비 투자 업무협약</span></li>
+<li class="it"><span class="yy" data-y="2025"></span><span class="dt">8. 28.</span><span class="tx">AI 데이터센터 기공식 및 AI수도 울산 선포식</span></li>
+<li class="it"><span class="yy" data-y="2025"></span><span class="dt">9. 29.</span><span class="tx">울산하이드로젠파워2호 발전소 준공식</span></li>
+<li class="it"><span class="yy" data-y="2025"></span><span class="dt">10. 16.</span><span class="tx">울산시-페르가나주 자매도시 협약식</span></li>
+<li class="it"><span class="yy" data-y="2025"></span><span class="dt">10. 22.</span><span class="tx">현대오일터미널(주) 암모니아 저장시설 및 인프라 증설 투자 협약</span></li>
+<li class="it"><span class="yy" data-y="2025"></span><span class="dt">11. 5.</span><span class="tx">차세대 이차전지 상용화 지원센터 개소식</span></li>
+<li class="it"><span class="yy" data-y="2025"></span><span class="dt">11. 5.</span><span class="tx">울산프로야구단 창단 업무협약</span></li>
+<li class="it"><span class="yy" data-y="2025"></span><span class="dt">11. 13.</span><span class="tx">WAVE 2025 울산 세계미래산업박람회 개막식</span></li>
+<li class="it"><span class="yy" data-y="2025"></span><span class="dt">12. 2.</span><span class="tx">전국 최초 수소전기 트랙터 실증 차량 인도식</span></li>
+<li class="it"><span class="yy" data-y="2025"></span><span class="dt">12. 3.</span><span class="tx">KTX울산역 복합특화단지 개발사업 기공식</span></li>
+<li class="it"><span class="yy" data-y="2025"></span><span class="dt">12. 17.</span><span class="tx">2040년 울산도시기본계획 발표</span></li>
+<li class="it"><span class="yy" data-y="2025"></span><span class="dt">12. 18.</span><span class="tx">태화루(용금소) 스카이워크 설치사업 준공식</span></li>
+</ul></section>
+    </div>
+  </section>
+</div>
+<script>
+/* 일자가 확실한 항목만 달력에 표시: [연, 월, 일, 내용] */
+var EV = [[1963,1,1,"울주군 서생면을 동래군에 편입"],[1964,1,1,"울산시교육청과 울주군교육청 발족"],[1970,1,1,"울산시청사 학산동 123 → 신정동 646-4 이전, 국제(局制) 시행"],[1980,1,1,"울산용수관리사무소 설치"],[1983,1,1,"동울산전화국 개설"],[1988,1,1,"울산시방어진출장소를 동구로 승격"],[1991,1,1,"울주군을 울산군으로 개칭"],[1995,1,1,"울산시-울산군 통합, 산군을 울주구로 개편"],[2021,1,1,"울산관광재단 출범"],[1988,1,4,"남구보건소 개소"],[1999,1,4,"동부소방서 개청(임시청사)"],[1995,1,5,"시청 제2청사 준공"],[1986,1,6,"울산시 이주지원사업소 설치"],[2016,1,6,"국립재난안전연구원 울산 신청사 개청식"],[2022,1,6,"울산시립미술관 개관"],[2025,1,6,"동해석유가스자원개발 및 탄소중립을 위한 업무협약"],[2015,1,8,"독일 프라운호퍼 화학기술연구소 MOU 체결"],[2016,1,8,"녹색포럼 창립총회 개최"],[2016,1,9,"‘차세대 촉매센터’ 출범식"],[2023,1,9,"울산복지가족진흥사회서비스원 출범"],[1995,1,10,"통합 울산시 의회 개원"],[1996,1,10,"제16회 시의회 임시회 - 울산광역시 승격행정절차 이행 요청"],[2019,1,10,"태화강백리대숲 시민 대토론회"],[2024,1,11,"도심항공교통(UAM) 실증 및 사업기반 마련 업무협약"],[1950,1,12,"울산우편국을 울산우체국으로 개칭"],[2023,1,12,"울산관광기업지원센터 개소"],[2021,1,14,"울산경제자유구역청 개청식"],[2025,1,14,"HD현대중공업(주) 차세대 스마트 조선소 구축 업무협약"],[2014,1,15,"국외관광홍보 및 투자설명회 개최"],[1964,1,16,"법무부 부산출입국관리사무소 울산출장소 개소"],[2018,1,16,"울주군 신청사 개청"],[2020,1,16,"초대 민선 울산광역시체육회장 이·취임식"],[2023,1,16,"울산 디자인주도 제조혁신센터 개소"],[2001,1,17,"울산보건환경연구원 개원"],[2011,1,17,"공업탑 리모델링 준공"],[2014,1,17,"지역항공사 설립 타당성 분석 연구용역 최종보고회"],[2016,1,20,"‘차세대 에너지저장장치’ 보급 확대 협약 체결"],[2016,1,20,"울산시-쿠웨이트 PIC-SK가스, 1억달러 투자 MOU"],[2022,1,20,"울산광역시사회서비스원 개원식"],[1963,1,21,"망해사지 승탑, 석남사 승탑, 간월사지 석조여래좌성, 청송사지 삼층석탑 보물 지정"],[2020,1,22,"용연하수처리구역 중계5펌프장 일원 차집관로 정비공사 준공"],[1973,1,23,"한국예총 울산지부 창립총회 개최"],[2025,1,23,"해오름동맹광역추진단 출범식"],[2024,1,24,"삼성SDI㈜ 이차전지 생산공장 신설 투자양해각서 체결"],[2011,1,26,"하수슬러지 처리시설 준공(남구 성암동 139-4번지)"],[2015,1,26,"주민참여예산제 활성화 관련 시민토론회"],[1962,1,27,"울산 특정공업지구 결정 공포(각령 제304호)"],[2012,1,27,"울산공업센터 지정 50주년 기념 「울산도약 제2선언문비」 제막"],[2014,1,27,"화학재난 합동방재센터 개소"],[2022,1,27,"울산공업센터 60주년 기념식"],[2005,1,28,"동천국민체육센터 개관"],[2015,1,28,"「인터넷중독 대응센터」 개소식"],[1991,1,29,"울산시 주차장관리공단 설립"],[2008,1,30,"박상진 의사 생가 전시관 개관"],[2019,1,30,"농수산물도매시장 임시영업장 개소식"],[2008,1,31,"선바위교 개통, 선암댐 수변공원 준공"],[2018,1,31,"영․호남 시․도지사 협력회의"],[1978,2,1,"울산공과대학 병설 공업전문학교가 전문대학으로 승격"],[2005,2,2,"울산 교통관리센터 준공"],[1962,2,3,"울산공업센터 종합기공식 거행(울산군 대현면 납도)"],[2012,2,3,"울산공업센터 지정 50주년 기념식 개최 및 KTX 울산역 광장「번영탑」준공"],[2015,2,3,"울산광역시 민원콜센터(울산 120 해울이콜센터) 개소식"],[2016,2,3,"「디지털 울산 문화대전」 편찬 협약 체결"],[2016,2,4,"해양플랜트 기자재 국산화 개발지원 MOU 체결"],[2016,2,4,"‘게놈 기반 바이오메디컬산업 육성사업’ 착수"],[2018,2,5,"울산고속도로 장검 진입로 개통"],[2020,2,5,"울산광역자활센터 개소식"],[2025,2,5,"친환경 울산 수소트램 기술 심포지엄"],[2013,2,6,"(주)바커케미칼코리아 울산공장 증설 준공"],[1962,2,7,"울산개발위원회 울산개발 계획본부 설치"],[2001,2,7,"울산고속버스터미널 준공"],[2002,2,7,"매곡지방산업단지(울산 최초 지방산업단지) 착공"],[2007,2,7,"울산광역시도시공사 설립"],[2022,2,7,"아프가니스탄 특별기여자 동구 정착(입주)"],[2014,2,9,"명장의 전당 등재식 개최"],[2023,2,9,"동남권 미세먼지연구관리센터 개소"],[2007,2,12,"시 캐릭터(해울이) 선정"],[2015,2,13,"노사민정협의회"],[2020,2,13,"울산경제 활성화를 위한 상생금융 업무협약"],[2019,2,14,"소상공인 행복드림센터 개소식"],[1983,2,15,"양산군 서생면을 울주군에 편입"],[2000,2,15,"천전리 선사유적지에서 공룡발자국 발견"],[1995,2,16,"2002년 월드컵 축구대회 울산경기유치위원회 조직"],[2016,2,16,"창조경제혁신센터 3D프린팅 교육 MOU 체결"],[2024,2,16,"달빛어린이 병원 지정 및 운영 활성화 업무협약 체결"],[2021,2,17,"반구대암각화 세계유산 우선등재목록 선정"],[1975,2,18,"울산전신전화국 신설"],[2009,2,18,"시청 신청사 개청식"],[2013,2,18,"고용노동부 고객상담센터(혁신도시 이전 공공기관) 신청사 개소"],[2025,2,18,"2028울산국제정원박람회 조직위원회 구성 및 현판식"],[2013,2,20,"고분자․나노융합소재가공기술센터 개소"],[2023,2,20,"부울경 개발제한구역 제도개선 공동건의문 발표"],[2001,2,21,"울산발전연구원 개원"],[2023,2,21,"북구 실버케어센터 개원"],[2011,2,23,"울산광역시 보훈회관 준공"],[2009,2,24,"태화강 전망대 및 십리대밭교 준공"],[2021,2,24,"3D프린팅 벤처집적 지식산업센터 개소식"],[2025,2,25,"울산 국가 지역전략사업 확정 발표"],[2016,2,26,"UNIST 3D프린팅 첨단기술 연구센터 출범식"],[2016,2,26,"울산 중부소방서 매곡 119안전센터 개소"],[2019,2,26,"수소도시 비젼선포 및 수소산업의날 지정선언"],[2014,2,27,"온산 바이오에너지센터 준공"],[2018,2,27,"신고리 원전 건설현장 일자리 연계 MOU 체결"],[1967,2,28,"선암정수장 준공, 제1회 울산공업축제 개최"],[2002,2,28,"울산 롯데호텔 개관"],[2013,2,28,"울산하늘공원 개장"],[2014,2,28,"산업기술박물관 울산건립추진위원회 개최"],[2024,2,28,"교육발전특구 시범지역 지정"],[2024,2,28,"국보 ‘울주 천전리 각석’ 명칭, ‘울주 천전리 명문과 암각화’로 변경"],[1998,3,1,"부산지검울산지청이 울산지방검찰청으로 승격"],[2021,3,1,"부산고등법원 울산재판부 개원"],[2009,3,2,"울산과학기술대학교(UNIST) 첫 입학식(5.12 개교식)"],[2023,3,2,"울산역사연구소 개소"],[2015,3,3,"울산과학기술대, 과학기술원으로 전환 확정"],[2022,3,3,"바이오데이터팜 개소"],[2023,3,3,"권역정신응급의료센터 개소"],[2014,3,4,"주전항 정비사업 준공식"],[2021,3,4,"인권센터 개소식"],[2022,3,4,"산업로(신답교~경주시계) 확장 개통"],[2003,3,6,"(재)울산산업진흥재단(현, 울산테크노파크) 개원"],[2024,3,6,"꿀잼도시 울산, 산업경관 개선사업 업무협약 체결"],[1962,3,7,"울산특별건설국 설치(각령 제540호)"],[2006,3,9,"울산자동차부품혁신센터 개원"],[2023,3,9,"S-OIL 샤힌프로젝트 기공식"],[1972,3,10,"울산공과대학 병설 공업전문학교 개교"],[1975,3,10,"남목정수장 준공"],[2016,3,10,"농소하수처리시설 민간투자사업(BTO) 준공식"],[2025,3,10,"북울산역 환승체계 개선사업 준공식"],[2016,3,11,"울산지방중소기업청 개청식"],[2014,3,12,"대한적십자봉사회 전국대회 개최"],[2025,3,12,"서울주소방서 준공식"],[1976,3,13,"울산지방 항만관리청 개청"],[2014,3,13,"울산광역시 여성인력개발센터 개관"],[2025,3,13,"제2시립노인복지관 개관식"],[2016,3,14,"전통시장지원센터 개소식"],[2019,3,14,"울산중장년일자리희망센터 이전 개소식"],[1994,3,15,"중국 창춘시와 자매결연"],[2007,3,15,"울주군립도서관 개관"],[1970,3,16,"울산공과대학 개교식 및 제1회 입학식"],[2012,3,16,"국립울산검역소 신청사 준공"],[2016,3,16,"대왕암공원 대왕교 교체공사 준공식"],[2018,3,16,"중소 및 창업기업 물류지원센터 준공"],[2000,3,17,"울산과학대학 동부캠퍼스 개교"],[2022,3,17,"울산콘텐츠기업지원센터 개소"],[2006,3,18,"현대중공업(주) 용연공장 준공"],[2009,3,19,"(재)울산테크노파크 개원"],[2019,3,21,"전통해안숲 보전 한*일*대만 국제심포지움"],[2007,3,22,"한국화학시험연구원 영남지역본부 설립"],[2012,3,22,"한국화학연구원 신화학실용화센터 개소"],[1972,3,23,"현대조선 울산공장 착공"],[2015,3,23,"여성가족개발원 개원식"],[2006,3,24,"국립수산과학원 고래연구소 울산 이전"],[2014,3,24,"언양하수관거부설 임대형 민자사업 준공"],[2015,3,24,"창조시정을 위한 「시민과의 대화」"],[2011,3,25,"국도변 화물자동차정류장(휴게소) 준공"],[2020,3,25,"율리~삼동간 도로개설 개통식"],[2014,3,26,"신항만부두 연결도로 개설공사 준공"],[2018,3,26,"울산가정법원 개원"],[2002,3,27,"중소기업종합지원센터 개원"],[2014,3,27,"6․25 및 월남전 참전기념탑 제막행사"],[2018,3,27,"수소전기하우스 개소 및 넥소수소차 전달"],[2018,3,27,"울산산학융합지구 준공"],[2000,3,28,"중국 광저우시와 우호협력 조인"],[1966,3,29,"태화교 준공"],[2012,3,29,"2차전지 핵심소재 생산공장 준공((주)엘바텍)"],[2016,3,29,"울산 온산 시가지 우회 공단 진입도로 개통"],[2023,3,29,"산재전문 공공병원 건립 착공"],[2024,3,29,"양성자치료센터 건립 공동혐력 업무협약 체결"],[2004,3,30,"기독교방송(CBS) 울산방송 개국"],[2016,3,30,"내일설계지원센터 개소식"],[1966,3,31,"태화사지 십이지상 사리탑을 보물 제441호로 지정"],[2015,3,31,"울산여성기업종합지원센터 확장 개소"],[2022,3,31,"남목도서관 개관"],[1970,4,1,"울산어음교환소 개설"],[2004,4,1,"동울산세무서 개청"],[2019,4,1,"남북교류 100분 토론회"],[2015,4,2,"청량율리 공공주택지구 조성사업 준공"],[2025,4,2,"울산광역시 RISE 위원회 및 협약식"],[2014,4,3,"울산대교 상량식 개최"],[2015,4,6,"방사선비상계획구역 30km로 잠정결정"],[2013,4,7,"문수스쿼시경기장 준공"],[2023,4,7,"화물자동차 수소 충전소 구축사업 준공"],[2015,4,8,"울산시-ETRI 공동연구실 개소"],[2022,4,8,"중구야구장 준공"],[2020,4,9,"코로나19 위기 극복을 위한 「울산 큰 두레」 창단 회의"],[2025,4,9,"현대자동차(주) 수소연료전지 공장 신설 업무협약"],[1968,4,10,"울산민간방송(UBC) 정규방송 시작"],[1982,4,10,"변방시동인회 동인지『변방』창간"],[2015,4,10,"「울산 엔젤투자 매칭펀드」 업무협약 체결"],[2000,4,11,"울산기능대학교 개교"],[2013,4,12,"동서석유화학(주) 울산공장 증설 준공"],[2023,4,12,"울산상천물류단지 조성사업 투자 업무협약"],[1973,4,13,"비철금속제련사업 육성계획 발표"],[2006,4,13,"울산대공원 2차시설 개장"],[2021,4,14,"2022년 제20차 세계한상(韓商)대회 개최지 선정"],[1947,4,15,"삼남면 면양장에 귀환동포 입주 시작"],[1991,4,15,"초대 울산시의회, 울산군의회 개원"],[2018,4,16,"어린이테마파크 준공"],[2025,4,16,"울산어린이청소년도서관 개관식"],[2022,4,19,"부울경 특별연합 협약식"],[2023,4,19,"고에너지정밀가공기술센터 개소"],[1964,4,20,"부산지방해운국 울산출장소 개설"],[1973,4,20,"건설부, 울산 어업전진기지 착공"],[2015,4,20,"울산시-울산상의-세계한인무역협회 ‘경제협력 MOU’"],[2016,4,20,"창업가와 함께하는 통통대화"],[2018,4,20,"매곡진입도로 확장공사 준공"],[2023,4,20,"자동차부품생산시설 신설 투자협약 체결"],[2020,4,21,"회야하수처리시설 증설사업 준공식"],[2010,4,22,"카자흐스탄 카라간디주와 우호협력 조인"],[2016,4,22,"공공데이터 활용 창업지원을 위한 MOU 체결"],[2016,4,22,"세계한인무역협회(OKTA) 세계대표자대회 개최"],[2008,4,24,"시 자원봉사센터 개소"],[2014,4,24,"울산 ~ 장춘 자매결연 20주년 기념행사 대표단 파견"],[2024,4,24,"현대자동차(주) 하이퍼캐스팅 공장 신설 투자양해각서 체결"],[1969,4,25,"『울산문학』 창간"],[2002,4,25,"국제여객터미널 개장 및 여객선 취항"],[2010,4,26,"일본 구마모토시와 우호협력 조인"],[2018,4,26,"울산도서관 개관"],[2019,4,26,"'책읽는 울산, 올해의 책' 선포식"],[2021,4,26,"한국인 만 명 게놈 해독완성 선언식"],[2024,4,26,"2024 전국생활체육대축전 개회식"],[2015,4,27,"저차원탄소혁신소재 연구센터 개원식"],[2020,4,27,"화봉공원 공영주차장 준공식"],[2001,4,28,"울산체육공원 및 문수축구경기장 개장"],[2015,4,28,"제2장애인체육관 개관"],[1998,4,29,"시립박물관건립 추진위원회 구성"],[2021,4,29,"울산전시컨벤션센터 개관식"],[2002,4,30,"울산대공원 1차 시설 개장"],[2008,5,1,"북구 중앙도서관 개관"],[2012,5,1,"영남알프스 하늘억새길 준공"],[2015,5,1,"원자력업무 강화 ‘시민안전실’ 신설"],[1975,5,2,"남목정수장 통수식"],[2016,5,2,"울산시-미얀마 만달레이 우호도시 MOU"],[2021,5,3,"울산고용안정지원센터 개소식"],[2022,5,3,"대통령직인수위 울산지역 정책과제 대국민 보고회"],[1973,5,4,"천전리 각석을 국보 제147호로 지정"],[1995,5,4,"근로복지공단 울산지사 개소"],[1992,5,6,"시 여성회관 설치"],[2021,5,6,"울주 반구천 일원 국가지정문화재 명승 지정"],[1966,5,7,"울산세관 승격"],[2024,5,7,"성안동 청년희망주택 입주식"],[1970,5,8,"종합운동장 메인스타디움 1식 완공"],[2016,5,9,"국가산단 지원 ‘울산종합비즈니스센터’ 준공"],[2016,5,9,"울산시-삼성SDI, 2차전지 3조원 투자 MOU"],[2024,5,9,"전기차 모듈화 부품공장 신설 투자양해각서 체결"],[2025,5,9,"(주)카프로 수소출하센터 준공식"],[2018,5,11,"장생포순환도로 확장공사 준공"],[2020,5,11,"태화강 국가정원 실개천 유지수통수식"],[2015,5,13,"강동리조트(워터파크) 조성을 위한 업무협약"],[2025,5,13,"국가산업단지 통합안전관리센터 준공식"],[1962,5,14,"울산 인구 50만을 목표로 한 도시계획 수립"],[2020,5,14,"수소산업 육성 3대사업 업무 협약식"],[2019,5,15,"태화강 백리대숲 조성사업 참여 협약식"],[2023,5,15,"중앙병원·울산병원 지역응급의료센터 추가지정"],[2023,5,16,"제52회 전국소년체전(5.27.~30.) 및 제17회 전국장애학생체전(5.16.~19.) 개최"],[2020,5,18,"울산콘텐츠코리아랩 개소식"],[2010,5,19,"정부석유비축기지 준공"],[2015,5,20,"에너지경제연구원 울산청사 이전"],[2015,5,21,"규제개혁 평가 전국 ‘최우수’ 지자체 선정"],[2025,5,21,"울산 암모니아벙커링 규제자유특구 지정"],[1966,5,22,"울산항 제1부두 준공"],[2014,5,22,"해양안전벨트 구축 업무협약 체결"],[2025,5,22,"분산에너지 특화지역 후보지 선정"],[1989,5,23,"이종주 고신왕지 및 이임 무과홍패를 보물 제1006호로 지정"],[2013,5,23,"농소 수질복원사업소 기공식 개최"],[2016,5,23,"SK어드밴스드 PDH 플랜트 준공식"],[2023,5,23,"울산성암소각장 1,2호기 재건립사업 기공식"],[2024,5,23,"울산시–창춘시, 자매도시 체결 30주년 기념식"],[2016,5,26,"S-OIL 석유화학복합시설 프로젝트 기공식"],[1980,5,27,"한국은행 울산지점 개설"],[2013,5,27,"시정 홍보관 개관"],[2021,5,27,"자치경찰위원회 출범식"],[1991,5,29,"동구보건소 개소"],[2009,5,29,"울산농수산물종합유통센터 개장"],[2015,5,29,"울산대교 준공"],[2008,5,30,"울산암각화전시관 개관"],[2013,5,30,"태화루 건립 상량식 개최"],[2005,5,31,"장생포고래박물관 개관"],[2019,5,31,"제24회 바다의날 기념식"],[1952,6,1,"교육자치제 실시, 울산교육구청 개청"],[1962,6,1,"울산시 승격(법령 제1068호), 홍승순 초대 울산시장 취임"],[1973,6,1,"울산외항(미포항) 개항"],[1975,6,1,"시민의 날 제정 및 시화(배꽃)․시목(은행) 제정"],[1991,6,1,"처용문화제 개최(울산공업축제를 처용문화제로 명칭변경)"],[2002,6,1,"2002월드컵 울산지역 첫경기(우루과이-덴마크 전) 개최"],[2007,6,1,"울산대공원 곤충생태관 개관"],[2011,6,1,"KIER(한국에너지기술연구원)-UNIST 울산 차세대 전지 원천기술센터 개소"],[2015,6,1,"공동주택관리지원센터 개소"],[2015,6,1,"제33회 전국연극제"],[2023,6,1,"울산공업축제 개막"],[2002,6,2,"터키 코자엘리시와 자매결연"],[2016,6,2,"육아종합지원센터 기공식"],[2002,6,3,"브라질 산토스시와자매결연"],[2015,6,3,"UNISDR 방재안전도시 인증 업무협약 체결"],[2016,6,3,"울산시·한국바스프, 안료사업 전담법인 신설 MOU"],[2016,6,3,"망양~덕신 간 도로 준공"],[2014,6,4,"제6회 전국지방동시선거 실시"],[2012,6,5,"한국생산기술연구원 친환경청정기술센터 개소"],[2024,6,7,"에코폴리스 울산선언 20주년 기념식"],[1982,6,8,"울산 YMCA 창설"],[2001,6,9,"대륙간컵 축구대회 개최"],[2004,6,9,"에코폴리스 울산선언"],[2021,6,9,"울산·경남 지역혁신 플랫폼 출범식"],[1998,6,10,"명촌교 확장 개통"],[2016,6,10,"울산시립도서관 건립 기공식"],[2019,6,10,"3D프린팅산업 관련 기업체 대표와의 간담회"],[2019,6,11,"제2실내종합체육관 건립 기공식"],[2020,6,11,"UN방재안전도시 인증, 울산경제자유구역 지정"],[2020,6,11,"故 심완구 전 울산광역시장 시민 영결식"],[2024,6,11,"시청 앞 시내버스 정류소 환경개선 사업 준공식"],[2012,6,12,"울산-우루과이 몬테비데오시 우호협력도시 협약"],[1981,6,13,"동강병원 개원"],[2006,6,14,"울산시립노인복지관 준공"],[2013,6,15,"영남알프스 둘레길 준공"],[2023,6,15,"태화강변 파크골프장 준공"],[2004,6,16,"울산시립노인병원 개원"],[2016,6,16,"日쿠라레 자동차유리 필름 울산공장 증설"],[2025,6,16,"덕하시장~석유화학단지 및 덕정교차로~온산로 도로개설 준공식"],[2005,6,17,"대곡댐 준공"],[2006,6,17,"제35회 전국소년체육대회 및 제1회 태화강 물축제 개최"],[1962,6,18,"김철년 초대 울주군수 취임"],[1981,6,19,"대만 화롄시와 자매결연"],[2015,6,19,"울주 공동차고지 준공"],[2019,6,19,"2019 대한민국 수소엑스포"],[2023,6,19,"옥동 군부대 이전 합의각서 체결(울산시↔국방부)"],[1956,6,20,"보건진료소 설치"],[2002,6,20,"베트남 칸호아성과 자매결연"],[2005,6,20,"제57차 IWC(국제포경위원회) 총회 개막"],[2025,6,20,"울산 AI 데이터센터 출범식"],[2001,6,22,"북구 신청사 개청"],[2011,6,22,"울산박물관 개관"],[1995,6,23,"반구대 암각화를 국보 제285호로 지정"],[2008,6,23,"울산 폐기물 소각장 폐에너지 자원화시설 준공"],[2013,6,23,"2013 국제산업생태학회(ISIE) 콘퍼런스 개최"],[2016,6,23,"울산시·환경부, 물 순환 선도도시 조성 협약 체결"],[2009,6,24,"대곡박물관 개관"],[2021,6,24,"낙동강 유역 통합물관리방안 의결로 운문댐 안전한 먹는물 공급 확정"],[2022,6,24,"2022 세계관광산업컨퍼런스 개최(6. 24.~26.)"],[2010,6,25,"태화강 대공원 준공"],[2015,6,25,"교향악단 미국 뉴욕 연주회"],[2020,6,25,"국가정원교하부 인도교 개통행사"],[1997,6,26,"울산대교 및 접속도로 건설 기본계획 수립"],[2015,6,26,"아시아 첫 3D프린팅 전기차 생산공장 울산 건립 업무협약"],[2024,6,26,"부·울·경 광역철도 조속 추진 3개 시도지사 공동 건의"],[1964,6,27,"울산문화원 창립총회 개최"],[2002,6,27,"『울산광역시사』 발간"],[2016,6,28,"2016 UNIDO 제4차 녹색산업회의(GIC) 개최"],[2018,6,29,"민선 제6대 울산광역시장 이임"],[2016,6,30,"울산·포항·경주 도시공동체 ‘해오름동맹’ 출범"],[2022,6,30,"제7대 울산광역시장 이임"],[1955,7,1,"지방직제 변경으로 소방서를 폐지, 의용소방대 편성"],[1995,7,1,"민선 초대 심완구 울산시장 취임"],[1998,7,1,"민선 제2대 심완구 울산광역시장 취임"],[2006,7,1,"민선 제4대 울산광역시의회 개원"],[2010,7,1,"민선 제5대 박맹우 울산광역시장 취임"],[2010,7,1,"민선 제5대 울산광역시의회 개원"],[2019,7,1,"울산광역시 청년센터 개소식"],[2022,7,1,"제8대 울산광역시장 취임"],[2025,7,1,"울산 뉴비전 선포식"],[1962,7,2,"부산세관 울산출장소 승격"],[1999,7,2,"울산지방경찰청 개청"],[2002,7,2,"민선 제3대 박맹우 울산광역시장 취임"],[2018,7,2,"제7대 울산광역시장 취임"],[2006,7,3,"민선 제4대 박맹우 울산광역시장 취임"],[2003,7,4,"울산광역시노사정협의회 출범"],[2023,7,4,"서울주 소방서 건립 기공식"],[2007,7,5,"울산항만공사 출범"],[2015,7,6,"울산광역정신건강증진센터 개소"],[2020,7,6,"게놈서비스산업 규제자유특구 지정"],[2015,7,8,"시장과 함께하는 통통대화"],[2020,7,8,"덕하공영차고지조성사업준공식"],[1998,7,9,"민선 제2대 울산광역시의회 개원"],[2002,7,9,"제3대 울산광역시의회 개원"],[2013,7,9,"수소타운 조성사업 준공식 개최"],[2003,7,10,"달동문화공원 개장"],[1995,7,11,"민선 제2대 울산시의회 개원"],[1997,7,11,"2016년 울산도시기본계획 수립(인구150만 기준)"],[2013,7,11,"울산 봉계일반산업단지 준공"],[2023,7,11,"울산 수소전기차 검사센터 개소"],[2024,7,11,"울산 분산에너지 지원센터 현판식"],[2025,7,12,"반구천의 암각화 유네스코 세계유산 등재"],[2007,7,13,"울산광역시 10년 기념백서 발간"],[2015,7,13,"울산시청자미디어센터 건립 기공식"],[2016,7,13,"건전한 스마트폰 사용을 위한 U-공감 토크콘서트 개최"],[2018,7,13,"프로야구 올스타전 개최(7.13. ~ 7.14.)"],[2004,7,14,"브랜드슬로건 선포(Ulsan for you)"],[1985,7,15,"울산시 구제(區制) 실시(중․남 2개구 설치), 방어진출장소 설치"],[1997,7,15,"울산광역시 승격, 북구 신설"],[1997,7,15,"시로고 선정"],[2001,7,15,"방어진 체육공원 개장"],[2015,7,15,"창조경제혁신센터 개소식"],[2019,7,15,"농촌형교통모델 마실버스 개통식"],[2019,7,15,"울산사랑상품권 MOU 체결"],[2012,7,16,"울산공업센터 지정 50주년 기념 「울산경제 50년사」 발간"],[2019,7,16,"노동복지센터 준공식"],[2024,7,18,"울산도시철도 1호선 건설사업 타당성 평가 완료"],[1977,7,19,"울산부녀의용소방대 발대"],[2021,7,19,"울주소방서 개서식"],[1966,7,20,"울산 특정 공업지역 확장 지정고시"],[2023,7,20,"국가첨단전략산업 울산 첨단이차전지 특화단지 지정"],[1997,7,21,"울산광역시 선거관리위원회 개청"],[2011,7,21,"용암 폐수종말처리장 준공"],[2022,7,21,"울산광역시 장기요양요원 지원센터 개소"],[2014,7,22,"「울산안전포럼」심포지엄 개최"],[2015,7,22,"울산 화물차공동차고지 준공"],[2019,7,22,"태화강국가정원 지정서 헌정식"],[2013,7,24,"울산대학교병원, 권역외상센터로 선정"],[2025,7,24,"태화강수상스포츠센터 개장식"],[2008,7,25,"울산 장생포 ‘고래문화특구’ 지정"],[2016,7,26,"울산광역시 중소기업제품 전시관 개관식"],[2018,7,26,"어린이테마파크 개관"],[2024,7,26,"지역기업 애로해결 현장간담회와 연계한 월간업무계획 보고회 개최"],[1961,7,29,"농협중앙회 울주군지부 개설"],[2021,7,29,"부울경 특별지방자치단체 합동추진단 개소식"],[2001,7,30,"오토밸리로(산업로 배면도로) 1공구 착공"],[2014,7,30,"남구을 국회의원 보궐선거 실시"],[1946,8,1,"울산상공회 조직"],[1968,8,1,"울산산재보험사무소 울산직업안전소 설치"],[1972,8,1,"울산시 수산업협동조합 개설"],[2013,8,1,"신일반산업단지 조성 공사 준공"],[2015,8,1,"‘뼈로 만든 화살촉 박힌 고래뼈’ 울산 유형문화재 지정"],[2016,8,2,"울산시-인도 첸나이시, 우호협력도시 MOU"],[1984,8,3,"시립도서관 개관"],[2009,8,3,"중국 칭다오시와 우호협력 조인"],[2023,8,7,"이차전지용 부품 생산공장 신설 투자협약 체결"],[2016,8,8,"영남알프스 통합 관광안내시스템 서비스 개시"],[2021,8,9,"박상진 의사 순국 100주년 기념주간 선포식"],[2022,8,9,"울주 현장방사능방재지휘센터 준공"],[2014,8,12,"제1차 울산 생활권발전협의회 개최"],[1945,8,15,"광복, 울산의용소방대 설립, 울산비행장 폐쇄"],[1949,8,15,"지방자치법 시행으로 시․읍․면이 지방자치단체가 됨"],[2012,8,15,"고헌 박상진 의사 기념비 제막"],[2016,8,17,"울산 에너지포럼 출범식"],[2023,8,17,"분산에너지 활성화 추진전략 발표"],[1971,8,20,"강변도로 준공"],[2024,8,21,"2024 울산 세계명문대학 조정 페스티벌 개막식"],[2024,8,22,"울산시립아이돌봄센터 개소식"],[2023,8,23,"울산도시철도 1호선 건설사업 기재부 타당성 재조사 통과"],[1999,8,24,"울산시외버스터미널 삼산동으로 이전"],[2005,8,25,"종합운동장 준공"],[2016,8,25,"‘건강도시 울산’ 홍보판 제막식"],[2021,8,25,"울산권역 장애인 구강진료센터 개소식"],[2020,8,26,"원자력 및 원전해체 에너지산업융복합단지 지정"],[2005,8,27,"문수실내수영장 준공"],[2006,8,27,"중국 우시와 우호협력 조인"],[2014,8,27,"동북아시아지역자치단체연합(NEAR) 국제포럼 참가"],[2019,8,27,"전국최초 지자체 맞춤형 지진방재종합계획 수립 보고회"],[2025,8,27,"(주)GS엔텍 해상풍력 관련 설비 투자 업무협약"],[2015,8,28,"울주세계산악영화제 프레세스티벌 개막"],[2018,8,28,"고등학교 전면 무상급식 확대지원 실시 협약식"],[2020,8,28,"감염병관리지원단 현판식"],[2025,8,28,"AI 데이터센터 기공식 및 AI수도 울산 선포식"],[2019,8,29,"시립미술관 기공식"],[2018,8,30,"현대자동차 태양광 발전사업 협약식"],[1995,8,31,"울산광역시 승격 추진위원회 발족"],[1961,9,1,"읍․면의회 해산, 읍․면 자치제 폐지, 군이 지방자치단체가 됨"],[1963,9,1,"울산항 개항"],[1997,9,1,"ubc울산방송국 개국"],[2009,9,1,"제45회 세계양궁선수권대회 개최"],[2018,9,1,"북부소방서 개서"],[2022,9,1,"태화강역~북울산역 광역철도 사업 기본계획 고시(국토교통부)"],[2023,9,1,"울산경제일자리진흥원 출범"],[2024,9,1,"어린이 시내버스 요금 무료화 시행"],[1963,9,2,"울산상공회의소 창립총회 개최"],[1994,9,2,"2002 월드컵 유치 신청"],[2020,9,2,"울산 씨름 전승·발전을 위한 협력협약식"],[1990,9,4,"번영교 개통"],[2015,9,4,"울산시 사진DB 구축 공개"],[2015,9,4,"울주 보삼마을 영화마을 기념관 개관"],[2018,9,4,"울산안전체험관 개관"],[2024,9,5,"2028울산국제정원박람회 국제원예생산자협회(AIPA) 최종 승인"],[1999,9,6,"유엔아동기금(UNICEF, 유니세프) 협력도시 조인식"],[2016,9,7,"울산지역 이전공공기관 합동채용 설명회"],[1972,9,8,"교통부 울산지방해운국 개국"],[2000,9,8,"경부고속도로 서(西)울산 IC 개통"],[2016,9,9,"울산정보산업진흥원 창립총회"],[2018,9,10,"울산광역시 시민신문고위원회 출범"],[2019,9,10,"울산형 일자리 로드맵 발표"],[1996,9,11,"제125회 도의회 임시회 - 울산광역시 승격건의안 가결"],[2015,9,11,"어린이집 CCTV 의무 설치"],[2006,9,12,"제26회 전국장애인체육대회 개최"],[2013,9,12,"오토밸리로 2공구(송정 IC~농소2 IC)개설 기공식 개최"],[2021,9,13,"옥동~농소 도로개설공사 중 북부순환도로~문수로 구간 부분 개통식"],[2021,9,14,"문수체육관 준공식"],[2022,9,14,"수소연료전지 발전소 신설투자 업무협약 체결"],[2023,9,14,"지방시대 울산비전 선포식"],[2022,9,15,"현대자동차 울산 전기차 전용공장 신설 투자양해각서 체결"],[1978,9,16,"동울산우체국 개설"],[2015,9,17,"울산 권역외상센터 개소식"],[2014,9,18,"동아시아경제교류추진기구(OEAED) 관광부회 참가"],[2018,9,18,"한국소비자원 울산지원 개소"],[2008,9,19,"충렬공 박제상 기념관 개관"],[2014,9,19,"제17회 인천아시아경기대회 개회식 참석"],[2018,9,19,"대왕암 타워주차장 준공"],[2019,9,20,"울산프롬나드페스티벌"],[2006,9,21,"일본 니이가타시와 우호협력 조인"],[2015,9,21,"시-한국도로공사 업무협약 체결"],[2008,9,24,"울산 응원가 선정"],[2020,9,24,"반려동물 문화센터개관식"],[2003,9,25,"북구 문화예술회관 개관"],[2012,9,25,"강동하수처리장 준공"],[2012,9,26,"울산평생교육진흥원 개원"],[1995,9,27,"경부고속철도 울산역 유치 준비위원회 발족"],[2013,9,27,"울산-중국 우시시 자매도시 협정 조인식 개최"],[2024,9,27,"선박통합데이터센터 개소식"],[1977,9,28,"종하실내체육관 개관"],[2019,9,28,"염포부두 선박 화재"],[1992,9,29,"울산시 여성회관 중구 복산2동에서 개관"],[2022,9,29,"옥동~농소(이예로) 전구간 개통"],[2025,9,29,"울산하이드로젠파워2호 발전소 준공식"],[2009,9,30,"외솔 최현배 선생 기념관 준공"],[2010,9,30,"2010 울산세계옹기문화엑스포 개막"],[1963,10,1,"울산항을 출입국항으로 지정 공포"],[2013,10,2,"미포국가산업단지 진입도로 개설공사 준공식 개최"],[2013,10,2,"언양읍성 남문(영화루) 준공"],[2018,10,2,"해오름동맹 원자력 혁신센터 개소"],[1970,10,3,"울산~서울간 고속버스 운행"],[2013,10,4,"융복합기술센터 기공식 개최"],[1995,10,5,"울산종합문화예술회관 개관"],[2011,10,5,"이라크 바스라주와 우호협력 체결"],[2015,10,5,"제50회 전국기능경기대회 울산 개막"],[2015,10,5,"대학생과 함께하는 통통대화"],[2016,10,5,"2층 이하 건축물 내진보강 시 지방세 감면 확대"],[1976,10,6,"울산시 새마을부녀회 결성"],[1984,10,6,"울산공과대학이 울산대학교로 승격 인가"],[2001,10,6,"울산 시티투어 운영 개시"],[2020,10,6,"WHO 고령친화도시인증"],[2021,10,6,"취약노동자 건강증진센터 개소식"],[2023,10,6,"노동화합센터 개소"],[2022,10,7,"제103회 전국체육대회 개최(10. 7.~13.)"],[2001,10,8,"울산시가 제정"],[1968,10,10,"현대자동차 울산공장 준공"],[1997,10,10,"울산대공원 기공"],[2013,10,10,"울산신항 남항부두 조성사업 준공"],[2024,10,10,"2024 울산공업축제 개최"],[2016,10,11,"120 해울이 콜센터 ISO 9001 현판식"],[2023,10,11,"울산 플라스틱 순환경제 상생협력 거버넌스 발대식"],[2001,10,12,"제1회 시민의 날 행사 개최"],[2013,10,12,"태화강 100리길 준공식 및 준공기념 걷기대회"],[2022,10,12,"부울경 초광역 경제동맹 출범 계획 발표"],[1998,10,13,"울산광역시 외자통상본부 서울사무소(현. 울산광역시 서울사무소) 개소"],[2005,10,14,"제86회 전국체육대회 개최"],[2015,10,14,"2015 울산 UNWTO 산악관광회의"],[2012,10,15,"굴화하수처리장 준공"],[2013,10,15,"노벨리스코리아 울산 열간압연공장 준공"],[2014,10,15,"SK Advanced PHD plant 기공식"],[1979,10,16,"울산남부경찰서 개청"],[2006,10,16,"제1회 울산산업주간 행사"],[2025,10,16,"울산시-페르가나주 자매도시 협약식"],[2014,10,17,"2014년 국정감사(안전행정위원회) 수감"],[2013,10,18,"박맹우 울산시장, 제7대 전국시도지사협의회장 선임"],[2016,10,18,"기술발전 거점' 울산과학기술진흥센터 개소"],[2019,10,18,"2019 전국 우수시장박람회"],[2019,10,18,"태화강국가정원 지정 선포식"],[2023,10,18,"이예로 전 구간 완전 개통"],[2011,10,20,"S-oil 온산공장 확장"],[1945,10,21,"울산경찰서 창설"],[1970,10,21,"울산비행장 준공, 울산~서울 1일 2회 왕복 21인승 소형 단발비행기 취항"],[2024,10,21,"울산시 국정감사 실시"],[2018,10,22,"수소선도도시 도약 업무협약 체결"],[2021,10,22,"재난관리자원 통합관리센터 개소식"],[2025,10,22,"현대오일터미널(주) 암모니아 저장시설 및 인프라 증설 투자 협약"],[2015,10,23,"UNIST 스마트센서 연구센터 출범식"],[2020,10,23,"태화강국가정원 은하수다리 명판 제막식"],[2018,10,24,"기업체 미세먼지 저감 자발적 협약"],[1945,10,25,"미군정이 최동룡을 초대 울산군수로 임명"],[2022,10,25,"3D프린팅 제조공정센터 개소"],[2022,10,27,"울산 글로벌게임센터 및 웹툰캠퍼스 개소"],[2010,10,28,"KTX 울산역 개통"],[2015,10,28,"울산대 창조일자리센터 개소"],[2024,10,28,"전국 최초 수소시범도시 준공"],[1968,10,29,"일본 하기시와 자매결연"],[1990,10,30,"시 근로청소년복지회관 설립"],[2007,10,30,"대우버스(주) 울산공장 준공"],[2008,10,30,"회야하수처리장 고도처리시설공사 준공"],[2009,10,30,"용연하수처리장 고도처리시설공사 준공"],[2014,10,30,"창조경제협의회 출범식 및 전체회의 개최"],[2020,10,30,"석유화학공정기술교육원 개원식"],[1969,10,31,"제2부두 준공"],[2012,10,31,"자원회수시설 민간투자사업 준공(성암동 환경자원사업소 내)"],[1963,11,1,"울산 중앙출장소 설치"],[2022,11,1,"제20차 세계한상대회 개최(11. 1.~3.)"],[2016,11,2,"울산 남부권 산업로 확장공사 마무리"],[2024,11,2,"울산 기회발전특구 지정"],[2009,11,3,"외고산 옹기마을 사업 준공 및 옹기문화관 개관"],[2020,11,3,"용암공공폐수처리시설 방류수 재이용 증설(2차)사업 준공식"],[2021,11,3,"제3차 한-러 지방협력 포럼"],[2022,11,3,"자율운항선박 성능실증센터 준공"],[2022,11,4,"고려아연 이차전지 소재 생산 공장 신·증설 투자 협약 체결"],[2004,11,5,"동해-1 가스전 준공"],[2012,11,5,"서덕출 전시관 개관"],[2013,11,5,"바이오화학실용화센터 건립 기공 및 비전 선포식"],[2025,11,5,"차세대 이차전지 상용화 지원센터 개소식"],[2025,11,5,"울산프로야구단 창단 업무협약"],[2014,11,6,"울산화력발전소 4복합화력 준공"],[2024,11,7,"울산 도심융합특구 지정"],[2024,11,7,"종하이노베이션센터 준공식"],[2001,11,8,"중국 옌타이시와 우호협력 조인"],[2018,11,9,"울산 청년창업사관학교 개소"],[2010,11,10,"SB리모티브 전지공장 준공"],[2013,11,11,"울산 스팀 하이웨이 구축사업 준공식 개최"],[2003,11,12,"러시아 톰스크시와 자매결연"],[2015,11,12,"울산자유무역지역 준공식"],[2019,11,13,"동북아오일가스허브 북항사업 투자협약식"],[2020,11,13,"이산화탄소 자원화 규제자유특구 지정"],[2023,11,13,"울산대학교, 글로컬대학30 지정"],[2023,11,13,"현대자동차 전기차 신공장 기공식"],[2025,11,13,"WAVE 2025 울산 세계미래산업박람회 개막식"],[2013,11,14,"울산-체코 모라비아 실레지아 주 ‘우호협력도시’ MOU 체결"],[2020,11,14,"해수자원화기술 연구센터준공식"],[2016,11,15,"주거복지 부담 줄이는 ‘금융지원 업무협약' 체결"],[2021,11,15,"울산재난안전산업지원센터 현판식"],[2021,11,15,"울산국제개발협력센터 개소식"],[2021,11,16,"전국체육대회·전국장애인체육대회 대회조직위원회 창립총회"],[2015,11,17,"ULSAN EXPORT PLAZA 2015"],[1982,11,18,"방어진순환도로 준공"],[2000,11,18,"제1회 망양리 옹기축제 개최(‘11년부터 울산옹기축제로 명칭 변경)"],[2016,11,18,"국가산단 지하매설배관 추가DB 구축 업무 협약 체결"],[2020,11,18,"노동인권센터 개소식"],[2022,11,18,"울산화폐박람회 개최(11. 18.~20.)"],[2015,11,19,"테크노산단 기공식"],[2019,11,19,"중고신입생 무상교복 전액지원 협약식"],[1987,11,20,"미국 포틀랜드시와 자매결연"],[2005,11,21,"이예 선생 공적비 쓰시마에 건립"],[2018,11,21,"버스정보시스템(BIS) 개선사업 완료"],[2005,11,22,"울산대종 준공"],[2015,11,23,"공약이행평가 주민배심원제 도입"],[2009,11,24,"장생포 고래생태체험관 개관"],[2015,11,24,"정주영 현대 창업자 탄생 100주년 기념행사"],[2024,11,25,"울산시-광저우시-현대차 수소생태계 공동협력 추진 업무협약 체결"],[1979,11,26,"태화호텔 개관"],[1999,11,26,"달천농공단지 준공"],[2014,11,26,"강동권 개발사업 투자설명회"],[2015,11,27,"노사발전재단 중장년일자리희망센터 개소"],[1977,11,28,"울산시 위생처리장관리소 설치"],[1967,11,29,"울산소방서 개청1675"],[2022,11,29,"ICT융합 전기추진 스마트 선박 '울산태화'호 명명식"],[2009,11,30,"울산대교 착공"],[1946,12,1,"울산소방대 설치"],[2000,12,1,"시립무용단 창단"],[2003,12,1,"온산소방서 개청"],[2016,12,1,"신재생에너지 융·복합단지 구축사업 준공"],[1991,12,2,"동부경찰서 개청"],[2022,12,2,"울산광역시 탄소중립 지원센터 개소"],[2025,12,2,"전국 최초 수소전기 트랙터 실증 차량 인도식"],[1985,12,3,"국립식물검역소 부산지소 울산출장소 승격"],[1989,12,3,"울산공업전문대학이 울산대학교에서 독립, 울산전문대학으로 교명 변경"],[2015,12,3,"국가예산 2조3천103억 역대 최대 확보"],[2025,12,3,"KTX울산역 복합특화단지 개발사업 기공식"],[1996,12,4,"울산시 노인복지회관 신설"],[1998,12,4,"울산환경선언 및 푸른울산21 선포"],[2015,12,4,"(가칭)‘동해안연구개발특구’공동추진 MOU 체결"],[2013,12,5,"태화강 ‘전국 12대 생태관광지역’ 선정"],[1969,12,6,"국립부산검역소 울산지소가 국립울산검역소로 승격"],[2012,12,6,"광역 스마트 스팀 네트워크 구축사업 준공"],[2016,12,6,"정보산업진흥원 개원식 개최"],[2019,12,6,"신고리 3,4호기 준공기념행사"],[2022,12,6,"법정문화도시 지정"],[2008,12,8,"울산자유무역지역 지정 확정 고시․발표"],[2015,12,10,"울산 인구 120만명 돌파"],[1964,12,11,"대한석유공사 울산정유공장 준공"],[2018,12,11,"십리대밭 먹거리단지 산책로 준공"],[2020,12,11,"함양울산고속도로 밀양-울산 구간 개통식"],[1955,12,12,"부산지방해무청 방어진출장소 개설"],[2016,12,13,"수소택시 시범사업 발대식"],[2022,12,13,"청정(블루) 암모니아 세계 최초 울산항 입항"],[2006,12,14,"울산벤처빌딩 개소"],[2012,12,14,"울산대학교병원 암센터 준공"],[2015,12,14,"여성과 함께하는 통통대화"],[2014,12,15,"유라시아 교류확대를 위한 실무대표단 파견"],[2015,12,15,"KTX울산역 복합환승센터 개발사업 협약체결"],[1977,12,16,"울산지방 해운항만청 개청"],[1984,12,16,"한국방송공사 울산방송국 개국"],[2016,12,16,"울산시청자미디어센터 개관식"],[2016,12,16,"울산 미포산업로 완전개통"],[2020,12,16,"공공보건의료지원단 현판식"],[2022,12,16,"S-OIL 석유화학복합시설 건설 투자 MOU 체결(샤힌 프로젝트)"],[1971,12,17,"제3부두 준공"],[2013,12,17,"시 새 상징물 ‘대나무․장미․백로’ 선정"],[2019,12,17,"열린시민대학 운영협력 MOU 체결"],[2021,12,17,"제1회 울산국제영화제 개막식"],[2025,12,17,"2040년 울산도시기본계획 발표"],[2024,12,18,"제2시립노인복지관 준공식"],[2025,12,18,"태화루(용금소) 스카이워크 설치사업 준공식"],[1997,12,19,"울산시, 2002월드컵 개최도시로 결정"],[1998,12,19,"2002 월드컵 축구전용경기장(문수축구경기장) 건설공사 착공"],[2013,12,19,"울산가정법원 2018년 설치 확정"],[2013,12,19,"삼호철새공원(삼호지구 하천환경정비사업) 준공식 개최"],[2024,12,19,"울산광역시 지역혁신중심 대학지원체계(RISE) 기본계획 수립"],[1988,12,20,"울산향토사연구회 회보 『향토사보』 창간"],[2001,12,20,"신복로터리 고가도로 개통"],[2024,12,20,"KTX-이음 태화강역 첫 운행"],[2015,12,21,"울산국가산업단지(용연~청량IC) 연결도로 준공식"],[2021,12,21,"산업로(신답교~경주시계) 확장공사 신답삼거리~중산교차로 구간 부분 개통식"],[2024,12,21,"울산광역시 시내버스 노선 전면 개편"],[1995,12,22,"울산광역시추진기획단 발족"],[2004,12,22,"태화강 생태공원(1단계) 개장"],[2018,12,22,"울산시민축구단 창단"],[2020,12,22,"동천제방겸용도로개설공사 개통식"],[2021,12,22,"상수도사업본부 중부사업소 신축 준공식"],[2023,12,22,"남부권 광역관광 개발사업 추진 협약 체결"],[2023,12,22,"2024년도 울산시 국가예산 역대 최대 확보 발표"],[2019,12,23,"아이낳고 키우기 좋은 직장 만들기 업무협약"],[2002,12,24,"울산12경 선정"],[2022,12,24,"울산 공공 야외빙상장 개장"],[1970,12,25,"언양면 천전리 강안 암벽에서 암각화 발견"],[1971,12,25,"언양면 대곡리 강안 암벽에서 암각화 발견"],[1975,12,26,"울산시에 건설국 신설"],[1996,12,26,"제182차 임시국회에서 울산광역시 승격 법률안 통과"],[2007,12,26,"울산혁신도시 기공"],[1965,12,27,"사연댐 준공"],[1996,12,27,"울산문인협회, 제1회 울산문학상 시상"],[1963,12,28,"신정~야음 간선가로 준공"],[2011,12,28,"수출 1천억 달러 달성"],[2021,12,28,"동남권 4개 철도건설사업 및 북울산(박상진생가)역 개통식"],[1999,12,29,"울산신항 착공"],[2008,12,29,"울산~부산간 고속도로 개통"],[2015,12,29,"울산~포항(동해) 고속도로 개통식1688"],[2022,12,29,"염포산터널 통행료 전면 무료 발표(2023. 1. 1. 시행)"],[1969,12,30,"사연교 준공"],[1972,12,30,"울주군교육청을 울산시교육청으로 통합"],[1987,12,30,"『울산시사』발간"],[1996,12,30,"해안도로(아산로) 개통"],[1997,12,30,"북부순환도로 개통"],[2020,12,30,"투게더·덕하공영차고지 수소충전소 준공"],[2021,12,30,"동천제방겸용도로(우안제) 정비공사 준공식"],[1962,12,31,"울산 첫 수출(26만 달러)"],[1966,12,31,"부두 진입도로 준공"],[1969,12,31,"대암댐 준공 및 방어진 정수장 준공"],[1977,12,31,"울산 10억달러 수출 달성"],[1983,12,31,"삼산로 개설"],[1992,12,31,"울산 수출 100억달러 달성"]];
+
+(function () {
+  var KST = "Asia/Seoul";
+  var P = new Intl.DateTimeFormat("en-CA", { timeZone: KST, year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date()).split("-").map(Number);
+  var TY = P[0], TM = P[1], TD = P[2], LAYOUT_YEAR = TY;      // 요일 배치는 올해 달력 (2월 29일 항목 없음)
+  var TOTAL = 754;
+
+  /* ---------- 검색 공통 ---------- */
+  var TK = [];
+  function tokens(v) { return v.toLowerCase().split(/\s+/).filter(Boolean).sort(function (a, b) { return b.length - a.length; }); }
+  function matches(str) { str = str.toLowerCase(); for (var i = 0; i < TK.length; i++) if (str.indexOf(TK[i]) < 0) return false; return true; }
+  function esc(t) { return t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+  function hl(node, text) {
+    node.textContent = "";
+    if (!TK.length) { node.appendChild(document.createTextNode(text)); return; }
+    var re = new RegExp("(" + TK.map(esc).join("|") + ")", "gi");
+    text.split(re).forEach(function (part, i) {
+      if (i % 2) { var m = document.createElement("mark"); m.textContent = part; node.appendChild(m); }
+      else if (part) node.appendChild(document.createTextNode(part));
+    });
+  }
+  var evStr = function (e) { return e[0] + " " + e[1] + ". " + e[2] + ". " + e[3]; };
+
+  /* ---------- 달력 ---------- */
+  var month = TM, byMD = {}, host = document.getElementById("days");
+  EV.forEach(function (e) { var k = e[1] + "-" + e[2]; (byMD[k] = byMD[k] || []).push(e); });
+  Object.keys(byMD).forEach(function (k) { byMD[k].sort(function (a, b) { return a[0] - b[0]; }); });
+  var daysIn = function (m) { return new Date(Date.UTC(LAYOUT_YEAR, m, 0)).getUTCDate(); };
+
+  function monthCounts() {
+    var c = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    EV.forEach(function (e) { if (!TK.length || matches(evStr(e))) c[e[1]]++; });
+    return c;
+  }
+  function render() {
+    document.getElementById("mlabel").textContent = month + "월";
+    host.textContent = "";
+    var first = new Date(Date.UTC(LAYOUT_YEAR, month - 1, 1)).getUTCDay(), dim = daysIn(month), total = Math.ceil((first + dim) / 7) * 7, n = 0, hit = 0;
+    for (var i = 0; i < total; i++) {
+      var d = i - first + 1, out = d < 1 || d > dim;
+      var cell = document.createElement("div"); cell.className = "cell" + (out ? " out" : "");
+      var dt = new Date(Date.UTC(LAYOUT_YEAR, month - 1, d)), w = dt.getUTCDay();
+      var num = document.createElement("span");
+      num.className = "num" + (!out && month === TM && d === TD ? " today" : w === 0 ? " sun" : w === 6 ? " sat" : "");
+      num.textContent = String(dt.getUTCDate());
+      cell.appendChild(num);
+      if (!out) {
+        var chips = document.createElement("div"); chips.className = "chips";
+        (byMD[month + "-" + d] || []).forEach(function (e) {
+          var ok = !TK.length || matches(evStr(e));
+          var c = document.createElement("span"); c.className = "chip" + (TK.length ? (ok ? " hit" : " dim") : "");
+          var b = document.createElement("b"); b.textContent = e[0]; c.appendChild(b);
+          var t = document.createElement("span"); hl(t, e[3]); c.appendChild(t);
+          chips.appendChild(c); n++; if (ok) hit++;
+        });
+        cell.appendChild(chips);
+      }
+      host.appendChild(cell);
+    }
+    document.getElementById("mcount").textContent = month + "월 · " + n + "건" + (TK.length ? " (검색 " + hit + "건)" : "");
+    var cnt = monthCounts(), tabs = document.querySelectorAll("#mtabs button");
+    for (var t = 0; t < tabs.length; t++) {
+      var b = tabs[t], m = t + 1;
+      b.classList.toggle("on", m === month);
+      b.classList.toggle("zero", TK.length > 0 && cnt[m] === 0);
+      var old = b.querySelector(".bd"); if (old) b.removeChild(old);
+      if (TK.length && cnt[m]) { var s = document.createElement("span"); s.className = "bd"; s.textContent = cnt[m]; b.appendChild(s); }
+    }
+  }
+  function flip(dir) { host.classList.remove("flip-next", "flip-prev"); void host.offsetWidth; host.classList.add(dir > 0 ? "flip-next" : "flip-prev"); }
+  function go(dm) { month = ((month - 1 + dm + 12) % 12) + 1; render(); flip(dm); }
+  function jump(m) { if (m === month) return; var dir = m > month ? 1 : -1; month = m; render(); flip(dir); }
+
+  var tabsEl = document.getElementById("mtabs");
+  for (var m = 1; m <= 12; m++) (function (m) {
+    var b = document.createElement("button"); b.type = "button"; b.textContent = m + "월";
+    b.addEventListener("click", function () { jump(m); }); tabsEl.appendChild(b);
+  })(m);
+  document.getElementById("pm").addEventListener("click", function () { go(-1); });
+  document.getElementById("nm").addEventListener("click", function () { go(1); });
+  document.getElementById("tod").addEventListener("click", function () { jump(TM); });
+
+  var box = document.querySelector(".cal"), x0 = 0, y0 = 0, on = false;
+  box.addEventListener("touchstart", function (e) { if (e.touches.length !== 1) { on = false; return; } on = true; x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+  box.addEventListener("touchend", function (e) {
+    if (!on) return; on = false;
+    var t = e.changedTouches[0], dx = t.clientX - x0, dy = t.clientY - y0;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) go(dx < 0 ? 1 : -1);
+  }, { passive: true });
+
+  /* ---------- 목록 ---------- */
+  var q = document.getElementById("q"), cnt = document.getElementById("cnt");
+  var items = Array.prototype.slice.call(document.querySelectorAll(".it"));
+  var secs = Array.prototype.slice.call(document.querySelectorAll(".dec"));
+  var orig = items.map(function (li) { return li.querySelector(".tx").textContent; });
+  function runList() {
+    var shown = 0;
+    items.forEach(function (li, i) {
+      var full = li.querySelector(".yy").getAttribute("data-y") + " " + li.querySelector(".dt").textContent + " " + orig[i];
+      var hit = !TK.length || matches(full);
+      li.classList.toggle("hide", !hit);
+      hl(li.querySelector(".tx"), orig[i]);
+      if (hit) shown++;
+    });
+    secs.forEach(function (s) { s.style.display = s.querySelector(".it:not(.hide)") ? "" : "none"; });
+    return shown;
+  }
+
+  /* ---------- 검색 입력 ---------- */
+  function onSearch(jumpToHit) {
+    TK = tokens(q.value);
+    var shown = runList(), c = monthCounts();
+    if (jumpToHit && TK.length && c[month] === 0) {
+      for (var k = 1; k <= 12; k++) { var m2 = ((month - 1 + k) % 12) + 1; if (c[m2]) { month = m2; break; } }
+    }
+    render();
+    if (!TK.length) { cnt.textContent = "전체 " + TOTAL + "건"; return; }
+    var inCal = 0; for (var m = 1; m <= 12; m++) inCal += c[m];
+    cnt.textContent = "";
+    cnt.appendChild(document.createTextNode("검색 결과 " + shown + "건 · 달력 " + inCal + "건 · 일자 미상 " + (shown - inCal) + "건"));
+    if (shown) { var a = document.createElement("a"); a.href = "#list"; a.textContent = "목록 보기 ↓"; cnt.appendChild(a); }
+  }
+  q.addEventListener("input", function () { onSearch(true); });
+  q.addEventListener("keydown", function (e) { if (e.key === "Enter") { var el = document.getElementById("list"); if (TK.length && el) el.scrollIntoView({ behavior: "smooth" }); } });
+  onSearch(false);
+})();
+</script>
+</body>
+</html>

@@ -32,6 +32,7 @@
   section { margin-top: 56px; }
   .sec-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 18px; }
   .sec-name { font-weight: 800; font-size: 13px; color: var(--purple); letter-spacing: .1em; white-space: nowrap; }
+  .sec-name.ko { font-size: 15px; letter-spacing: .04em; }
   .sec-line { flex: 1; height: 1px; background: var(--border); }
   .sec-tools { display: flex; gap: 8px; }
 
@@ -41,10 +42,9 @@
   .today-line { font-size: 22px; font-weight: 800; margin: 0 0 16px; letter-spacing: -0.01em; }
   .today-line .tri { color: var(--blue); margin-right: 6px; }
   .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 12px; }
-  .tile { background: #fff; border-radius: 14px; padding: 14px 16px; box-shadow: 0 8px 22px rgba(20,30,70,.08); }
+  .tile { background: #fff; border-radius: 14px; padding: 10px 14px; box-shadow: 0 8px 22px rgba(20,30,70,.08); }
   .tile .lab { font-size: 11px; font-weight: 700; color: var(--soft); letter-spacing: .04em; line-height: 1.4; }
-  .tile .val { font-size: 13px; font-weight: 800; margin-top: 6px; }
-  .tile .sub { font-size: 10px; color: var(--muted); margin-top: 2px; min-height: 14px; }
+  .tile .val { font-size: 13px; font-weight: 800; margin-top: 3px; }
   .today-note { font-size: 13px; color: var(--muted); margin-top: 6px; line-height: 1.7; }
 
   /* nav + filters */
@@ -67,6 +67,12 @@
   .filters input { accent-color: var(--blue); width: 15px; height: 15px; margin: 0; }
 
   /* grid */
+  .cal { touch-action: pan-y; }
+  .days { transform-origin: 50% 0; }
+  .days.flip-next { animation: flipNext .38s ease; }
+  .days.flip-prev { animation: flipPrev .38s ease; }
+  @keyframes flipNext { from { opacity: .25; transform: perspective(900px) rotateY(-14deg) translateX(36px); } to { opacity: 1; transform: none; } }
+  @keyframes flipPrev { from { opacity: .25; transform: perspective(900px) rotateY(14deg) translateX(-36px); } to { opacity: 1; transform: none; } }
   .cal { background: #fff; border-radius: 16px; box-shadow: 0 20px 50px rgba(20,30,70,.14); overflow: hidden; }
   .dows, .days { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
   .dows div { text-align: center; font-size: 12px; font-weight: 800; letter-spacing: .08em; padding: 11px 0; color: #4A5170; border-bottom: 1px solid var(--border); background: #F7F8FD; }
@@ -171,7 +177,7 @@
     table.dd th:nth-child(1), table.dd td:nth-child(1) { padding-left: 4px; }
     .today-line { font-size: 18px; }
   }
-  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
 </head>
 <body>
@@ -185,11 +191,11 @@
   </section>
 
   <section id="s-tide">
-    <div class="sec-head"><span class="sec-name">▷ 물때와 태풍 정보</span><span class="sec-line"></span></div>
+    <div class="sec-head"><span class="sec-name ko">물때와 태풍 정보</span><span class="sec-line"></span></div>
     <div class="card hist">
-      <div class="lbl"><span class="tri">▷</span><a href="https://www.khoa.go.kr/hightide/" target="_blank" rel="noopener noreferrer">국립해양조사원 실시간 고조정보</a></div>
-      <div class="lbl"><span class="tri">▷</span><a href="https://www.badatime.com/214/tide" target="_blank" rel="noopener noreferrer">BaDa TIME 울산 물때</a></div>
-      <div class="lbl"><span class="tri">▷</span><a href="https://www.typhooncommittee.org/index.php?route=product/category&amp;path=73_87" target="_blank" rel="noopener noreferrer">태풍위원회 태풍이름</a></div>
+      <div class="lbl"><a href="https://www.khoa.go.kr/hightide/" target="_blank" rel="noopener noreferrer">국립해양조사원 실시간 고조정보</a></div>
+      <div class="lbl"><a href="https://www.badatime.com/214/tide" target="_blank" rel="noopener noreferrer">BaDa TIME 울산 물때</a></div>
+      <div class="lbl"><a href="https://www.typhooncommittee.org/index.php?route=product/category&amp;path=73_87" target="_blank" rel="noopener noreferrer">태풍위원회 태풍이름</a></div>
     </div>
   </section>
 
@@ -241,6 +247,7 @@
   <section id="s-hist">
     <div class="sec-head"><span class="sec-name">▣ TODAY IN HISTORY</span><span class="sec-line"></span></div>
     <div class="card hist" id="hist"></div>
+    <div class="card hist" style="margin-top:14px"><div class="lbl"><a href="/ulsantimeline.html">울산연대표</a></div></div>
   </section>
 </div>
 
@@ -536,6 +543,11 @@ function yearData(y) {
     else slot(key(y, r[0], r[1])).mem.push({ n: r[2] });
   }
   }
+  // 월력요항에 없는 추가 기념일
+  slot(key(y, 4, 28)).mem.push({ n: "원불교 대각개교절" });
+  slot(key(y, 9, 14)).mem.push({ n: "삼복자 장대벌 순교" });
+  { const ur = find(7, 15); if (ur) slot(key(y, ur[0], ur[1])).mem.push({ n: "우란분절(백중)" }); }
+  { const ea = easterOf(y); if (ea) slot(key(y, ea[1], ea[2])).mem.push({ n: "부활절" }); }
   // 울산 기념일
   for (const r of ULSAN_DAYS) slot(key(y, r[0], r[1])).ul.push({ n: r[2] });
 
@@ -561,6 +573,15 @@ function yearData(y) {
     for (const r of LJ) if (r[0] === l.m && r[1] === kind) J(key(y, m, d), r[2], r[3]);
   }
   return (YC[y] = M);
+}
+
+/* 부활절: 춘분 이후 첫 보름달이 지나 맞는 첫 일요일 (교회 표준 계산법, 양력 3월 22일~4월 25일) */
+function easterOf(y) {
+  const a = y % 19, b = Math.floor(y / 100), c = y % 100, d = Math.floor(b / 4), e = b % 4;
+  const f = Math.floor((b + 8) / 25), g = Math.floor((b - f + 1) / 3), h = (19 * a + b - d - g + 15) % 30;
+  const i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7, m = Math.floor((a + 11 * h + 22 * l) / 451);
+  const mo = Math.floor((h + l - 7 * m + 114) / 31), da = ((h + l - 7 * m + 114) % 31) + 1;
+  return [y, mo, da];
 }
 
 /* 울산 장날·마트 휴업 */
@@ -627,19 +648,19 @@ function renderToday() {
   const monthIdx = (() => { for (let i = 0; i < 60; i++) if (i % 10 === mp.stem && i % 12 === mp.br) return i; return 0; })();
   const hj = hijriYear(t.y, t.m, t.d);
   const tiles = [
-    ["회기", "Islamic Era", hj ? hj + "년" : "—", "Hijri"],
-    ["불기", "Buddhist Era", (t.y + 544) + "년", ""],
-    ["공기", "Confucius Era", (t.y + 551) + "년", ""],
-    ["단기", "Dangun Era", (t.y + 2333) + "년", ""],
-    ["음력", "Lunar Calendar", (l.leap ? "윤 " : "") + l.m + "월 " + l.d + "일", ""],
-    ["세차", "Yearly Cycle", pillarK(yp) + "년", pillarH(yp) + "年"],
-    ["월건", "Monthly Cycle", pillarK(monthIdx) + "월", pillarH(monthIdx) + "月"],
-    ["일진", "Daily Cycle", pillarK(dp) + "일", pillarH(dp) + "日"]
+    ["음력", "Lunar Calendar", (l.leap ? "윤 " : "") + l.m + "월 " + l.d + "일"],
+    ["세차", "Yearly Cycle", pillarK(yp) + "년(" + pillarH(yp) + "年)"],
+    ["월건", "Monthly Cycle", pillarK(monthIdx) + "월(" + pillarH(monthIdx) + "月)"],
+    ["일진", "Daily Cycle", pillarK(dp) + "일(" + pillarH(dp) + "日)"],
+    ["회기", "Islamic Era", hj ? hj + "년" : "—"],
+    ["불기", "Buddhist Era", (t.y + 544) + "년"],
+    ["공기", "Confucius Era", (t.y + 551) + "년"],
+    ["단기", "Dangun Era", (t.y + 2333) + "년"]
   ];
   const grid = el("div", "tiles");
-  for (const [a, b, v, s] of tiles) {
+  for (const [a, b, v] of tiles) {
     const c = el("div", "tile");
-    c.append(el("div", "lab", a + " (" + b + ")"), el("div", "val", v), el("div", "sub", s));
+    c.append(el("div", "lab", a + " (" + b + ")"), el("div", "val", v));
     grid.append(c);
   }
   root.append(grid);
@@ -934,7 +955,7 @@ const HIST = [
 function renderHist() {
   const box = document.getElementById("hist"); box.textContent = "";
   for (const [t, u] of HIST) {
-    const l = el("div", "lbl"); l.append(el("span", "tri", "▷"), link(u, t));
+    const l = el("div", "lbl"); l.append(link(u, t));
     box.append(l);
   }
 }
@@ -944,14 +965,28 @@ function renderAll(full) {
   renderGrid(); renderDday(); renderCele(); renderUlsan(); renderMarket();
   if (full !== false) { renderToday(); renderHist(); }
 }
+function flip(dir) {
+  const host = document.getElementById("days");
+  host.classList.remove("flip-next", "flip-prev"); void host.offsetWidth;
+  host.classList.add(dir > 0 ? "flip-next" : "flip-prev");
+}
 function go(dy, dm) {
   let y = view.y + dy, m = view.m + dm;
   while (m < 1) { m += 12; y--; } while (m > 12) { m -= 12; y++; }
   y = Math.min(2099, Math.max(1901, y));
   view.y = y; view.m = m;
   const dd = Math.min(sel.d, dimOf(y, m)); sel.y = y; sel.m = m; sel.d = dd;
-  renderAll(false);
+  renderAll(false); flip(dy * 12 + dm);
 }
+(function swipe() {
+  const box = document.querySelector(".cal"); let x0 = 0, y0 = 0, on = false;
+  box.addEventListener("touchstart", e => { if (e.touches.length !== 1) { on = false; return; } on = true; x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+  box.addEventListener("touchend", e => {
+    if (!on) return; on = false;
+    const t = e.changedTouches[0], dx = t.clientX - x0, dy = t.clientY - y0;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) go(0, dx < 0 ? 1 : -1);
+  }, { passive: true });
+})();
 document.getElementById("py").addEventListener("click", () => go(-1, 0));
 document.getElementById("pm").addEventListener("click", () => go(0, -1));
 document.getElementById("nm").addEventListener("click", () => go(0, 1));
