@@ -39,10 +39,10 @@
   .card { background: #fff; border-radius: 16px; box-shadow: 0 12px 30px rgba(20,30,70,.10); padding: 22px 26px; }
 
   /* TODAY */
-  .today-line { font-size: 22px; font-weight: 800; margin: 0 0 16px; letter-spacing: -0.01em; }
-  .today-line .tri { color: var(--blue); margin-right: 6px; }
+  .today-line { font-weight: 800; font-size: 13px; color: var(--purple); letter-spacing: .1em; margin: 0 0 14px; }
   .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 12px; }
   .tile { background: #fff; border-radius: 14px; padding: 10px 14px; box-shadow: 0 8px 22px rgba(20,30,70,.08); }
+  .tile.leap { grid-column: 3; }
   .tile .lab { font-size: 11px; font-weight: 700; color: var(--soft); letter-spacing: .04em; line-height: 1.4; }
   .tile .val { font-size: 13px; font-weight: 800; margin-top: 3px; }
   .today-note { font-size: 13px; color: var(--muted); margin-top: 6px; line-height: 1.7; }
@@ -160,6 +160,7 @@
     .wrap { padding: 36px 16px 80px; }
     h1 { font-size: 30px; }
     .tiles { grid-template-columns: repeat(2, 1fr); }
+    .tile.leap { grid-column: auto; }
     .cell { min-height: 84px; padding: 4px 2px; align-items: stretch; }
     .ctop { flex-direction: column; align-items: center; gap: 0; }
     .lun { font-size: 9px; }
@@ -174,7 +175,6 @@
     .drow, .lrow { grid-template-columns: 82px 1fr; }
     .card { padding: 18px 16px; }
     table.dd th:nth-child(1), table.dd td:nth-child(1) { padding-left: 4px; }
-    .today-line { font-size: 18px; }
   }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
@@ -190,7 +190,7 @@
   </section>
 
   <section id="s-tide">
-    <div class="sec-head"><span class="sec-name ko">▷Tide-Time&Typoon</span><span class="sec-line"></span></div>
+    <div class="sec-head"><span class="sec-name">▷TIDE-TIME&amp;TYPHOON</span><span class="sec-line"></span></div>
     <div class="card hist">
       <div class="lbl"><a href="https://www.khoa.go.kr/hightide/" target="_blank" rel="noopener noreferrer">국립해양조사원 실시간 고조정보</a></div>
       <div class="lbl"><a href="https://www.badatime.com/214/tide" target="_blank" rel="noopener noreferrer">BaDa TIME 울산 물때</a></div>
@@ -222,7 +222,7 @@
   </section>
 
   <section id="s-dday">
-    <div class="sec-head"><span class="sec-name">▷D-DAY</span><span class="sec-line"></span>
+    <div class="sec-head"><span class="sec-name">▷ D-DAY</span><span class="sec-line"></span>
       <div class="sec-tools"><button class="btn small" id="editbtn" type="button">편집</button></div>
     </div>
     <div class="card" id="dday"></div>
@@ -574,6 +574,26 @@ function yearData(y) {
   return (YC[y] = M);
 }
 
+/* 음력 달의 크기: 30일이면 큰달, 29일이면 작은달 */
+function lunarMonthLen(y, m, d) {
+  const l = lunarOf(y, m, d), s0 = addDays(y, m, d, -(l.d - 1)), e = addDays(s0[0], s0[1], s0[2], 29), l2 = lunarOf(e[0], e[1], e[2]);
+  return (l2.d === 30 && l2.m === l.m && l2.leap === l.leap) ? 30 : 29;
+}
+const sizeKo = n => (n === 30 ? "큰달" : "작은달");
+const isLeapYear = y => (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0;
+function nextLeapYear(t) { for (let y = t.y; y < t.y + 9; y++) if (isLeapYear(y) && key(y, 2, 29) > key(t.y, t.m, t.d)) return y; return null; }
+const LEAPC = {};
+function leapMonthsAfter(t, years) {                 // 오늘 이후 years년 동안 시작하는 윤달 (직접 계산)
+  const k = key(t.y, t.m, t.d) + "/" + years;
+  if (LEAPC[k]) return LEAPC[k];
+  const out = [], total = Math.round(years * 365.2425);
+  for (let i = 1; i <= total; i++) {
+    const [yy, mm, dd] = addDays(t.y, t.m, t.d, i), l = lunarOf(yy, mm, dd);
+    if (l.leap && l.d === 1) out.push({ y: yy, m: mm, d: dd, lm: l.m, len: lunarMonthLen(yy, mm, dd) });
+  }
+  return (LEAPC[k] = out);
+}
+
 /* 부활절: 춘분 이후 첫 보름달이 지나 맞는 첫 일요일 (교회 표준 계산법, 양력 3월 22일~4월 25일) */
 function easterOf(y) {
   const a = y % 19, b = Math.floor(y / 100), c = y % 100, d = Math.floor(b / 4), e = b % 4;
@@ -641,28 +661,37 @@ function renderToday() {
   const t = todayKST(), root = document.getElementById("today");
   root.textContent = "";
   const info = dayInfo(t.y, t.m, t.d), l = info.lunar;
-  const line = el("p", "today-line"); line.append(el("span", "tri", "▷"), document.createTextNode("양력: " + t.y + "년 " + t.m + "월 " + t.d + "일(" + DOW_KO[info.w] + ")"));
+  const line = el("p", "today-line", "▷양력: " + t.y + "년 " + t.m + "월 " + t.d + "일(" + DOW_KO[info.w] + ")");
   root.append(line);
   const yp = yearPillar(t.y, t.m, t.d), mp = monthPillar(t.y, t.m, t.d), dp = dayPillar(t.y, t.m, t.d);
   const monthIdx = (() => { for (let i = 0; i < 60; i++) if (i % 10 === mp.stem && i % 12 === mp.br) return i; return 0; })();
   const hj = hijriYear(t.y, t.m, t.d);
+  const nl = nextLeapYear(t), lms = leapMonthsAfter(t, 19), nlm = lms[0];
   const tiles = [
-    ["음력", "Lunar Calendar", (l.leap ? "윤 " : "") + l.m + "월 " + l.d + "일"],
+    ["음력", "Lunar Calendar", (l.leap ? "윤 " : "") + l.m + "월 " + l.d + "일 – (" + sizeKo(lunarMonthLen(t.y, t.m, t.d)) + ")"],
     ["세차", "Yearly Cycle", pillarK(yp) + "년(" + pillarH(yp) + "年)"],
     ["월건", "Monthly Cycle", pillarK(monthIdx) + "월(" + pillarH(monthIdx) + "月)"],
     ["일진", "Daily Cycle", pillarK(dp) + "일(" + pillarH(dp) + "日)"],
     ["회기", "Islamic Era", hj ? hj + "년" : "—"],
     ["불기", "Buddhist Era", (t.y + 544) + "년"],
     ["공기", "Confucius Era", (t.y + 551) + "년"],
-    ["단기", "Dangun Era", (t.y + 2333) + "년"]
+    ["단기", "Dangun Era", (t.y + 2333) + "년"],
+    ["윤년", "Leap Year", nl ? nl + "년" : "—", "leap"],
+    ["윤달", "Leap Month", nlm ? nlm.y + "년 윤" + nlm.lm + "월 (" + sizeKo(nlm.len) + ")" : "—"]
   ];
   const grid = el("div", "tiles");
-  for (const [a, b, v] of tiles) {
-    const c = el("div", "tile");
+  for (const [a, b, v, cls] of tiles) {
+    const c = el("div", "tile" + (cls ? " " + cls : ""));
     c.append(el("div", "lab", a + " (" + b + ")"), el("div", "val", v));
     grid.append(c);
   }
   root.append(grid);
+  const nc = el("div", "card"); nc.style.marginTop = "12px";
+  const n1 = noteBlock("윤년(양력)", ["서기 연수가 4로 나누어 떨어지는 해는 윤년", "단, 100으로 나누어 떨어지나 400으로 나누어 떨어지지 않는 해는 평년"]);
+  n1.style.borderTop = "0"; n1.style.marginTop = "0"; n1.style.paddingTop = "0";
+  const lmTxt = lms.map(x => x.y + "년 윤" + x.lm + "월(" + sizeKo(x.len) + ")").join(", ");
+  const n2 = noteBlock("윤달(음력)", ["19년 7윤법: " + lmTxt + " (오늘 기준 앞으로 19년, 계산값)", "동지 소재월 11월 원칙, 무중치윤법"]);
+  nc.append(n1, n2); root.append(nc);
   const parts = [];
   if (info.term) parts.push("오늘은 " + info.term);
   info.hol.forEach(e => parts.push(e.n)); info.folk.forEach(e => parts.push(e.n));
