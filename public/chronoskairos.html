@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>시간의 인문학 — Kim Sang Yuk</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+  :root { --text:#0B1220; --muted:#6B7290; --soft:#8A90A8; --border:#D7DCEE; --line:#E7EAF4; --blue:#2F5FE0; --purple:#6D4FE0; --red:#D64545; --hover:#EEF1FA; --th:#F3F5FC; }
+  * { box-sizing: border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; min-height:100vh; background:linear-gradient(180deg,#EEF1FA 0%,#E7EBF7 100%); font-family:'Inter','Apple SD Gothic Neo','Malgun Gothic',sans-serif; color:var(--text); }
+  .wrap { max-width:980px; margin:0 auto; padding:56px 32px 120px; }
+  .back-link { display:inline-flex; align-items:center; gap:6px; text-decoration:none; color:#4A5170; font-size:13px; font-weight:600; margin-bottom:40px; transition:color .15s ease; }
+  .back-link:hover { color:var(--blue); }
+  .eyebrow { font-weight:700; font-size:13px; letter-spacing:.14em; margin:0 0 12px; }
+  .eyebrow .blue { color:var(--blue); }
+  h1 { font-size:36px; line-height:1.15; margin:0 0 6px; font-weight:800; letter-spacing:-0.02em; }
+  .subtitle { font-size:15px; color:var(--muted); margin:0 0 6px; line-height:1.6; }
+  .byline { font-size:13px; color:var(--soft); margin:0 0 28px; }
+  .sec-head { display:flex; align-items:baseline; gap:12px; margin-bottom:14px; }
+  .sec-name { font-weight:800; font-size:13px; color:var(--purple); letter-spacing:.1em; }
+  .sec-name.ko { font-size:16px; letter-spacing:.02em; }
+  .sec-line { flex:1; height:1px; background:var(--border); }
+  .totop { font-size:12px; font-weight:700; color:var(--soft); text-decoration:none; white-space:nowrap; }
+  .totop:hover { color:var(--blue); }
+  a:focus-visible { outline:2px solid var(--blue); outline-offset:2px; border-radius:4px; }
+
+  /* 목차 */
+  #toc { scroll-margin-top:16px; background:#fff; border-radius:16px; box-shadow:0 12px 30px rgba(20,30,70,.10); padding:20px 24px 22px; }
+  #toc ol { list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:2px 28px; }
+  #toc a { display:flex; align-items:baseline; gap:10px; padding:8px 8px; border-radius:8px; text-decoration:none; color:#1B2236; font-size:14.5px; font-weight:600; line-height:1.45; }
+  #toc a:hover { background:var(--hover); color:var(--blue); }
+  #toc .n { flex:0 0 22px; text-align:right; font-weight:800; font-size:12.5px; color:var(--purple); }
+
+  /* 섹션 */
+  .sec { margin-top:44px; scroll-margin-top:16px; }
+  .sec > :not(.sec-head) { }
+  .prose, .sec { font-size:14.5px; line-height:1.8; }
+  .prose { background:#fff; border-radius:16px; box-shadow:0 12px 30px rgba(20,30,70,.10); padding:22px 26px; }
+  .prose p { margin:0 0 16px; } .prose p:last-child { margin-bottom:0; }
+  .sec p { margin:10px 0; }
+  ul.bul { list-style:none; margin:0 0 14px; padding:8px 22px; background:#fff; border-radius:16px; box-shadow:0 12px 30px rgba(20,30,70,.08); }
+  ul.bul li { position:relative; padding:9px 0 9px 18px; border-top:1px solid var(--line); }
+  ul.bul li:first-child { border-top:0; }
+  ul.bul li::before { content:"◦"; position:absolute; left:0; top:9px; color:var(--blue); font-weight:800; }
+  .sub { display:block; margin-top:2px; color:var(--muted); font-size:13.5px; }
+  h3.cap { font-size:14px; font-weight:800; margin:22px 0 8px; color:#27407f; }
+  p.src { margin:6px 2px 14px; font-size:13px; color:var(--muted); }
+  p.note { margin:8px 0 16px; padding:12px 16px; background:#fff; border-left:3px solid var(--purple); border-radius:0 10px 10px 0; font-size:13.5px; color:#3b4260; }
+  .zh { font-family:'Noto Serif CJK KR','Noto Serif KR','Batang','Songti SC','SimSun',serif; }
+  .en { font-size:12px; color:var(--muted); }
+  sup, sub { font-size:.75em; line-height:0; }
+
+  /* 시문 */
+  figure.verse { margin:12px 0 18px; padding:14px 20px; background:#fff; border-left:3px solid var(--blue); border-radius:0 12px 12px 0; box-shadow:0 8px 22px rgba(20,30,70,.07); }
+  figure.verse figcaption { font-size:13px; font-weight:800; color:#27407f; margin:0 0 8px; }
+  .vl { padding:3px 0; line-height:1.7; }
+  .vl .ko { display:block; color:var(--muted); font-size:13px; }
+
+  /* 표 */
+  .tw { overflow-x:auto; margin:10px 0 20px; background:#fff; border-radius:14px; box-shadow:0 8px 22px rgba(20,30,70,.08); -webkit-overflow-scrolling:touch; }
+  table { border-collapse:collapse; width:100%; font-size:13.5px; line-height:1.55; }
+  caption { caption-side:top; text-align:left; font-size:13px; font-weight:800; color:#27407f; padding:12px 16px 6px; }
+  th, td { border:1px solid var(--line); padding:7px 10px; text-align:center; vertical-align:middle; }
+  th { background:var(--th); font-weight:800; color:#27407f; white-space:nowrap; }
+  tr:first-child th, tr:first-child td { border-top:0; }
+  table.def td, table.plain td, table.terms td:not(:first-child) { text-align:left; }
+  table.def td:first-child, table.plain td:first-child { text-align:center; white-space:nowrap; }
+  table.def th:last-child, table.def td:last-child { min-width:240px; }
+  table.gan { min-width:560px; }
+  table.gan th { white-space:nowrap; }
+  table.su th { background:var(--th); }
+  table.gua64 td:nth-child(odd) { color:var(--muted); font-weight:700; width:54px; }
+  table.gua64 td:nth-child(even) { text-align:left; }
+  table.gua8 { min-width:520px; }
+  table.wide3 td:last-child { text-align:left; }
+
+  .floatnav { position:fixed; right:18px; bottom:18px; z-index:10; display:flex; flex-direction:column; gap:8px; }
+  .floatnav a { text-decoration:none; font-size:12px; font-weight:800; color:#fff; background:var(--blue); border-radius:999px; padding:9px 14px; box-shadow:0 8px 20px rgba(47,95,224,.35); text-align:center; }
+  .floatnav a:hover { background:#2450c4; }
+
+  @media (max-width:760px) {
+    .wrap { padding:36px 16px 100px; }
+    h1 { font-size:28px; }
+    #toc { padding:14px 12px 16px; }
+    #toc ol { grid-template-columns:1fr; }
+    .prose { padding:18px 16px; }
+    ul.bul { padding:6px 14px; }
+    th, td { padding:6px 6px; }
+    table { font-size:12.5px; }
+  }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior:auto; } * { transition:none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back-link" href="/">&larr; KIM SANG YUK</a>
+  <p class="eyebrow">CHRONOS <span>&mdash;</span> <span class="blue">KAIROS</span></p>
+  <h1>시간의 인문학</h1>
+  <p class="subtitle">해와 달과 함께하는 시간</p>
+  <p class="byline">김 상 육 · 2026. 11. 11.</p>
+
+  <nav id="toc" aria-label="목차">
+    <div class="sec-head"><span class="sec-name ko">목차</span><span class="sec-line"></span></div>
+    <ol>
+<li><a href="#s-pre"><span class="n">0</span>머리말</a></li>
+<li><a href="#s1"><span class="n">1</span>「천문법」</a></li>
+<li><a href="#s2"><span class="n">2</span>「국가표준법」</a></li>
+<li><a href="#s3"><span class="n">3</span>미터·초(秒)</a></li>
+<li><a href="#s4"><span class="n">4</span>음력과 양력</a></li>
+<li><a href="#s5"><span class="n">5</span>윤년·윤달·윤초</a></li>
+<li><a href="#s6"><span class="n">6</span>24절기</a></li>
+<li><a href="#s7"><span class="n">7</span>명절과 세시풍속</a></li>
+<li><a href="#s8"><span class="n">8</span>태극과 음양, 오행과 오성</a></li>
+<li><a href="#s9"><span class="n">9</span>오행의 상생과 상극</a></li>
+<li><a href="#s10"><span class="n">10</span>주역 64괘</a></li>
+<li><a href="#s11"><span class="n">11</span>간지干支와 역법曆法</a></li>
+<li><a href="#s12"><span class="n">12</span>역법의 역사와 역리학</a></li>
+<li><a href="#s13"><span class="n">13</span>일주일 또는 칠요(七曜)</a></li>
+<li><a href="#s14"><span class="n">14</span>칭원법稱元法</a></li>
+<li><a href="#s15"><span class="n">15</span>뉴밀레니엄</a></li>
+<li><a href="#s16"><span class="n">16</span>국제 시간</a></li>
+<li><a href="#s17"><span class="n">17</span>조석간만과 물 때</a></li>
+<li><a href="#s18"><span class="n">18</span>비와 가뭄, 장마와 태풍</a></li>
+<li><a href="#s19"><span class="n">19</span>별자리</a></li>
+    </ol>
+  </nav>
+
+<section class="sec" id="s-pre"><div class="sec-head"><span class="sec-name ko">머리말</span><span class="sec-line"></span><a class="totop" href="#toc">↑ 목차</a></div><div class="prose"><p>미래는 불확실하다.<br>현재는 찰나만큼 정지되어 있다.<br>과거는 끊임없이 변한다.<br>오늘에 정확히 대응되는 과거의 오늘은 없다.</p>
+<p>시간이란 무엇인가? 물리학의 문제이고, 역사학의 과제이다.<br>천문역법! 자연과학과 인문과학의 접점이다.<br>사마천은 천문학자이자 역사학자였다.<br>하늘과 시간을 모르면 역사 서술과 사건 이해가 불가능하다.</p>
+<p>『이아尔雅』에서 한 해를 말하길,<br>“하夏는 세歲, 상商은 사祀, 주周는 연年, 당唐은 재载”라고 했다.<br>시간은 공간 속의 움직임이자, 세상 속의 사람 활동이다.<br>한번 가면 돌아오지 않는다고 하지만,<br>사람이 이름을 붙인 시간은 시대가 지나 다시 돌아온다.</p>
+<p>중국 원, 명과 고려, 조선 칠정산에서도 채택한 수시력(授時曆)!<br>경수민시(敬授民時)라는 『사기』 「오제본기」의 문장에서 유래했다.<br>백성에게 시간변화를 알려 농사에 잘못이 없도록 역법을 준다는 의미이다.<br>1280년 나온 것으로 그레고리력 1년과 꼭 같으나 300년 앞선 것이었다.<br>300년은 긴 시간이었지만, 영원한 승리를 보장하기에는 극히 짧았다.</p>
+<p>중국의 황제는 우리나라가 무엇을 독자적으로 하는 것을 가장 싫어했을까?<br>국호인가? 왕위인가? 연호인가? 글자인가? 역법인가?<br>중국의 연호를 사용하라는 압력은 단순히 자존심 싸움이었을까?<br>중국의 달력에만 의지하여 우리 천문과학의 발전을 포기하라는 의도였을까?</p>
+<p>태초(BC104~101)에 고조선(BC2333~108)은 이미 없었다.<br>국가 간의 총성 없는 역사전쟁이 지금도 계속되고 있다.<br>그 역사전쟁은 도시와 마을에서도 일어나고 있다.</p></div></section>
+<section class="sec" id="s1"><div class="sec-head"><span class="sec-name ko">1. 「천문법」</span><span class="sec-line"></span><a class="totop" href="#toc">↑ 목차</a></div>
+<div class="tw"><table class="def"><tr><th>용어</th><th>정의</th></tr><tr><td><b>천문역법</b></td><td>천체운행의 계산을 통하여 산출되는 날짜와 천체의 출몰시각 등을 정하는 방법을 말한다.</td></tr><tr><td><b>윤초(閏秒)</b></td><td>지구자전속도의 불규칙성으로 인하여 발생하는 세계시와 세계협시의 차이가 1초 이내로 되도록 보정하여주는 것을 말한다.</td></tr><tr><td><b>그레고리력</b></td><td>1년의 길이를 365.2425일로 정하는 역법체계로서 윤년을 포함하는 양력을 말한다.</td></tr><tr><td><b>윤년</b></td><td>그레고리력에서 여분의 하루인 2월 29일을 추가하여 1년 동안 날짜의 수가 366일이 되는 해를 말한다.</td></tr><tr><td><b>월력요항</b></td><td>관공서의 공휴일, 기념일, 24절기 등의 자료를 표기한 것으로 달력 제작의 기준이 되는 자료를 말한다.</td></tr></table></div>
+<ul class="bul">
+<li>천문역법을 통하여 계산되는 날짜는 양력인 그레고리력을 기준으로 하되, 음력을 병행하여 사용할 수 있다.</li>
+<li>과학기술정보통신부장관은 한국천문연구원으로부터 필요한 자료를 제출받아 매년 6월 말까지 다음 연도의 월력요항을 작성하여 관보에 게재하여야 한다.</li>
+</ul>
+</section>
+<section class="sec" id="s2"><div class="sec-head"><span class="sec-name ko">2. 「국가표준법」</span><span class="sec-line"></span><a class="totop" href="#toc">↑ 목차</a></div>
+<div class="tw"><table class="def"><tr><th>용어</th><th>정의</th></tr><tr><td><b>국가표준</b></td><td>국가사회의 모든 분야에서 정확성, 합리성 및 국제성을 높이기 위하여 국가적으로 공인된 과학적ㆍ기술적 공공기준으로서 측정표준ㆍ참조표준ㆍ성문표준ㆍ기술규정 등 이 법에서 규정하는 모든 표준을 말한다.</td></tr><tr><td><b>국제표준</b></td><td>국가 간의 물질이나 서비스의 교환을 쉽게 하고 지적ㆍ과학적ㆍ기술적ㆍ경제적 활동 분야에서 국제적 협력을 증진하기 위하여 제정된 기준으로서 국제적으로 공인된 표준을 말한다.</td></tr><tr><td><b>측정표준</b></td><td>산업 및 과학기술 분야에서 물상상태(物象狀態)의 양의 측정단위 또는 특정량의 값을 정의하고, 현시(顯示)하며, 보존 및 재현하기 위한 기준으로 사용되는 물적척도, 측정기기, 표준물질, 측정방법 또는 측정체계를 말한다.</td></tr><tr><td><b>소급성(遡及性)</b></td><td>연구개발, 산업생산, 시험검사 현장 등에서 측정한 결과가 명시된 불확정 정도의 범위 내에서 국가측정표준 또는 국제측정표준과 일치되도록 연속적으로 비교하고 교정(較正)하는 체계를 말한다.</td></tr></table></div>
+<ul class="bul">
+<li>측정단위는 국제단위계에 따라 기본단위와 유도(誘導)단위로 구분한다.</li>
+</ul>
+<h3 class="cap">국가표준기본법 시행령 별표1 : 기본단위</h3>
+<div class="tw"><table class="def"><tr><th>기본단위</th><th>정의</th></tr><tr><td><b>초(s)</b></td><td>시간의 단위로서, 세슘-133 원자의 바닥상태의 전이 주파수(진동수) Δν<sub>Cs</sub>를 Hz 단위로 나타낼 때 9 192 631 770이 된다. 여기서 Hz는 s<sup>-1</sup>과 같은 단위이다.</td></tr><tr><td><b>미터(m)</b></td><td>길이의 단위로서, 진공에서의 빛의 속력 c를 m s<sup>-1</sup> 단위로 나타낼 때 299 792 458이 된다.</td></tr><tr><td><b>킬로그램(kg)</b></td><td>질량의 단위로서, 플랑크 상수 h를 J s 단위로 나타낼 때 6.626 070 15 × 10<sup>-34</sup>이 된다. 여기서 J s는 kg m<sup>2</sup> s<sup>-1</sup>과 같은 단위이다.</td></tr><tr><td><b>암페어(A)</b></td><td>전류의 단위로서, 기본 전하 e를 C 단위로 나타낼 때 1.602 176 634 × 10<sup>-19</sup>이 된다. 여기서 C는 A s와 같은 단위이다.</td></tr><tr><td><b>켈빈(K)</b></td><td>온도의 단위로서, 볼츠만 상수 k를 J K<sup>-1 </sup>단위로 나타낼 때 1.380 649 × 10<sup>-23</sup>이 된다. 여기서 J K<sup>-1</sup>은 kg m<sup>2</sup> s<sup>-2</sup> K<sup>-1</sup>과 같은 단위이다.</td></tr><tr><td><b>몰(mol)</b></td><td>물질량의 단위로서, 6.022 140 76 × 10<sup>23</sup>개의 구성요소를 포함한다. 이 숫자는 아보가드로 상수 N<sub>A</sub>를 mol<sup>-1</sup> 단위로 나타낼 때 정해지는 수치로서 아보가드로 수라고 부른다. 어떤 계의 물질량(기호: n)은 명시된 특정 구성요소들의 수를 나타내는 척도이다. 특정 구성요소들이란 원자, 분자, 이온, 전자, 그 외의 입자 또는 그런 입자들의 특정한 집합체가 될 수 있다.</td></tr><tr><td><b>칸델라(cd)</b></td><td>광도의 단위로서, 주파수 540 × 10<sup>12 </sup>Hz의 단색광 시감효능 K<sub>cd</sub>를 lm W<sup>-1</sup> 단위로 나타낼 때 683이 된다. 여기서 lm W<sup>-1</sup>은 cd sr W<sup>-1</sup> 또는 cd sr kg<sup>-1</sup> m<sup>-2</sup> s<sup>3</sup> 과 같은 단위이다.</td></tr></table></div>
+</section>
+<section class="sec" id="s3"><div class="sec-head"><span class="sec-name ko">3. 미터·초(秒)</span><span class="sec-line"></span><a class="totop" href="#toc">↑ 목차</a></div>
+<ul class="bul">
+<li>프랑스혁명 후 의회의 도량형 통일위원회는 1m를 지구 자오선 길이의 4000만분의 1로 정의하고 백금 90%과 이리듐 10%의 합금으로 1m 원기를 만들었다. 현재의 1m는 1983년 국제도량형 총회가 빛이 진공 속에서 1/299,792,458초 동안 진행하는 길이로 정의한다.</li>
+<li>예전에 1초는 지구의 자전에 의한 평균 태양일의 1/86,400(=60×60×24) 로 정의되었다. 그러나 지구의 자전은 불규칙하므로 시간의 정확도를 보장할 수 없었다. 그래서 1956년 1초는 1900년 1월 0일 12시 기준으로 태양년의 1/31556925.9747로 했다. 지구의 자전에서 공전으로 기준이 바뀐 셈이었다.</li>
+<li>그러나 자전과 공전이 일정하지 않기 때문에 원자시계가 나온 이후 1967년 시간의 정의를 절대 0도에서의 세슘 133 원자의 복사를 기준으로 한 표준으로 바꾸었다. 세슘(55번) 진동수가 91억 9,263만 1,770이 되면 1초로 하는 것이다. 영국의 물리학자 루이 에센이 1955년에 처음 이론을 낸 것이다.</li>
+<li>그러나 고유 진동수가 높은 희토류 원자인 이터븀(70번)을 이용한 이터븀 원자 광격자 시계가 가장 정확하다. 이터븀 원자는 고유 진동수가 1초에 518조 2,958억 3,659만 865번으로, 세슘보다 무려 5만 6,000배 이상 정밀하다. 오차는 1억년에 1초보다 적은 약 0.91초이다. 2014년 한국표준과학연구원이 미국, 일본에 이어 세계 세 번째로 개발했다.</li>
+</ul>
+</section>
+<section class="sec" id="s4"><div class="sec-head"><span class="sec-name ko">4. 음력과 양력</span><span class="sec-line"></span><a class="totop" href="#toc">↑ 목차</a></div>
+<ul class="bul">
+<li>달 공전주기는 29.53일로 12달이면 354일이라 오차가 11일이나 된다.</li>
+<li>음력은 소월(29일)과 대월(30일)이 교대로 오며 십구년칠윤법(十九年七閏法)이라 해서 19년에 7번은 음력 한 달이 통째로 더 필요하다.</li>
+<li>윤달은 2~3년 주기인데다 오는 달도 일정치 않다. (나라에서 달력을 만들어 주지 않으면 방법이 없다.)</li>
+<li>절기(節氣) 중에서 매월 앞에 오는 날을 절(기), 뒤에 오는 날을 (중)기라 한다. (중)기가 없어 이름이 없는 달 중에서 첫 번째 달을 윤달로 삼는데 이를 무중치윤법(無中置閏法)이라 하며 5월이 많고 겨울인 11~12월은 드물다.</li>
+<li>윤달은 덤이라 재액이 없다 하여 결혼, 건축, 수의 만들기 등을 꺼리지 않는다. 제사도 두 번하고 생일도 두 번한다.</li>
+<li>귀신은 1·2일 동쪽, 3·4일 남쪽, 5·6일 서쪽, 7·8일 북쪽에서 활동하다. 9·10일에는 하늘로 올라가고 없기 때문에 한 달 중 5~6일을 ‘손 없는 날’이라 한다.</li>
+<li>윤(閏)이라는 글자도 원래 손이 없는 날에 왕이 조상신을 모시는 사당을 찾아 제사를 지낸 것을 전달하는 회의문자이다.</li>
+<li>BC46년 카이사르의 율리우스력은 기존 음력을 양력으로 바꾸었다. 일 년을 365.25일로 했고 7, 8월이 더해졌다.</li>
+<li>서력기원 AD는 동로마제국 신학자 엑시구스(Dionysius Exiguus, 470~544)가 AD 525년 창안하였다. 원래 황제 즉위년을 연대표로 사용했으나 당시 기독교 박해자라 교황 요한 1세가 지지하였다.</li>
+<li>교황 그레고리오의 그레고리역은 일 년이 365.2425이다. 1582년 10월 4일을 10월 15일로 바꾸었고 400년에 3번의 윤년은 지웠다. 즉 4의 배수는 그대로 윤년으로 하되, 100으로 나눌 수 있지만 400으로 나뉘어 떨어지지 않는 해인 1900년, 2100년, 2200년, 2300년 등은 예외로 했다.</li>
+<li>현대 천문학에서 일 년은 365.2422일이다. 그레고리력이 26초 많아 3,300년마다 하루를 지워야 한다. (그날이 올지)</li>
+</ul>
+</section>
+<section class="sec" id="s5"><div class="sec-head"><span class="sec-name ko">5. 윤년·윤달·윤초</span><span class="sec-line"></span><a class="totop" href="#toc">↑ 목차</a></div>
+<ul class="bul">
+<li>순태음력은 달의 공전에 따라 29.5일을 한 달로 쳤지만 일 년보다는 11일이나 모자란다. 순태음력에 24절기 요소와 윤달 요소를 더한 것이 태음태양력, 지금의 음력이다.</li>
+<li>24절기는 12절기와 12중기로 나뉘고 1개월마다 절(節)기(월초, 홀수번째)와 중(中)기(월중, 짝수번째)가 각각 하나씩 들어가야 하는데 하나가 빠진 경우 다음 달을 윤달로 집어넣게 되고 이것을 ‘무중치윤법’이라 한다.</li>
+<li>윤년(leap year)은 1382년 그레고리우스력이 1년을 약 365.2422일로 정하면서 1년에 5시간 48분 45.2초가 남아서 생긴 것이다. 400년 동안 97일의 윤일을 넣는다. 4의 배수와 400의 배수는 윤년이고, 4의 배수라도 100의 배수는 평년이다.</li>
+<li>윤달은 태음력(354일)이 태양력보다 11일이나 짧아 한 달을 끼워 넣은 것이다. BC 433년 그리스 천문학자 메톤이 19년 주기로 7번의 윤달을 넣는 것을 고안했고, 중국에선 그보다 앞서 BC 600년께 이미 19년 순환주기를 발견했다고 한다.</li>
+<li>윤초(leap second)는 1972년 도입된 현대 과학의 산물이다. 그리니치 표준시와 세슘 원자시계 간의 차이가 0.9초를 넘으면 1초를 더하는 것이다. 지구 자전속도가 조수간만 등의 영향으로 미세하게 변하는 탓이다. 2015년 7월 1일 오전 9시에 1초가 더 생겨 지금까지 27번의 윤초가 있었다. 다음 윤초는 지구만 알고 있다. 하늘을 보고 정하던 시간을 이제는 세슘 전자가 정확히 결정해준다.</li>
+<li>윤초는 국제지구자전국(IERS)이 필요할 때마다 공표한다.</li>
+</ul>
+</section>
+<section class="sec" id="s6"><div class="sec-head"><span class="sec-name ko">6. 24절기</span><span class="sec-line"></span><a class="totop" href="#toc">↑ 목차</a></div>
+<ul class="bul">
+<li>순태음력은 오차가 크서 양력보다 농업에 불리하다. 고대 중국 화북지방 주나라에서는 황도를 기준으로 24절기(solar term)를 만들어 농업에 활용했다. 양력을 접목해 양음합력 또는 태음태양력을 만든 것이다.</li>
+<li>황도(黃道, ecliptic)는 지구에서 보아 태양이 하늘을 1년에 걸쳐 이동하는 경로이다. 황도 경사는 지구 적도와 황도가 이루는 각으로 지구 자전축 기울기를 말하며, 현재 약 23.4°이다.</li>
+<li>절기의 절節은 1/8을 말하는 것으로 한 해를 치면 45일이다. 기氣는 15일이다.</li>
+<li>二至(동지ㆍ하지), 二分(춘분ㆍ추분), 四立(입춘ㆍ입하ㆍ입추ㆍ입동)이 대장이 되어 각각 3개 절기씩, 총 24절기를 관할한다.</li>
+<li>二至(동지ㆍ하지)는 6월, 11월 하순이다.</li>
+<li>二分(춘분ㆍ추분)은 2월, 7월 하순이다.</li>
+<li>四立(입춘ㆍ입하ㆍ입추ㆍ입동)은 1월, 4월, 7월, 10월 상순이다.</li>
+<li>절기는 근대 이전 평기법(平氣法)에서는 동지를 기준으로 15.22일씩 더해 가며 매겼다. 정기법(定氣法)은 수나라 유탁이 제안했으나 방치되다가 청나라 때에 이르러서야 시헌력(時憲曆)이 채택하였다.</li>
+<li>조선은 김육이 건의한 이후 연구를 거쳐 효종 때 시행했다.</li>
+<li>동지를 기점으로 황도 상에서 15도씩 간격을 두어 태양이 이 점을 지나는 날로 매긴다. 지금 우리나라는 천문연구원이 한국표준시에 맞춰 발표한다.</li>
+</ul>
+<figure class="verse"><figcaption>중국 24절기가(二十四节气歌)</figcaption><div class="vl"><span class="zh">春雨惊春清谷天，夏满芒夏暑相连.</span><span class="ko">춘우경춘청곡천, 하만망하서상련.</span></div><div class="vl"><span class="zh">秋处露秋寒霜降，冬雪雪冬小大寒.</span><span class="ko">추처로추한상강, 동설설동소대한.</span></div><div class="vl"><span class="zh">每月两节不变更，最多相差一两天.</span><span class="ko">매월양절불변경, 최다상차일양천.</span></div><div class="vl"><span class="zh">上半年来六廿一，下半年是八廿三.</span><span class="ko">상반년래육입일, 하반년시팔입삼.</span></div></figure>
+<div class="tw"><table class="terms"><caption>24절기 (절節·중中, 중국어 표기와 영문)</caption><tr><th>순서</th><th>절(節)</th><th>중(中)</th></tr><tr><td>1</td><td><b>입춘</b> <span class="zh">立春</span><br><span class="en">Spring begins</span></td><td><b>우수</b> <span class="zh">雨水</span><br><span class="en">The rains</span></td></tr><tr><td>2</td><td><b>경칩</b> <span class="zh">惊蛰</span><br><span class="en">Insects awaken</span></td><td><b>춘분</b> <span class="zh">春分</span><br><span class="en">Vernal equinox</span></td></tr><tr><td>3</td><td><b>청명</b> <span class="zh">清明</span><br><span class="en">Clear and bright</span></td><td><b>곡우</b> <span class="zh">谷雨</span><br><span class="en">Grain rain</span></td></tr><tr><td>4</td><td><b>입하</b> <span class="zh">立夏</span><br><span class="en">Summer begins</span></td><td><b>소만</b> <span class="zh">小满</span><br><span class="en">Grain buds</span></td></tr><tr><td>5</td><td><b>망종</b> <span class="zh">芒种</span><br><span class="en">Grain in ear</span></td><td><b>하지</b> <span class="zh">夏至</span><br><span class="en">Summer solstice</span></td></tr><tr><td>6</td><td><b>소서</b> <span class="zh">小暑</span><br><span class="en">Slight heat</span></td><td><b>대서</b> <span class="zh">大暑</span><br><span class="en">Great heat</span></td></tr><tr><td>7</td><td><b>입추</b> <span class="zh">立秋</span><br><span class="en">Autumn begins</span></td><td><b>처서</b> <span class="zh">处暑</span><br><span class="en">Stopping the heat</span></td></tr><tr><td>8</td><td><b>백로</b> <span class="zh">白露</span><br><span class="en">White dews</span></td><td><b>추분</b> <span class="zh">秋分</span><br><span class="en">Autumn equinox</span></td></tr><tr><td>9</td><td><b>한로</b> <span class="zh">寒露</span><br><span class="en">Cold dews</span></td><td><b>상강</b> <span class="zh">霜降</span><br><span class="en">Hoar-frost falls</span></td></tr><tr><td>10</td><td><b>입동</b> <span class="zh">立冬</span><br><span class="en">Winter begins</span></td><td><b>소설</b> <span class="zh">小雪</span><br><span class="en">Light snow</span></td></tr><tr><td>11</td><td><b>대설</b> <span class="zh">大雪</span><br><span class="en">Heavy snow</span></td><td><b>동지</b> <span class="zh">冬至</span><br><span class="en">Winter solstice</span></td></tr><tr><td>12</td><td><b>소한</b> <span class="zh">小寒</span><br><span class="en">Slight cold</span></td><td><b>대한</b> <span class="zh">大寒</span><br><span class="en">Great cold</span></td></tr></table></div>
+<p>매달 변함없이 두 절기가 있고, 차이가 나더라도 하루 이틀이라.</p>
+<p>상반기는 6일과 21일에 오고, 하반기는 8일과 23일이다.</p>
+</section>
+<section class="sec" id="s7"><div class="sec-head"><span class="sec-name ko">7. 명절과 세시풍속</span><span class="sec-line"></span><a class="totop" href="#toc">↑ 목차</a></div>
+<div class="tw"><table class="plain"><caption>명절</caption><tr><th>구분</th><th>명절</th><th>음력</th></tr><tr><td>기수 명절</td><td>설날</td><td>1월 1일</td></tr><tr><td>기수 명절</td><td>삼짇날</td><td>3월 3일</td></tr><tr><td>기수 명절</td><td>단오</td><td>5월 5일</td></tr><tr><td>기수 명절</td><td>칠석</td><td>7월 7일</td></tr><tr><td>기수 명절</td><td>중양절</td><td>9월 9일</td></tr><tr><td>보름 명절</td><td>정월 대보름</td><td>1월 15일</td></tr><tr><td>보름 명절</td><td>유두</td><td>6월 15일</td></tr><tr><td>보름 명절</td><td>백중</td><td>7월 15일</td></tr><tr><td>보름 명절</td><td>추석</td><td>8월 15일</td></tr></table></div>
+<ul class="bul">
+<li>삼복(三伏) 또는 삼경일(三庚日) 은 음력 6월에서 7월 사이에 있다. 하지 후 셋째 경일(庚日)을 초복, 넷째 경일(庚日)을 중복, 입추 후 첫 경일(庚日)을 말복이라 한다.</li>
+<li>한식(寒食)은 동지의 105일 후로서(동지와 요일이 같다.) 보통 4월 5일이나 6일쯤이다. 청명(晴明)과 날이 자주 겹친다. 현재 중국의 한식은 청명 하루 전날로 정해진다.</li>
+</ul>
+</section>
+<section class="sec" id="s8"><div class="sec-head"><span class="sec-name ko">8. 태극과 음양, 오행과 오성</span><span class="sec-line"></span><a class="totop" href="#toc">↑ 목차</a></div>
+<ul class="bul">
+<li>오행(五行)의 근본은 하나의 음과 양이요, 음양이 바로 하나의 태극이니, 태극의 근본은 무극이다.</li>
+<li>오행(水火木金土)은 오성 또는 오륜(仁義禮智信)과 통한다. 주역 중천건괘의 원형리정(元亨利貞)과 통한다. 토, 신, 성(誠)은 성질은 없으나 그 속에 숨어있는 것이다.</li>
+<li>오행은 오방(색)과 통한다. ‘東/靑/木, 西/白/金, 中/黃/土, 南/赤/火, 北/黑/水’이다.</li>
+<li>오행은 사주와 통한다. ‘청-갑을, 백-병정, 황-무기, 적-경신, 흑-임계’이다.</li>
+</ul>
+<figure class="verse"><figcaption>주돈이(周敦頥) 태극도설(太極圖說)</figcaption><div class="vl"><span class="zh">無極而太極  太極動而生陽  動極而靜  靜而生陰  靜極復動.</span></div><div class="vl"><span class="zh">一動一靜 互爲其根  分陰分陽 兩儀立焉.</span></div><div class="vl"><span class="zh">陽變陰合  而生水火木金土  五氣順布  四時行焉.</span></div><div class="vl"><span class="zh">五行一陰陽也  陰陽一太極也  太極本無極也.</span></div><div class="vl"><span class="zh">五行之生也  各一其性  無極之眞二五之精  妙合而凝  乾道成男坤道成女.</span></div><div class="vl"><span class="zh">二氣交感 化生萬物  萬物生生  而變化無窮焉.</span></div><div class="vl"><span class="zh">惟人也得其秀而最靈  形旣生矣神發知矣  五性感動而善惡分  萬事出矣.</span></div><div class="vl"><span class="zh">聖人定之以中正仁義  而主靜立人極焉.</span></div><div class="vl"><span class="zh">故聖人與天地合其德  日月合其明  四時合其序  鬼神合其吉凶.</span></div><div class="vl"><span class="zh">君子修之吉  小人悖之凶.</span></div><div class="vl"><span class="zh">故曰立天之道曰陰與陽  立地之道曰柔與剛  立人之道曰仁與義.</span></div><div class="vl"><span class="zh">又曰原始反終  故知死生之說  大哉易也  斯其至矣.</span></div></figure>
+</section>
+<section class="sec" id="s9"><div class="sec-head"><span class="sec-name ko">9. 오행의 상생과 상극</span><span class="sec-line"></span><a class="totop" href="#toc">↑ 목차</a></div>
+<ul class="bul">
+<li>오행(水火木金土)이 木火土金水 순서로 상생한다. 木土水火金 간에는 상극이다. 상생과 상극은 절대적이지 않다.</li>
+</ul>
+<div class="tw"><table class="def"><caption>상생(相生)과 상극(相剋)</caption><tr><th>관계</th><th>순리</th><th>그러나</th></tr><tr><td><b>木生火</b></td><td>나무는 불을 타게 해주며 자신을 희생한다.</td><td>불은 많은 생나무에 덮이면 꺼질 수도 있다.</td></tr><tr><td><b>火生土</b></td><td>태양은 땅을 데우고 불로 흙을 구워 그릇을 만든다.</td><td>흙은 불이 과다하면 마르고 갈라져 못쓰게 된다.</td></tr><tr><td><b>土生金</b></td><td>흙은 금광석을 보존하고 생산케 해준다.</td><td>금은 흙이 많아 깊이 묻히면 쓸 수가 없다.</td></tr><tr><td><b>金生水</b></td><td>바위 속에 물이 솟고 쇠 그릇에 담을 수 있다.</td><td>물이 넘치면 바위나 쇠가 물 속에 잠겨버린다.</td></tr><tr><td><b>水生木</b></td><td>물은 나무에게 수분을 주어 자라게 한다.</td><td>나무가 많으면 물이 마르고 물이 고일 수가 없다</td></tr><tr><td><b>木剋土</b></td><td>나무는 흙의 양분을 빼고 뿌리로 땅을 가른다.</td><td>흙이 붕괴될 때 나무뿌리가 흙을 결속시켜준다.</td></tr><tr><td><b>土剋水</b></td><td>흙은 물길을 방해하고 댐을 쌓아 물을 가둔다.</td><td>마른 흙은 빗물로 적셔야 비옥한 땅이 될 수 있다.</td></tr><tr><td><b>水剋火</b></td><td>물은 더위를 식히고 타는 불을 꺼 버릴 수 있다.</td><td>불로 밥을 지으며 추위에 난방을 할 수 있다.</td></tr><tr><td><b>火剋金</b></td><td>불은 무쇠와 금을 녹여 연장과 귀금보석을 만든다.</td><td>놋쇠가 화롯불을 담고 쇠가 열기를 전달한다.</td></tr><tr><td><b>金剋木</b></td><td>도끼로 재목을 다듬고 쇠톱으로 나무를 자른다.</td><td>도끼나 쇠톱의 손잡이는 나무로 만든다.</td></tr></table></div>
+<p class="src">☞ 김기승 「명리학 정론」</p>
+</section>
+<section class="sec" id="s10"><div class="sec-head"><span class="sec-name ko">10. 주역 64괘</span><span class="sec-line"></span><a class="totop" href="#toc">↑ 목차</a></div>
+<ul class="bul">
+<li>주역은 이집트 피라미드보다 6백년 늦지만 독일의 칼 야스퍼스가 말한 축의 시대(Axial Age BC800~BC200)보다 빠른 중국 정신문명의 금자탑이자 지혜의 곤륜탑이다. 주역처럼 각기 다른 시각이나 각도에서 해석될 수 있으며 능히 통할 수 있는 책은 노자나 홍루몽 정도가 아닐까? 역경(I Ching, the Book of Changes)은 역전과 다른 것인데 (역)경은 오리지널 저작으로 점을 말하고, (역)전은 주관적 해설서로 이를 해석한 철학을 말한다. 중국인의 우환의식에서 나왔다. 원래 역(易)은 日月이 합쳐진 글자로 간략하고 평이한 진리이며, 변역에 관한 진리이고, 영혼불변의 진리이다. 괘의 모양과 뜻은 모순이 있기도 하다. 모순이 있어야 충돌이 있고, 충돌이 있어야 변화가 있으며, 변화가 있어야 발전이 있고, 발전이 있어야 전망이 있다. 그러나 변화와 발전도 적절해야 좋다. 그래서 중용이다.</li>
+</ul>
+<p class="src">☞ 이중톈 「사람을 말하다」, 주역의 계시</p>
+<ul class="bul">
+<li>주역은 점치던 책이다. 주역은 철학서다. 주역은 역사서다. 주역은 과(수)학서다. 주역은 백과전서다</li>
+</ul>
+<p class="src">☞ 장치청 「주역전해」</p>
+<ul class="bul">
+<li>주나라 역법이 주역이다. 복희(伏羲)가 선천팔괘를 만들었고, 주나라 문왕(文王)이 육십사괘를 지었다고 한다.</li>
+<li>태극(太極)에서 음양(陰陽)이라는 양의(兩儀)가 나온다. 양의가 조합되어 4상(四象)이 만들어지고 다시 자연과 성정, 가족과 방위들을 포괄할 수 있는 8괘(八卦)가 형성된다. 시계반대 반향으로 아래와 같다.</li>
+</ul>
+<div class="tw"><table class="gua8"><caption>팔괘(八卦)</caption><tr><th>8괘 (시계 반대 방향)</th><th>天</th><th>澤</th><th>火</th><th>雷</th><th>地</th><th>山</th><th>水</th><th>風</th></tr><tr><td>자연</td><td>천</td><td>택</td><td>화</td><td>뢰</td><td>지</td><td>산</td><td>수</td><td>풍</td></tr><tr><td>괘 이름</td><td>건</td><td>태</td><td>리</td><td>진</td><td>곤</td><td>간</td><td>감</td><td>손</td></tr><tr><td>괘(卦)</td><td>乾</td><td>兌</td><td>離</td><td>震</td><td>坤</td><td>艮</td><td>坎</td><td>巽</td></tr></table></div>
+<ul class="bul">
+<li>8괘(卦)를 상하괘로 조합해 64괘이다. 또 괘별로 6효(爻)가 있다. 양효는 아래에서부터 ‘初九, 구이, 구삼, 구사, 구오, 上九’라고 부른다. 음효는 아래에서부터 ‘初六, 육이, 육삼, 육사, 육오, 上六’이라 부른다. 중천건괘의 경우 상구 위에 用九(见群龙无首，吉)가 있고, 중지곤괘의 경우 상육 위에 用六(利永贞)이 있다.</li>
+<li>64괘에 6효가 조합되어 총 384개 효사가 있으며, 용구와 용육 2개의 효를 합쳐 총 386개의 효가 있다.</li>
+<li>6효 간의 관계는 중정응비(中正應比)가 이루어지면 좋다. 중(中)은 상괘와 하괘의 가운데 효인 2효와 5효를 말한다. 홀수 효에 양표가 오거나, 짝수 효에 음효가 오면 정(正)이다. 1효와 4효, 2효와 5효, 3효와 6효가 짝인데 각각 음과 양 또는 양과 음으로 이루어지면 정응(正應)이라 한다. 이웃한 효끼리 양과 음, 음과 양으로 조화를 이루는 것을 친비(親比)라 한다.</li>
+<li>64괘는 인간이 경험할 수 있는 인생의 대표적인 상황을 의미한다. 이 상황에 대한 대응 방식을 미리 파악한다면 큰 과오 없이 행복한 인생을 살 수 있을 것이다.</li>
+<li>주역 64괘 중 자연이치를 나타내는 상경 30괘는 乾坤으로 시작해 坎離로 끝난다.</li>
+<li>인간사를 나타내는 하경 34괘는 咸恒으로 시작해 水火旣濟/火水未濟로 끝난다.</li>
+</ul>
+<div class="tw"><table class="gua64"><caption>上 經 · 30괘</caption><tr><th>번호</th><th>괘</th><th>번호</th><th>괘</th></tr><tr><td>01</td><td>중천건괘 <span class="zh">(乾卦)</span></td><td>02</td><td>중지곤괘 <span class="zh">(坤卦)</span></td></tr><tr><td>03</td><td>수뢰준괘 <span class="zh">(屯卦)</span></td><td>04</td><td>산수몽괘 <span class="zh">(蒙卦)</span></td></tr><tr><td>05</td><td>수천수괘 <span class="zh">(需卦)</span></td><td>06</td><td>천수송괘 <span class="zh">(訟卦)</span></td></tr><tr><td>07</td><td>지수사괘 <span class="zh">(師卦)</span></td><td>08</td><td>수지비괘 <span class="zh">(比卦)</span></td></tr><tr><td>09</td><td>풍천소축괘 <span class="zh">(小畜卦)</span></td><td>10</td><td>천택이괘 <span class="zh">(履卦)</span></td></tr><tr><td>11</td><td>지천태괘 <span class="zh">(泰卦)</span></td><td>12</td><td>천지비괘 <span class="zh">(否卦)</span></td></tr><tr><td>13</td><td>천화동인괘 <span class="zh">(同人卦)</span></td><td>14</td><td>화천대유괘 <span class="zh">(大有卦)</span></td></tr><tr><td>15</td><td>지산겸괘 <span class="zh">(謙卦)</span></td><td>16</td><td>뇌지예괘 <span class="zh">(豫卦)</span></td></tr><tr><td>17</td><td>택뢰수괘 <span class="zh">(隨卦)</span></td><td>18</td><td>산풍고괘 <span class="zh">(蠱卦)</span></td></tr><tr><td>19</td><td>지택임괘 <span class="zh">(臨卦)</span></td><td>20</td><td>풍지관괘 <span class="zh">(觀卦)</span></td></tr><tr><td>21</td><td>화뢰서합괘 <span class="zh">(噬嗑卦)</span></td><td>22</td><td>산화비괘 <span class="zh">(賁卦)</span></td></tr><tr><td>23</td><td>산지박괘 <span class="zh">(剝卦)</span></td><td>24</td><td>지뢰복괘 <span class="zh">(復卦)</span></td></tr><tr><td>25</td><td>천뢰무망괘 <span class="zh">(無妄卦)</span></td><td>26</td><td>산천대축괘 <span class="zh">(大畜卦)</span></td></tr><tr><td>27</td><td>산뢰이괘 <span class="zh">(頤卦)</span></td><td>28</td><td>택풍대과괘 <span class="zh">(大過卦)</span></td></tr><tr><td>29</td><td>중수감괘 <span class="zh">(坎卦)</span></td><td>30</td><td>중화이괘 <span class="zh">(離卦)</span></td></tr></table></div>
+<p class="note">※ (䷎ 地山謙卦) 땅 속에 산이 있음이 겸이다. 군자는 이로써 많은 것을 덜어 부족한 것에 더하니, 만물을 저울질하여 평탄하게 베푼다. 높은 산이 낮은 땅 아래 있는 것처럼 자신을 낮추는 것이 겸이다. 군자는 부족한 것을 더하고 과한 것을 덜어 모든 것을 공평하게 베풀어야 한다.</p>
+<div class="tw"><table class="gua64"><caption>下 經 · 34괘</caption><tr><th>번호</th><th>괘</th><th>번호</th><th>괘</th></tr><tr><td>31</td><td>택산함괘 <span class="zh">(咸卦)</span></td><td>32</td><td>뇌풍항괘 <span class="zh">(恒卦)</span></td></tr><tr><td>33</td><td>천산둔괘 <span class="zh">(遯卦)</span></td><td>34</td><td>뇌천대장괘 <span class="zh">(大壯卦)</span></td></tr><tr><td>35</td><td>화지진괘 <span class="zh">(晉卦)</span></td><td>36</td><td>지화명이괘 <span class="zh">(明夷卦)</span></td></tr><tr><td>37</td><td>풍화가인괘 <span class="zh">(家人卦)</span></td><td>38</td><td>화택규괘 <span class="zh">(睽卦)</span></td></tr><tr><td>39</td><td>수산건괘 <span class="zh">(蹇卦)</span></td><td>40</td><td>뇌수해괘 <span class="zh">(解卦)</span></td></tr><tr><td>41</td><td>산택손괘 <span class="zh">(損卦)</span></td><td>42</td><td>풍뢰익괘 <span class="zh">(益卦)</span></td></tr><tr><td>43</td><td>택천쾌괘 <span class="zh">(夬卦)</span></td><td>44</td><td>천풍구괘 <span class="zh">(姤卦)</span></td></tr><tr><td>45</td><td>택지췌괘 <span class="zh">(萃卦)</span></td><td>46</td><td>지풍승괘 <span class="zh">(升卦)</span></td></tr><tr><td>47</td><td>택수곤괘 <span class="zh">(困卦)</span></td><td>48</td><td>수풍정괘 <span class="zh">(井卦)</span></td></tr><tr><td>49</td><td>택화혁괘 <span class="zh">(革卦)</span></td><td>50</td><td>화풍정괘 <span class="zh">(鼎卦)</span></td></tr><tr><td>51</td><td>중뢰진괘 <span class="zh">(震卦)</span></td><td>52</td><td>중산간괘 <span class="zh">(艮卦)</span></td></tr><tr><td>53</td><td>풍산점괘 <span class="zh">(漸卦)</span></td><td>54</td><td>뇌택귀매괘 <span class="zh">(歸妹卦)</span></td></tr><tr><td>55</td><td>뇌화풍괘 <span class="zh">(豊卦)</span></td><td>56</td><td>화산여괘 <span class="zh">(旅卦)</span></td></tr><tr><td>57</td><td>중풍손괘 <span class="zh">(巽卦)</span></td><td>58</td><td>중택태괘 <span class="zh">(兌卦)</span></td></tr><tr><td>59</td><td>풍수환괘 <span class="zh">(渙卦)</span></td><td>60</td><td>수택절괘 <span class="zh">(節卦)</span></td></tr><tr><td>61</td><td>풍택중부괘 <span class="zh">(中孚卦)</span></td><td>62</td><td>뇌산소과괘 <span class="zh">(小過卦)</span></td></tr><tr><td>63</td><td>수화기제괘 <span class="zh">(旣濟卦)</span></td><td>64</td><td>화수미제괘 <span class="zh">(未濟卦)</span></td></tr></table></div>
+<p class="note">※ (䷯ 水風井卦) 정치를 물을 긷는 것에 비유하면 두레박은 백성과 나라를 살찌우는 관리(官吏)다. 두레박이 없으면 물의 공(功)이 위로 올라올 수 없듯, 사람이 없으면 임금의 은택이 밑으로 두루 미칠 수 없다. ☞ 신원봉, 인문으로 읽는 주역</p>
+</section>
+<section class="sec" id="s11"><div class="sec-head"><span class="sec-name ko">11. 간지干支와 역법曆法</span><span class="sec-line"></span><a class="totop" href="#toc">↑ 목차</a></div>
+<ul class="bul">
+<li>팔괘의 건에서 10천간, 곤에서 12지지가 나왔다. 괘효가 아니라 간지를 기준으로 한다. 간지는 오랫동안 순환하는 시간의 이름으로 쓰였다.</li>
+<li>명리학이란 사람의 사주(연·월·일·시)를 육십갑자로 변환하여 음양오행과 생극제화(生剋濟化) 그리고 다양한 법칙에 따라 길흉화복을 점쳐 인간의 운명을 예측하는 학문이다. 간지에 근거한 것이다.</li>
+<li>『이아 爾雅』&lt;釋天&gt;편에 세양(歲陽, 천간)과 세음(歲陰,지지)의 이름이 나온다. 이후 『사기 史記』에도 약간의 차이가 있지만 간지가 나온다.</li>
+<li>북송시대 『통감외기 通鑑外記』에는 간지 이전에 쓰던 고갑자古甲子가 나온다. 이 책에서 “황제가 대요에게 명하여 갑자를 정하게 했다.”고 하여 역사적 계보를 마련했다.</li>
+<li>천간은 쉽게 말해서 하늘의 이름을 말하는 것으로 甲乙丙丁戊己庚辛壬癸의 십간으로 구성되어 있다. 각각의 글자에는 고유의 뜻이 있으며 세상 만물이 그렇듯이 음양의 조화가 있다. 甲丙戊庚壬 5가지는 양으로 양간(陽干)이라고 하며, 乙丁己辛癸 5가지는 음이므로 음간(陰干)이라 한다.</li>
+<li>지지는 땅의 이름을 말하는 것으로 子丑寅卯辰巳午未申酉戌亥의 12지지로 구성되어 있다. 명대 『칠수류고 七修類稿』에 따르면 십이지신은 발가락이 홀수면 양, 짝수면 음으로 분류한다. 하루의 시작은 음양이 교차하는 쥐의 시간에 시작하며, 새벽 호랑이 시간에는 양의 기운이 역동적으로 깨어난다.</li>
+</ul>
+<div class="tw"><table class="gan"><caption>십간의 음양오행 배속표</caption><tr><th scope="row">十干</th><td>甲</td><td>乙</td><td>丙</td><td>丁</td><td>戊</td><td>己</td><td>庚</td><td>辛</td><td>壬</td><td>癸</td></tr><tr><th scope="row">年度</th><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>0</td><td>1</td><td>2</td><td>3</td></tr><tr><th scope="row">爾雅</th><td>閼逢</td><td>旃蒙</td><td>柔兆</td><td>疆圉</td><td>著雍</td><td>屠維</td><td>上章</td><td>重光</td><td>玄黓</td><td>昭陽</td></tr><tr><th scope="row">陰陽</th><td>陽</td><td>陰</td><td>陽</td><td>陰</td><td>陽</td><td>陰</td><td>陽</td><td>陰</td><td>陽</td><td>陰</td></tr><tr><th scope="row">五行</th><td>木</td><td>木</td><td>火</td><td>火</td><td>土</td><td>土</td><td>金</td><td>金</td><td>水</td><td>水</td></tr><tr><th scope="row">五常</th><td colspan="2">仁</td><td colspan="2">禮</td><td colspan="2">信</td><td colspan="2">義</td><td colspan="2">智</td></tr><tr><th scope="row">五方色</th><td colspan="2">靑</td><td colspan="2">赤</td><td colspan="2">黃</td><td colspan="2">白</td><td colspan="2">黑</td></tr><tr><th scope="row">巡還</th><td colspan="2">탄생</td><td colspan="2">성장</td><td colspan="2">조화</td><td colspan="2">수확</td><td colspan="2">비축</td></tr></table></div>
+<div class="tw"><table class="gan"><caption>십이지의 음양오행 배속표</caption><tr><th scope="row">十二支</th><td>子</td><td>丑</td><td>寅</td><td>卯</td><td>辰</td><td>巳</td><td>午</td><td>未</td><td>申</td><td>酉</td><td>戌</td><td>亥</td></tr><tr><th scope="row">爾雅</th><td>困敦</td><td>赤奮若</td><td>攝提格</td><td>單閼</td><td>執徐</td><td>大荒落</td><td>敦牂</td><td>協洽</td><td>涒灘</td><td>作噩</td><td>閹茂</td><td>大淵獻</td></tr><tr><th scope="row">陰陽</th><td>陽</td><td>陰</td><td>陽</td><td>陰</td><td>陽</td><td>陰</td><td>陽</td><td>陰</td><td>陽</td><td>陰</td><td>陽</td><td>陰</td></tr><tr><th scope="row">五行</th><td>水</td><td>土</td><td>木</td><td>木</td><td>土</td><td>火</td><td>火</td><td>土</td><td>金</td><td>金</td><td>土</td><td>水</td></tr><tr><th scope="row">월/시</th><td>11</td><td>12</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td></tr><tr><th scope="row">계절</th><td>冬</td><td>冬</td><td>春</td><td>春</td><td>春</td><td>夏</td><td>夏</td><td>夏</td><td>秋</td><td>秋</td><td>秋</td><td>冬</td></tr><tr><th scope="row">방위</th><td>北</td><td>北</td><td>東</td><td>東</td><td>東</td><td>南</td><td>南</td><td>南</td><td>西</td><td>西</td><td>西</td><td>北</td></tr><tr><th scope="row">동물</th><td>쥐</td><td>소</td><td>범</td><td>토끼</td><td>용</td><td>뱀</td><td>말</td><td>양</td><td>원숭이</td><td>닭</td><td>개</td><td>돼지</td></tr><tr><th scope="row">발가락</th><td>4/5</td><td>2+2</td><td>5/4</td><td>4</td><td>5</td><td>0</td><td>1</td><td>2+2</td><td>5</td><td>4</td><td>5</td><td>4</td></tr></table></div>
+<ul class="bul">
+<li>오상과 오방색은 천간을 따라 2년씩 배치하고, 사계절과 사방위는 지지를 따라 3년씩 배치한다.</li>
+<li>천간과 지지가 짝을 지어 60간지, 1갑자를 이룬다. 한 칸 건너뛰게 되어 모든 글자가 만나지는 않으므로, 辛申年 등의 간지 이름은 없다.</li>
+<li>년, 월, 일의 간지 이름은 세차(歲次), 월건(月建), 일진(日辰)이라 한다.</li>
+<li>세차는 천간이 10개이므로 연도의 끝자리가 항상 같다. 해당 년(2020)에서 7(2027)을 더하여 10으로 나눈 나머지(7)를 구하면 천간(경)이다. 해당 년(2020)에서 9를 더한 값(2029)을 12로 나눈 나머지(1)를 구하면 지지(자)이다. 예를 들어 2020년은 경자년이다.</li>
+<li>월건의 경우 12달이므로 12지는 변하지 않는다. 이것을 유지하기 위해 윤달은 월건을 쓰지 않는다. 1월부터 12월까지 寅卯辰巳午未申酉戌亥子丑 순서로 돌아간다. 중국 고대 하나라 때부터 자시가 11시이듯이 ~子月은 동짓달인 11월이다. 해가 가장 짧아졌다가 다시 길어지는 시작점이고 추수를 끝내고 휴식기이었기 때문이다. 북유럽 등 한대지방은 하지를 더 중시하였다. 현재 정월은 ~寅月이다.</li>
+<li>일진은 60간지가 윤년이 있어도 계속 번갈아 돌아간다.</li>
+<li>진시황대는 전욱력, 전한대는 태초력, 후한대는 사분력을 사용했다.</li>
+<li>전욱력에서는 동춘하수 순서로 세수가 10월이었다. 오차가 컸다.</li>
+<li>태초는 한무제의 11차례 연호 중 7번째 연호인데, 기원전 105년은 원봉(元封) 6년 (1월 ~ 9월)에서 태초(太初) 원년 (10~12월)에 걸쳐져 있다.</li>
+</ul>
+<div class="tw"><table class="plain wide3"><caption>한무제 : 유철(劉徹)=한세종(漢世宗)=한 무제(漢武帝)</caption><tr><th>차례</th><th>연호</th><th>내용</th></tr><tr><td>1</td><td><b>건원(建元)</b></td><td>1년. B.C.140년=단기 2194년=신축(辛丑)</td></tr><tr><td>2</td><td><b>원광(元光)</b></td><td>혜성 출현</td></tr><tr><td>3</td><td><b>원삭(元朔)</b></td><td></td></tr><tr><td>4</td><td><b>원수(元狩)</b></td><td>일각수 또는 기린 포획</td></tr><tr><td>5</td><td><b>원정(元鼎)</b></td><td>보정(寶鼎) 발견</td></tr><tr><td>6</td><td><b>원봉(元封)</b></td><td>태산 봉선 거행<br>· 원봉(元封) 3년, B.C.108년=단기 2226년=계유(癸酉), 고조선 멸망<br>· 원봉(元封) 6년, B.C.105년=단기 2229년=병자(丙子)</td></tr><tr><td>7</td><td><b>태초(太初)</b></td><td>1년. 태초력(10월→1월) B.C.104년=단기 2230년=정축(丁丑)</td></tr><tr><td>8</td><td><b>천한(天漢)</b></td><td></td></tr><tr><td>9</td><td><b>태시(太始)</b></td><td></td></tr><tr><td>10</td><td><b>정화(征和)</b></td><td></td></tr><tr><td>11</td><td><b>후원(後元)</b></td><td>후원2년, 한무제 사망</td></tr></table></div>
+<ul class="bul">
+<li>무제는 방사 등평(鄧平), 낙하굉(落下閎), 당도(唐都, 사마천의 아버지, 사마담司馬談에게 천문학을 가르친 스승) 등이 만든 역법을 태초력으로 공식 반포했다. BC46년 율리우스력보다 60년 앞선다.</li>
+<li>BC104년 병자(정축)년을 갑인년으로 개칭했고 봄이 시작되는 1월, 인월(寅月)을 세수로 했다.</li>
+<li>전한 유흠(劉歆, ?~23년)은 태초력을 개수해 삼통력(三統曆)을 만들었다. 전한(前漢) 평제(平帝) 연호로 원시(元始) 5년(서기 5년)부터 사용했으며 원시 4년이 갑자년이었다. 상원적년법(上元積年法)을 도입했다.</li>
+<li>후한 시기 AD 85년부터 육십갑자를 년도 명칭에 번갈아 사용했다. 이때 BC161년을 경진년으로 삼았다(경진역원).</li>
+<li>목성 공전이 144년에 1회씩 늦어진다고 했으나 현대 측정에 따르면 86년 주기이다.</li>
+</ul>
+<h3 class="cap">육십갑자와 태초력</h3>
+<ul class="bul">
+<li>갑골문에서는 일진에만 간지를 사용했는데, 상나라 이전 제례 목적으로 날을 나눈 걸로 추정된다.</li>
+<li>그 이전 세차는 공전주기가 약 12년(11.8618)인 세성 또는 태세(歲星 또는 太歲=목성) 위치로 구분했다. 고갑자를 사용했다.</li>
+<li>기원전 104년, 한무제가 태초(太初)연호와 태초력(太初曆)을 반포한 것은 60갑자의 역사에서 한 획이 되었다.</li>
+<li>기원전 105년 동지의 절입시각이 절묘하게도 갑자월의 1일 갑자일의 자시에 들었다. 기록에 따르면 그뿐만이 아니라 칠요가 하늘의 자방(북쪽)에 모였다고 한다.</li>
+<li>이 일은 신비롭게 해석되어 기원전 105년의 세차가 원래는 병자(丙子)년이었는데 갑인(甲寅)년으로 개칭되었으며, 기원전 105년 동지는 태초력의 역원이 되었다. (기원전 104년은 을묘년인데, 삼통력 상원적년법에서는 정축년이 된다.)</li>
+<li>태초라는 명칭은 도교 방사(方士) 황로학 관점을 접목한 것이다.</li>
+</ul>
+<ul class="bul">
+<li>남북조 송대의 원가력(元嘉曆)에 따르면 BC5261년(경신년)이 상원이 된다. (왜 그때가 상원인지는 모른다.)</li>
+<li>1270년 원나라 수시력이 채택되며 상원적년법을 폐지했다.</li>
+<li>우리나라 광개토왕릉비, 천전리각석에 간지를 사용한 기록이 있다.</li>
+<li>우리나라는 칠정산이 출판된 1444년, 갑자년을 상원으로 60갑자를 해의 명칭으로 채택해 부르기 시작했다.</li>
+<li>기원후는 &lt;4-갑, 5-을, 6-병, 7-정, 8-무, 9-기, 0-경, 1-신, 2-임, 3-계&gt; 순서이다.</li>
+<li>기원후 1년은 신유년, 기원전 1년은 경신년이다.</li>
+<li>기원전은 &lt;계-8, 임-9, 신-0, 경-1, 기-2, 무-3, 정-4, 병-5, 을-6, 갑-7&gt; 순서이다.</li>
+</ul>
+<div class="tw"><table class="plain"><caption>60 갑자(甲子)의 주요 역사적 사건</caption><tr><th>간지</th><th>사건</th><th>연도</th></tr><tr><td>계유</td><td>계유국치</td><td>BC108</td></tr><tr><td>신미</td><td>신미양요</td><td>1871</td></tr><tr><td>신유</td><td>신유천년</td><td>0001</td></tr><tr><td>임오</td><td>임오군란</td><td>1882</td></tr><tr><td>임진</td><td>임진왜란</td><td>1592</td></tr><tr><td>계해</td><td>계해약조</td><td>1443</td></tr><tr><td>계유</td><td>계유정난</td><td>1453</td></tr><tr><td>갑신</td><td>갑신정변</td><td>1884</td></tr><tr><td>갑오</td><td>갑오경장</td><td>1894</td></tr><tr><td>을미</td><td>을미사변</td><td>1895</td></tr><tr><td>을사</td><td>을사늑약</td><td>1905</td></tr><tr><td>병자</td><td>병자조약</td><td>1876</td></tr><tr><td>병인</td><td>병인양요</td><td>1866</td></tr><tr><td>병자</td><td>병자호란</td><td>1636</td></tr><tr><td>정유</td><td>정유광무</td><td>1897</td></tr><tr><td>정미</td><td>정미의병</td><td>1907</td></tr><tr><td>정유</td><td>정유재란</td><td>1597</td></tr><tr><td>정묘</td><td>정묘호란</td><td>1627</td></tr><tr><td>무오</td><td>무오사화</td><td>1498</td></tr><tr><td>기유</td><td>기유각서</td><td>1909</td></tr><tr><td>기미</td><td>기미선언</td><td>1919</td></tr><tr><td>경술</td><td>경술국치</td><td>1910</td></tr><tr><td>경신</td><td>경신기근</td><td>1670</td></tr></table></div>
+<ul class="bul">
+<li>시간은 子丑寅卯辰巳午未申酉戌亥 순서로 12시진时辰이다. 매 두 시간은 다시 초初, 정正으로 나눈다. 자초子初는 11시, 자정子正은 12시이다. 그러니 정오가 아니라 오정인 것이다. 1각은 15분이다.</li>
+<li>사인검(四寅劍)은 인년(寅年), 인월(寅月), 인일(寅日), 인시(寅時)를 택해 타조(打造)한 것으로 매 12년마다 한 번 제작할 수 있었다.</li>
+</ul>
+<div class="tw"><table class="plain"><caption>갑자(甲子)년의 역사</caption><tr><th>연도</th><th>왕·사건</th></tr><tr><td>BC 57년</td><td>혁거세 원년</td></tr><tr><td>4년</td><td>온조왕/남해차차웅 원년</td></tr><tr><td>244년</td><td>고구려 동천왕/백제 고이왕</td></tr><tr><td>544년</td><td>신라 진흥왕</td></tr><tr><td>844년</td><td>신라 문성왕/발해 대이진</td></tr><tr><td>1144년</td><td>고려 인종</td></tr><tr><td>1444년</td><td>조선 세종, 칠정산 출판</td></tr><tr><td>1744년</td><td>조선 영조</td></tr><tr><td>2044년</td><td>—</td></tr></table></div>
+</section>
+<section class="sec" id="s12"><div class="sec-head"><span class="sec-name ko">12. 역법의 역사와 역리학</span><span class="sec-line"></span><a class="totop" href="#toc">↑ 목차</a></div>
+<ul class="bul">
+<li>역법(曆法)의 원시(元始)를 역원(曆元)이라 한다. 정 북쪽을 기준으로 칠정(七政)이 일렬을 이룬 순간을 00 시점으로 규정하고 음력 초하루와 24기절력 갑자일 동지로 정했다. 역원과 같은 천문현상은 1539년마다 이루어진다. 갑자년, 갑자월, 갑자일, 갑자시까지 같이 돌아오는 것은 아니다.</li>
+<li>칠정이 일렬로 서는 것이 3번 돌면 4617년 만에 똑같은 천문현상이 다시 돌아온다.</li>
+<li>이아주소(爾雅注疏)에서 하(夏)나라가 한 해를 세(歲)라고 부른 것은 세성(歲星) 즉 목성(木星)이 12차(十二次)를 운행하는 중에서 1차(一次)를 운행하는 것에서 취했다.</li>
+<li>상(商)나라가 한 해를 사(祀)라고 부른 것은 사계절이 한 번 끝나는 것에서 취했다.</li>
+<li>주(周)나라가 한 해를 년(年)이라고 부른 것은 벼가 한 번 익는 것에서 취했다. 年자는 禾(벼 화)자와 人(사람 인)자가 합쳐진 것이다.</li>
+<li>당우(唐虞) 즉 요순(堯舜) 시대에 한 해를 재(載)라고 부른 것은 재(載)는 시작이다. 사물(物)이 끝나고 다시 시작하는 것에서 취했다.</li>
+<li>결론적으로 첫째, 한자 문화권의 역법은 역경(易經)에서 비롯되었다. 둘째는 한 해를 년(年)이라고 하는 음력(陰曆)과 한 해를 세(歲)라고 하는 한자 문화권식 양력인 24기절력(二十四氣)이 서양보다 약 2000여 년 먼저 사용되기 시작했다. 셋째는 짧은 년(年) 즉 음력과 긴 세(歲) 즉 24기절력의 길이를 맞추기 위해 24기절(節)을 기준으로 음력에 윤달을 배치했다. 넷째는 음력에서 24기절을 도입한 사실이 없고 60갑자 또한 음력 날짜에 배정한 것이 아닌 24기절력 날짜의 부호라는 사실이다.</li>
+</ul>
+<p class="src">☞ 허정 이상엽</p>
+</section>
+<section class="sec" id="s13"><div class="sec-head"><span class="sec-name ko">13. 일주일 또는 칠요(七曜)</span><span class="sec-line"></span><a class="totop" href="#toc">↑ 목차</a></div>
+<ul class="bul">
+<li>칠요(七曜, 1주)는 현대 천문학과 무관하다.</li>
+<li>BC7C 바빌로니아가 일월, 오행성을 합쳐 1주 단위를 만들었다. 이어 중동(창세기), 인도, 중국으로 전파되었다.</li>
+<li>일~토요일 순서는 맨눈 밝기 순서였다.</li>
+<li>동양에서는 일월 황도상 교차점인 나후(羅喉)와 계도(計都)를 합쳐 구요(九曜)라 했다.</li>
+<li>우리나라는 갑오개혁때 요일제가 채탁되었다.</li>
+<li>그 이전부터 조선 관료들은 매월 1일, 8일, 15일, 23일과 24절기 및 명절때 쉬었다.</li>
+</ul>
+</section>
+<section class="sec" id="s14"><div class="sec-head"><span class="sec-name ko">14. 칭원법稱元法</span><span class="sec-line"></span><a class="totop" href="#toc">↑ 목차</a></div>
+<ul class="bul">
+<li>중국은 주로 유년칭원법踰年稱元法을 썼다. 효 사상 영향이다.</li>
+<li>한국은 원래 즉위년 또는 훙년칭원법薨年稱元法을 썼다.</li>
+<li>고려 원 간섭기부터 유년칭원법으로 바꾸었다.</li>
+<li>반정으로 정통성을 바꾼 때는 즉위년칭원법을 썼다.</li>
+<li>일본 원호元号는 지금도 즉위년칭년법을 쓴다. 2022년은 레이와(令和) 4년이다.</li>
+</ul>
+<figure class="verse"><figcaption>레이와(令和) 전고</figcaption><div class="vl"><span class="zh">후한 장형『歸田賦(귀전부)』</span></div><div class="vl"><span class="zh">仲春令月、時和氣淸</span></div><div class="vl"><span class="zh">『萬葉集』 「卷五」 梅花の歌 三十二首 序</span></div><div class="vl"><span class="zh">「初春令月、氣淑風和、 梅披鏡前之粉、蘭薰珮後之香」</span></div><div class="vl"><span class="zh">「초봄의 길한 달, 기운 상서롭고 바람 평온하니,</span></div><div class="vl"><span class="zh">매화는 거울 앞 가루를 날리고, 난초는 살결 같은 향을 풍기네.」</span></div></figure>
+</section>
+<section class="sec" id="s15"><div class="sec-head"><span class="sec-name ko">15. 뉴밀레니엄</span><span class="sec-line"></span><a class="totop" href="#toc">↑ 목차</a></div>
+<ul class="bul">
+<li>2001년 제3천년기를 시작했다. 21세기 첫 번째 해이다. 신사년辛巳年으로서 백사白蛇의 해이다. 월요일로 시작했다. 윤년이 아닌 평년이다.</li>
+<li>다른 기년법으로는 단기 4334년, 그레고리력 2001년 MMI, 불기 2545년, 이슬람력 1422~1423, 일본 헤이세이(平成) 13년, 황기 2661년, 민국 90년, 주체 90년, 히브리력 5761~5762, 아시리아력 6751년, 에티오피아력 1995~1996, 포덕(천도교) 142년 등이다.</li>
+</ul>
+<div class="tw"><table class="plain"><caption>2001년의 다양한 기년법</caption><tr><th>기년법</th><th>2001년</th></tr><tr><td>단기</td><td>4334년</td></tr><tr><td>그레고리력</td><td>2001년 (MMI)</td></tr><tr><td>불기</td><td>2545년</td></tr><tr><td>이슬람력</td><td>1422~1423</td></tr><tr><td>일본 헤이세이(平成)</td><td>13년</td></tr><tr><td>황기</td><td>2661년</td></tr><tr><td>민국</td><td>90년</td></tr><tr><td>주체</td><td>90년</td></tr><tr><td>히브리력</td><td>5761~5762</td></tr><tr><td>아시리아력</td><td>6751년</td></tr><tr><td>에티오피아력</td><td>1995~1996</td></tr><tr><td>포덕(천도교)</td><td>142년</td></tr></table></div>
+</section>
+<section class="sec" id="s16"><div class="sec-head"><span class="sec-name ko">16. 국제 시간</span><span class="sec-line"></span><a class="totop" href="#toc">↑ 목차</a></div>
+<ul class="bul">
+<li>자오선이란 자시와 오시가 근본적으로 시작되는 선이란 뜻이다. 현재 본초자오선은 그리니치 자오선보다, 동으로 5.3초(102.5m) 떨어져 있다.</li>
+<li>영국을 중심으로 경도 180°W~180°E 까지 12시간 빠른 나라와 12시간 느린 나라가 존재한다.</li>
+<li>본초자오선을 기준으로 태양이 이미 지나간 동쪽은 빠른 시간대, 앞으로 태양이 지나가게 될 서쪽은 늦은 시간대를 갖는다.</li>
+<li>날짜 변경선은 경도 180도를 기준으로 삼아 인위적으로 날짜를 구분하는 선이으로 사람이 살고 있는 육지를 피해서 인위적으로조정되었다.</li>
+<li>날짜 변경선을 서쪽에서 동쪽으로 지날 때는 같은 날짜를 반복하고, 동쪽에서 서쪽으로 지날 때는 하루를 더해 준다. 뉴질랜드는 서쪽이고, 하와이는 동쪽이다.</li>
+<li>KST(한국표준시)는 UTC=GMT 에서 9 시간을 더한 것과 같다.</li>
+<li>우리나라와 시간차는 중국 -1, 모스크바 -6, 런던 -8, 뉴욕 -14, LA -17, 하와이 -20, 웰링튼 +3이다.</li>
+<li>서머타임때는 차이가 1시간 줄어든다. 북미, 유럽, 호주는 실시하고 한중일과 러시아는 실시하지 않는다. 나라마다 다르지만 일요일 새벽에 시작하고 해제한다.</li>
+</ul>
+<div class="tw"><table class="plain"><caption>우리나라와의 시차</caption><tr><th>지역</th><th>한국과의 시차(시간)</th></tr><tr><td>중국</td><td>-1</td></tr><tr><td>모스크바</td><td>-6</td></tr><tr><td>런던</td><td>-8</td></tr><tr><td>뉴욕</td><td>-14</td></tr><tr><td>LA</td><td>-17</td></tr><tr><td>하와이</td><td>-20</td></tr><tr><td>웰링튼</td><td>+3</td></tr></table></div>
+</section>
+<section class="sec" id="s17"><div class="sec-head"><span class="sec-name ko">17. 조석간만과 물 때</span><span class="sec-line"></span><a class="totop" href="#toc">↑ 목차</a></div>
+<ul class="bul">
+<li>바닷물의 움직임, 즉 조석(潮汐)이 빠졌다, 찼다 반복하는 간만(干滿)을 조석간만이라 한다. 해와 달 그리고 지구의 바다가 기조력에 따라 상호작용하는 것이다.</li>
+<li>기조력은 그 천체의 질량에 비례하고 거리의 3제곱에 반비례한다. 태양은 달보다 2,700만 배 무겁지만 거리가 400배 더 멀다. 결국 태양의 기조력은 달의 0.46배에 불과하다.</li>
+<li>조석은 간만을 나타낸 과학적 예보통계이다. 물이 찰 때를 밀물, 들물, 만조라 하고 빠질 때를 썰물, 날물, 간조라 한다.</li>
+<li>지구의 자전에 따라 매일 2번의 밀물과 2번의 썰물이 일어난다. 정확히는 매 12시간 24분마다 만조와 간조가 일어난다. 12시간은 지구의 자전, 24분은 달의 공전 때문이다. 하루 네 번 약 6시간 단위로 조석이 바뀐다.</li>
+<li>2시간 간격으로 초들물, 중들물, 끝들물이라 하고 이어 정조기가 있다. 날물에도 2시간 간격으로 초날물, 중날물, 끝날물이 있고 이어 정조기가 있다.</li>
+<li>해와 달, 지구가 일직선에 있을 때인 그믐과 보름에 물이 가장 많이 올라온다. 그 때를 대조기라 한다. 그 때 울산의 간만은 ±50cm, 광양은 ±300cm, 인천은 ±900cm 정도 차이가 난다.</li>
+<li>해와 달, 지구가 90도가 될 때인 상현과 하현에 조석간만의 차가 작다. 이때를 소조기라 한다. 그 때 울산의 간만은 ±15cm, 광양은 ±100cm, 인천은 ±400cm 차이가 난다.</li>
+<li>물때는 어민들이 경험으로 정한 간이표이다. 물때는 15가지이다.</li>
+</ul>
+<div class="tw"><table class="plain"><caption>물때 (15가지)</caption><tr><th>구분</th><th>물때</th></tr><tr><td><b>조금물때</b></td><td>조금(14물), 무시(15물), 1물, 2물</td></tr><tr><td><b>사는물때</b></td><td>3물, 4물, 5물</td></tr><tr><td><b>사리물때</b></td><td>사리(보름, 그믐, 6물), 7물, 8물, 9물</td></tr><tr><td><b>죽는물때</b></td><td>10물, 11물, 한객기(12물), 두객기(13물)</td></tr></table></div>
+<ul class="bul">
+<li>사리물때에는 조류의 유속이 빨라 위험하지만 고기가 많다. 조금물때에는 조류의 유속이 느려 편하지만 고기가 활동이 적다. 그러나 암초의 배치 등 위치에 따라 여건이 다양하다.</li>
+<li>바다에서는 해가 뜨기 전이나 저문 직후의 박명(薄明), 황혼(黃昏), 여명(黎明) 또는 서광(曙光)이라는 약한 빛도 안전에 큰 영향을 준다.</li>
+<li>시민박명(市民薄明, Civil Twilight)은 태양이 지평선 6도 아래까지, 항해박명(航海薄明, Nautical Twilight)은 태양이 지평선 12도 아래까지, 천문박명(天文薄明,  Astronomical Twilight)은 태양이 지평선 18도 아래까지를 말한다.</li>
+</ul>
+</section>
+<section class="sec" id="s18"><div class="sec-head"><span class="sec-name ko">18. 비와 가뭄, 장마와 태풍</span><span class="sec-line"></span><a class="totop" href="#toc">↑ 목차</a></div>
+<ul class="bul">
+<li>비는 하늘에서 땅에 떨어져 높은 곳에서 낮은 곳으로 흐른다. 땅 위로 흐르면 강을 거쳐 바다로 흐르고, 땅 아래로 흐르면 지하수가 된다. 그 과정에서 농업과 산업, 생활에 사용된다.</li>
+<li>비가 고르게 온다면 강수량은 땅과 유역에 비례한다. 우리나라 면적은 1,003억㎡이며 연평균 강수량은 1,300mm(1.3m)로서 수자원 총량이 1,300억㎥ 정도이다.</li>
+<li>이 중 증발로 손실되는 양이 43%이며 이용가능수자원량이 57%이다. 이용가능한 물 57%는 바다로 유실되는 양이 29%, 실제 사용가능한 양은 28%이다.</li>
+<li>사용가능한 물 28%는 댐에 저수하는 양이 16%, 하천에 흐르는 물이 9%, 지하수가 3%이다. 댐과 하천, 지하수를 이용해 수돗물을 생산하는 것은 4.8%에 불과하다.</li>
+<li>우리나라 연평균 강수량은 세계 평균의 1.6배이지만 1인당 연간 강수량은 2,500㎥ 정도로 세계 평균의 1/6에 불과하다. 중국과 일본만 해도 연간 5,000㎥에 육박한다.</li>
+<li>가뭄은 일 5.0mm 이하 15일 이상 지속되거나 1개월 강수량 50mm 이하인 경우 가뭄으로 판단한다(가뭄판단지수).</li>
+<li>봄 가뭄이 끝나고 5월 망종 즈음부터 모내기를 시작해 장마가 오기 전 6월 중순에 마무리한다.</li>
+<li>장마는 6월말~7월말이다. 드물게 태풍이 시작되는 8월 중순까지 가기도 한다. 오랜 비란 뜻으로 長(길다, 한자)+마ㅎ(물, 한글) 합성어이다. 보통 연간 강수량의 30%가 내린다. 해마다 편차가 있어 마른장마가 있기도 하고 폭우가 내리며 긴 장마가 생기기도 한다.</li>
+<li>호우주의보는 3시간 60mm, 12시간 110mm 이상 예상될 때 발령이 되며, 호우경보는 3시간 90mm, 12시간 180mm 이상 예상될 때 발령된다.</li>
+<li>태풍颱風은 7~9월에 집중되어 있고 간혹 6월, 10월에도 내습한다. 원래 중국 북방과 조선에서는 구풍(颶風)이라 했고 태풍(颱風)은 대만 방언이었다. 현재 구풍(颶風)은 허리케인, 태풍(颱風)은 타이푼(typhoon)의 의미로 쓰고 있다.</li>
+<li>북반구에서 태풍은 지구 전향력때문에 반시계방향으로 분다. 풍속은 태풍의 눈 가장자리로부터 약 30~50km 원형대에서 최대속도를 나타낸다.</li>
+<li>태풍에 시달리고 처서를 넘기며 백로를 거쳐 휴식 후 9월 추분 즈음부터 벼 베기를 시작해서 10월 서리가 내리기 전에 추수를 마무리한다.</li>
+<li>태풍은 한 해 평균 25회 정도 발생하며, 우리나라에 영향을 미치는 것은 5회 정도이다.</li>
+</ul>
+</section>
+<section class="sec" id="s19"><div class="sec-head"><span class="sec-name ko">19. 별자리</span><span class="sec-line"></span><a class="totop" href="#toc">↑ 목차</a></div>
+<ul class="bul">
+<li>밤하늘에 빛나는 것은 달과 가까운 태양계 행성들, 그리고 우리은하계의 별들이다. 안드로메다 등 가까운 은하가 일부 맨눈으로 보이기도 한다. 현대 세계 표준별자리는 88개이다. 서울의 옛 이름 한(漢)은 천한(天漢), 즉 은하수라는 뜻이지, 중국 한나라와 무관하다.</li>
+<li>서양 별자리는 그리스로마신하에서 유래한 황도 12궁과 뱀주인자리가 대표적이다.</li>
+</ul>
+<div class="tw"><table class="plain"><caption>황도 12궁</caption><tr><td>양자리</td><td>황소자리</td><td>쌍둥이자리</td><td>게자리</td></tr><tr><td>사자자리</td><td>처녀자리</td><td>천칭자리</td><td>전갈자리</td></tr><tr><td>궁수자리</td><td>염소자리</td><td>물병자리</td><td>물고기자리</td></tr></table></div>
+<ul class="bul">
+<li>황도는 지구의 공전면이 천구를 가로지르는 원이다. 황도(Ecliptic)는 영어로 ‘나타나지 않다’는 뜻으로 일식이 일어나는 경로를 말한다.</li>
+<li>태양계 행성들은 황도면에 가깝지만 교차하지 않는다. 지구가 0°, 수성 7°, 기타 0.8°~ 3.2°에 위치한다. 때에 따라 근접 접근, 행성 정렬 현상 등이 일어난다.</li>
+<li>소행성은 크게 기울어져 명왕성은 17.2°, 달 궤도는 황도면으로부터 5.1° 기울어져 있다.</li>
+<li>황도 교차 시 일식, 월식이 발생한다. 초승달이 태양을 가리는 것을 일식이고, 지구 그림자가 보름달을 가리는 월식이다.</li>
+<li>탄생자리는 태양과 일직선에 있어 보이지 않는다. 6개월 전후에 볼 수 있다.</li>
+<li>황도에서 태양계 행성 발견 가능하다. 2040년 11월 4일 부분일식과 5행성 정렬이 일어난다.</li>
+<li>천구 적도는 자전축과 같은 기울기 23.5°이다. 황도-적도 교차점이 춘분, 추분이다. 축 세차로 25,800년마다 춘분점이 이동한다. 2,000년 전 양자리였는데, 지금은 물고기자리이다. 북극성도 고정되어 있지 않다. 지금은 작은곰자리 알파이지만 13,000년 후는 거문고자리 베가가 된다.</li>
+<li>동양 별자리는 적도를 기준으로 고대로부터 3원, 4상, 27수를 꼽는다.</li>
+<li>삼원(三垣)은 북쪽 하늘 주극성(週極星)이며 하늘의 중앙에 있어 일년 내내 볼 수 있다. 원은 별들로 이루어진 울타리라는 뜻으로 그 속에 여러 별자리들이 들어 있다. 자미원(紫微垣) 39수, 태미원(太微垣) 20수, 천시원(天市垣) 19수이다.</li>
+<li>자미원에는 옥황상제의 자미궁이 있다. 九陣(북극성=구진대성)과 북극오성이 있다. 서양 별자리 작은곰자리는 두 수가 함께 만든다. 자미원밖 북두칠성은 서양 별자리 큰곰자리다. 斗의 자루는 일몰 직후 춘하추동, 동남서북을 가리킨다.</li>
+<li>태미원에는 오제, 태자, 삼공, 구경이 있다. 오제는 黃帝와 사방의 청제, 적제, 백제, 흑제이다.</li>
+<li>斗星은 북두칠성, 남두육성, 동두오성, 서두사성이다. 북두칠성 그릇 아래, 두성 가운데 三台星이 자리한다. 삼태성에 객성이 나타나자 제갈공명이 죽었다.</li>
+<li>조선시대 문맹검은 천문풍수론을 펼치며 “서울은 하늘의 별자리 기운이 지상으로 내려온 천문(天文)의 도시다. 경복궁(근정전)과 도성은 紫微垣, 광진(낙천정)은 天市垣, 은평은 太微垣에 해당한다.”고 하였다. 도성 안에서 나누면 경복궁(군주)은 자미원, 육조거리(신하)는 태미원, 운종가(백성)는 천시원에 해당한다.</li>
+<li>사상(四象)은 사신도의 동방 청룡青龍, 서방 백호白虎, 남방 주작朱雀, 북방 현무玄武이다. 4상의 몸 부분을 각각 7개로 나누어 28수이다.</li>
+</ul>
+<div class="tw"><table class="su"><caption>28수(宿)</caption><tr><th scope="row"><b>東方蒼龍</b></th><td><span class="zh">角</span><br><small>각</small></td><td><span class="zh">亢</span><br><small>항</small></td><td><span class="zh">氐</span><br><small>저</small></td><td><span class="zh">房</span><br><small>방</small></td><td><span class="zh">心</span><br><small>심</small></td><td><span class="zh">尾</span><br><small>미</small></td><td><span class="zh">箕</span><br><small>기</small></td></tr><tr><th scope="row"><b>南方朱雀</b></th><td><span class="zh">井</span><br><small>정</small></td><td><span class="zh">鬼</span><br><small>귀</small></td><td><span class="zh">柳</span><br><small>류</small></td><td><span class="zh">星</span><br><small>성</small></td><td><span class="zh">張</span><br><small>장</small></td><td><span class="zh">翼</span><br><small>익</small></td><td><span class="zh">軫</span><br><small>진</small></td></tr><tr><th scope="row"><b>西方白虎</b></th><td><span class="zh">奎</span><br><small>규</small></td><td><span class="zh">婁</span><br><small>루</small></td><td><span class="zh">胃</span><br><small>위</small></td><td><span class="zh">昴</span><br><small>묘</small></td><td><span class="zh">畢</span><br><small>필</small></td><td><span class="zh">觜</span><br><small>자</small></td><td><span class="zh">參</span><br><small>삼</small></td></tr><tr><th scope="row"><b>北方玄武</b></th><td><span class="zh">鬥</span><br><small>두</small></td><td><span class="zh">牛</span><br><small>우</small></td><td><span class="zh">女</span><br><small>여</small></td><td><span class="zh">虛</span><br><small>허</small></td><td><span class="zh">危</span><br><small>위</small></td><td><span class="zh">室</span><br><small>실</small></td><td><span class="zh">壁</span><br><small>벽</small></td></tr></table></div>
+<ul class="bul">
+<li>천상열차분야지도(天象列次分野之圖)는 조선 태조 4년(1395)에 제작된 것으로 별이 1,467개 283수가 새겨져 있다. 사라졌던 고구려 천문도 탁본을 기반으로 수정했다. 당시 한양 위치인 38° 기준이다.</li>
+<li>열차는 천구 적도를 12등분한 구역이다. 분야는 별자리에 대응하는 땅의 구역이다. 서경덕 분야설에 따르면 울산은 女(須女, 직녀)이다.</li>
+<li>동양에서 가장 오래된 순우천문도(淳祐天文圖) 또는 소주(蘇州)천문도는 1,443개의 별이 새겨져 있다. 중국 남송(南宋)의 황상(黃裳)이 1190년에 그린 천문도를 순우(淳祐) 정미(丁未)년인 1247년 왕치원(王致源)이 사천(四川)에 있던 천문도를 얻어와 석판에 새긴 것이다. 개봉의 위치인 북위 34.5° 기준이다.</li>
+<li>『환단고기』에 보이는 천문현상 기록 ‘오성취루’가 그 책이 진서임을 입증해 주지 못한다는 점이다. 그것은 조선시대 천문학을 이해하거나 이순지의 『천문류초』를 본 사람이라면 얼마든지 적어 넣을 수 있는 수준의 천문 지식이기 때문이다. ~ 우리나라의 천문학과 천문관은 고조선의 고인돌에서부터 출발하여 고구려의 고분벽화와 천문도, 고려의 고분벽화, 조선의 『천상열차분야지도』로 이어지는 정통성을 가지고 있다. 이는 다른 어느 나라의 천문관과 매우 다른 독창적인 문화유산이다.”</li>
+</ul>
+<p class="src">☞ 애서운동가 白民 이양재 &amp; 안상현 &lt;우리 별자리&gt;</p>
+</section>
+</div>
+<div class="floatnav"><a href="#toc" aria-label="목차로 이동">↑ 목차</a></div>
+</body>
+</html>
