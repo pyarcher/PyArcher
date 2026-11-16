@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Github, Copy, Check, X } from "lucide-react";
+import { Github, Copy, Check } from "lucide-react";
 import faceImg from "./assets/face.jpg";
 import bookImg from "./assets/book.png";
 import harmonyImg from "./assets/harmony.png";
@@ -32,70 +32,6 @@ const BOOKS = [
     meta: "김상육 지음",
     cover: bookImg,
     url: "https://product.kyobobook.co.kr/detail/S000061694894",
-  },
-];
-
-// Ulsan Digest — rediscovered historical documents & texts.
-// PDFs live in the `public/pdfs` folder (NOT src/assets) and are referenced
-// by plain path, so no build-time import is needed.
-// `summary` is optional: add a one-line description whenever ready,
-// leave it blank ("") to show just the title and author/year.
-const DIGEST = [
-  {
-    title: "일학헌중수상량문",
-    author: "유한위",
-    year: "1784",
-    summary: "",
-    file: "/pdfs/house.pdf",
-  },
-  {
-    title: "서지하화기",
-    author: "심원열",
-    year: "1855",
-    summary: "",
-    file: "/pdfs/westpond.pdf",
-  },
-  {
-    title: "내 고향의 자랑, 울산풍물(蔚山風物)",
-    author: "최현배",
-    year: "1941",
-    summary: "",
-    file: "/pdfs/pride.pdf",
-  },
-  {
-    title: "울산공업센터 기공식 치사문",
-    author: "박정희",
-    year: "1962",
-    summary: "",
-    file: "/pdfs/industry.pdf",
-  },
-  {
-    title: "한반도연해포경사 서문",
-    author: "박구병",
-    year: "1987",
-    summary: "",
-    file: "/pdfs/whalesea.pdf",
-  },
-  {
-    title: "울산역사연표",
-    author: "pyarcher",
-    year: "2026",
-    summary: "",
-    file: "/pdfs/chronology.pdf",
-  },
-  {
-    title: "경상좌병영지도 이야기",
-    author: "pyarcher",
-    year: "2026",
-    summary: "",
-    file: "/pdfs/campleft.pdf",
-  },
-  {
-    title: "경상좌병영 동문(인빈문) 이야기",
-    author: "pyarcher",
-    year: "2026",
-    summary: "",
-    file: "/pdfs/eastgate.pdf",
   },
 ];
 
@@ -194,75 +130,8 @@ const ARTICLES = [
   },
 ];
 
-// Report & Paper — PDFs in `public/pdfs/`, referenced by plain path.
-// Title text includes the year where given, so no separate date field.
-const REPORTS = [
-  { title: "Lessons from Onondaga Lake Remediation, 2003", file: "/pdfs/lake.pdf" },
-  { title: "The Strike of the Korean Cargo Workers Federation in 2003, 2003", file: "/pdfs/cargo.pdf" },
-  { title: "고래와 고래잡이, 그리고 고래특구, 2012", file: "/pdfs/ulsanwhaling.pdf" },
-  { title: "대학생 촌관제와 후루사토 워킹홀리데이 연구, 2017", file: "/pdfs/work.pdf" },
-  { title: "미국 캘리포니아 고래관광 및 말산업 연구, 2023", file: "/pdfs/horse.pdf" },
-];
-
-// Goods & Gallery — photo thumbnails grouped by row (group number = first
-// digit of the filename). Rows are ordered highest group number first, and
-// within a row, items keep the order given (by their second digit). Images
-// live in `public/gallery/` (NOT src/assets) and are referenced by plain
-// path, same pattern as the Ulsan Digest PDFs. Clicking a thumbnail opens
-// the full-size original in a lightbox.
-const GALLERY = [
-  { group: 8, files: ["81bibyunsa", "82haedong"] },
-  { group: 7, files: ["72dasannampo", "73yosandai"] },
-  { group: 6, files: ["61mugcup", "62lotus", "63birdpole"] },
-  { group: 5, files: ["51seaside", "52bamboo"] },
-  { group: 4, files: ["41windycliff", "42sunrising", "43twinrock"] },
-  { group: 3, files: ["31tongdosa", "33virchow"] },
-  { group: 1, files: ["11epitaph2", "12epitaph"] },
-];
-
-// U-History Archive — reference list of primary sources & records held by
-// other institutions. No file is hosted here; each entry simply names the
-// source and the institution that provides access to it. Add a `url` field
-// to any entry later if you want the title to link out.
-const ARCHIVE = [
-  { title: "송호유집(류정)", org: "한국국학진흥원" },
-  { title: "부북일기(박계숙/박취문)", org: "다빈치맵" },
-  { title: "청대일기(권상일)", org: "한국국학진흥원" },
-  { title: "함안군총쇄록(오횡묵)", org: "한국학중앙연구원" },
-  { title: "심원권일기(심원권)", org: "국사편찬위원회" },
-  { title: "울산부호적", org: "규장각" },
-  { title: "통합울산지리지", org: "울산문화원연합회" },
-  { title: "통합울산선생안", org: "울산연구원" },
-  { title: "울산고지도", org: "규장각" },
-  { title: "군세일반", org: "국사편찬위원회" },
-  { title: "오만분일지형도", org: "국사편찬위원회" },
-  { title: "울산공업센터", org: "한국정책방송원" },
-  { title: "울산광역시사", org: "울산광역시" },
-  { title: "행정구역명칭변천사", org: "울산연구원" },
-];
-
-// U-Historian & Curator — institutions & museums, title links directly out.
-const CURATOR = [
-  { title: "울산연구원 / 울산역사연구소", url: "https://www.uri.re.kr/" },
-  { title: "울산박물관", url: "https://www.ulsan.go.kr/s/museum/" },
-  { title: "장생포고래박물관", url: "https://www.whalecity.kr/" },
-  { title: "울산문화유산연구원", url: "http://www.usmy.or.kr/" },
-  { title: "울산문화원연합회", url: "https://www.kccf.or.kr/" },
-  { title: "울주문화원", url: "http://m.ulju.or.kr/" },
-  { title: "울산대학교 / 역사문화학과", url: "https://history.ulsan.ac.kr/history/" },
-  { title: "울산노동역사관", url: "https://www.nodong1987.org/" },
-  { title: "국립경주박물관", url: "https://gyeongju.museum.go.kr/" },
-  { title: "국립김해박물관", url: "https://gimhae.museum.go.kr/" },
-  { title: "국립진주박물관", url: "https://jinju.museum.go.kr/" },
-  { title: "부산대학교 박물관", url: "https://pnumuseum.pusan.ac.kr/pnumuseum/" },
-  { title: "동국대학교 박물관", url: "https://dgumuseum.dongguk.edu/" },
-  { title: "부산박물관", url: "https://museum.busan.go.kr/busan/" },
-  { title: "양산박물관", url: "https://www.yangsan.go.kr/museum/" },
-];
-
 export default function KimSangYukPortfolio() {
   const [copied, setCopied] = useState("");
-  const [lightboxSrc, setLightboxSrc] = useState(null);
 
   const copy = (label, value) => {
     navigator.clipboard?.writeText(value);
@@ -299,21 +168,14 @@ export default function KimSangYukPortfolio() {
         .kp-essay-link { transition: background 0.15s ease, padding-left 0.15s ease, border-color 0.15s ease; }
         .kp-essay-link:hover { background: #EEF1FA; padding-left: 12px; border-color: #C7CDE3 !important; }
         .kp-essay-static { opacity: 0.55; }
-        .kp-thumb { transition: transform 0.15s ease, box-shadow 0.15s ease; }
-        .kp-thumb:hover { transform: translateY(-3px); box-shadow: 0 10px 22px rgba(20,30,70,0.22); }
-        .kp-archive-linkcard { transition: transform 0.15s ease, box-shadow 0.15s ease; }
-        .kp-archive-linkcard:hover { transform: translateY(-2px); box-shadow: 0 18px 40px rgba(20,30,70,0.16); }
         @media (prefers-reduced-motion: reduce) {
-          .kp-btn-primary, .kp-btn-ghost, .kp-social, .kp-copy, .kp-book, .kp-essay-link, .kp-thumb { transition: none; }
+          .kp-btn-primary, .kp-btn-ghost, .kp-social, .kp-copy, .kp-book, .kp-essay-link { transition: none; }
         }
         @media (max-width: 880px) {
           .kp-layout { grid-template-columns: 1fr !important; }
           .kp-card { margin-top: 40px; }
           .kp-name { font-size: clamp(46px, 13vw, 88px) !important; }
           .kp-essay-cols { grid-template-columns: 1fr !important; }
-          .kp-archive-cols { grid-template-columns: 1fr !important; }
-          .kp-curator-cols { grid-template-columns: 1fr !important; }
-          .kp-thumb img { width: 84px !important; height: 84px !important; }
         }
       `}</style>
 
@@ -373,6 +235,20 @@ export default function KimSangYukPortfolio() {
                 style={styles.btnGhost}
               >
                 Calendar
+              </a>
+              <a
+                href="/myarchive.html"
+                className="kp-btn-ghost"
+                style={styles.btnGhost}
+              >
+                Archive
+              </a>
+              <a
+                href="/chronoskairos.html"
+                className="kp-btn-ghost"
+                style={styles.btnGhost}
+              >
+                Time
               </a>
             </div>
 
@@ -514,29 +390,6 @@ export default function KimSangYukPortfolio() {
           </a>
         </div>
 
-        {/* ---------------- Report and Paper ---------------- */}
-        <div style={styles.reportSection}>
-          <p style={styles.eyebrow}>
-            REPORT <span style={styles.eyebrowDash}>&amp;</span>{" "}
-            <span style={styles.eyebrowBlue}>PAPER</span>
-          </p>
-
-          <div style={styles.reportList}>
-            {REPORTS.map((doc, i) => (
-              <a
-                key={i}
-                href={doc.file}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="kp-essay-link"
-                style={styles.reportItem}
-              >
-                <span style={styles.reportTitle}>{doc.title}</span>
-              </a>
-            ))}
-          </div>
-        </div>
-
         {/* ---------------- Column and Essay ---------------- */}
         <div style={styles.essaySection}>
           <p style={styles.eyebrow}>
@@ -583,156 +436,8 @@ export default function KimSangYukPortfolio() {
           </div>
         </div>
 
-        {/* ---------------- Goods and Gallery ---------------- */}
-        <div style={styles.gallerySection}>
-          <p style={styles.eyebrow}>
-            GOODS <span style={styles.eyebrowDash}>&amp;</span>{" "}
-            <span style={styles.eyebrowBlue}>GALLERY</span>
-          </p>
-
-          <div style={styles.galleryRows}>
-            {GALLERY.map((row) => (
-              <div key={row.group} style={styles.galleryRow}>
-                {row.files.map((name) => (
-                  <button
-                    key={name}
-                    className="kp-thumb"
-                    style={styles.galleryThumbBtn}
-                    onClick={() => setLightboxSrc(`/gallery/${name}.jpg`)}
-                    aria-label={`Open ${name}`}
-                  >
-                    <img
-                      src={`/gallery/${name}.jpg`}
-                      alt={name}
-                      style={styles.galleryThumb}
-                    />
-                  </button>
-                ))}
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* ---------------- Ulsan Digest ---------------- */}
-        <div style={styles.digestSection}>
-          <p style={styles.eyebrow}>
-            ULSAN <span style={styles.eyebrowDash}>&mdash;</span>{" "}
-            <span style={styles.eyebrowBlue}>DIGEST</span>
-          </p>
-
-          <div style={styles.digestList}>
-            {DIGEST.map((doc, i) => (
-              <a
-                key={i}
-                href={doc.file}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="kp-essay-link"
-                style={styles.digestItem}
-              >
-                <div style={styles.digestTextCol}>
-                  <span style={styles.digestTitle}>{doc.title}</span>
-                  {doc.summary ? (
-                    <span style={styles.digestSummary}>{doc.summary}</span>
-                  ) : null}
-                </div>
-                <span style={styles.digestMeta}>
-                  {doc.author} &middot; {doc.year}
-                </span>
-              </a>
-            ))}
-          </div>
-        </div>
-
-        {/* ---------------- U-History Archive ---------------- */}
-        <div style={styles.archiveSection}>
-          <p style={styles.eyebrow}>
-            U-HISTORY <span style={styles.eyebrowDash}>&mdash;</span>{" "}
-            <span style={styles.eyebrowBlue}>ARCHIVE</span>
-          </p>
-
-          <div className="kp-archive-cols" style={styles.archiveCols}>
-            {ARCHIVE.map((doc, i) =>
-              doc.url ? (
-                <a
-                  key={i}
-                  href={doc.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="kp-essay-link"
-                  style={styles.archiveItem}
-                >
-                  <span style={styles.archiveTitle}>{doc.title}</span>
-                  <span style={styles.archiveOrg}>{doc.org}</span>
-                </a>
-              ) : (
-                <div key={i} style={styles.archiveItem}>
-                  <span style={styles.archiveTitle}>{doc.title}</span>
-                  <span style={styles.archiveOrg}>{doc.org}</span>
-                </div>
-              )
-            )}
-          </div>
-        </div>
-
-        {/* ---------------- U-Historian & Curator ---------------- */}
-        <div style={styles.curatorSection}>
-          <p style={styles.eyebrow}>
-            U-HISTORIAN <span style={styles.eyebrowDash}>&amp;</span>{" "}
-            <span style={styles.eyebrowBlue}>CURATOR</span>
-          </p>
-
-          <div className="kp-curator-cols" style={styles.curatorCols}>
-            {CURATOR.map((doc, i) => (
-              <a
-                key={i}
-                href={doc.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="kp-essay-link"
-                style={styles.curatorItem}
-              >
-                <span style={styles.curatorTitle}>{doc.title}</span>
-              </a>
-            ))}
-          </div>
-        </div>
-
-        {/* ---------------- Internet Archive (external page) ---------------- */}
-        <div style={styles.archiveLinkSection}>
-          <a href="/archive.html" className="kp-archive-linkcard" style={styles.archiveLinkCard}>
-            <span style={styles.archiveLinkEyebrow}>
-              INTERNET <span style={styles.eyebrowDash}>&mdash;</span>{" "}
-              <span style={styles.eyebrowBlue}>ARCHIVE</span>
-            </span>
-            <span style={styles.archiveLinkArrow}>&rarr;</span>
-          </a>
-        </div>
-
       </div>
 
-      {lightboxSrc && (
-        <div
-          style={styles.lightboxOverlay}
-          onClick={() => setLightboxSrc(null)}
-          role="dialog"
-          aria-modal="true"
-        >
-          <button
-            style={styles.lightboxClose}
-            onClick={() => setLightboxSrc(null)}
-            aria-label="Close"
-          >
-            <X size={22} />
-          </button>
-          <img
-            src={lightboxSrc}
-            alt=""
-            style={styles.lightboxImage}
-            onClick={(e) => e.stopPropagation()}
-          />
-        </div>
-      )}
     </div>
   );
 }
@@ -1023,235 +728,5 @@ const styles = {
     fontWeight: 500,
     whiteSpace: "nowrap",
     flexShrink: 0,
-  },
-
-  /* ---- Report & Paper ---- */
-  reportSection: {
-    marginTop: 60,
-    paddingTop: 44,
-    borderTop: "1px solid #D7DCEE",
-  },
-  reportList: {
-    display: "flex",
-    flexDirection: "column",
-  },
-  reportItem: {
-    display: "block",
-    padding: "10px 6px",
-    borderRadius: 8,
-    borderLeft: "2px solid transparent",
-    borderBottom: "1px solid #E7EAF4",
-    textDecoration: "none",
-    color: "#0B1220",
-  },
-  reportTitle: {
-    fontSize: 13,
-    fontWeight: 700,
-    color: "#0B1220",
-  },
-
-  /* ---- Goods & Gallery ---- */
-  gallerySection: {
-    marginTop: 60,
-    paddingTop: 44,
-    borderTop: "1px solid #D7DCEE",
-    textAlign: "center",
-  },
-  galleryRows: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    gap: 14,
-  },
-  galleryRow: {
-    display: "flex",
-    justifyContent: "center",
-    gap: 14,
-    flexWrap: "wrap",
-  },
-  galleryThumbBtn: {
-    padding: 0,
-    border: "none",
-    background: "none",
-    cursor: "pointer",
-    borderRadius: 12,
-    overflow: "hidden",
-    lineHeight: 0,
-  },
-  galleryThumb: {
-    width: 104,
-    height: 104,
-    objectFit: "cover",
-    display: "block",
-    borderRadius: 12,
-    boxShadow: "0 4px 14px rgba(20,30,70,0.16)",
-  },
-  lightboxOverlay: {
-    position: "fixed",
-    inset: 0,
-    background: "rgba(11,18,32,0.86)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    zIndex: 100,
-    padding: 24,
-  },
-  lightboxImage: {
-    maxWidth: "92vw",
-    maxHeight: "88vh",
-    objectFit: "contain",
-    borderRadius: 8,
-    boxShadow: "0 20px 60px rgba(0,0,0,0.5)",
-  },
-  lightboxClose: {
-    position: "fixed",
-    top: 20,
-    right: 20,
-    width: 40,
-    height: 40,
-    borderRadius: "50%",
-    background: "rgba(255,255,255,0.12)",
-    border: "none",
-    color: "#fff",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    cursor: "pointer",
-  },
-
-  /* ---- Ulsan Digest ---- */
-  digestSection: {
-    marginTop: 60,
-    paddingTop: 44,
-    borderTop: "1px solid #D7DCEE",
-  },
-  digestList: {
-    display: "flex",
-    flexDirection: "column",
-  },
-  digestItem: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "baseline",
-    gap: 16,
-    padding: "12px 6px",
-    borderRadius: 8,
-    borderLeft: "2px solid transparent",
-    borderBottom: "1px solid #E7EAF4",
-    textDecoration: "none",
-    color: "#0B1220",
-  },
-  digestTextCol: {
-    display: "flex",
-    flexDirection: "column",
-    gap: 3,
-  },
-  digestTitle: {
-    fontSize: 13,
-    fontWeight: 700,
-    color: "#0B1220",
-  },
-  digestSummary: {
-    fontSize: 12.5,
-    fontWeight: 400,
-    color: "#6B7290",
-  },
-  digestMeta: {
-    fontSize: 12,
-    color: "#6D4FE0",
-    fontWeight: 600,
-    whiteSpace: "nowrap",
-    flexShrink: 0,
-  },
-
-  /* ---- U-History Archive ---- */
-  archiveSection: {
-    marginTop: 60,
-    paddingTop: 44,
-    borderTop: "1px solid #D7DCEE",
-  },
-  archiveCols: {
-    display: "grid",
-    gridTemplateColumns: "1fr 1fr",
-    columnGap: 56,
-  },
-  archiveItem: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "baseline",
-    gap: 16,
-    padding: "8px 6px",
-    borderRadius: 8,
-    borderLeft: "2px solid transparent",
-    borderBottom: "1px solid #E7EAF4",
-    textDecoration: "none",
-    color: "#0B1220",
-  },
-  archiveTitle: {
-    fontSize: 13,
-    fontWeight: 700,
-    color: "#0B1220",
-  },
-  archiveOrg: {
-    fontSize: 12,
-    color: "#6D4FE0",
-    fontWeight: 600,
-    whiteSpace: "nowrap",
-    flexShrink: 0,
-  },
-
-  /* ---- U-Historian & Curator ---- */
-  curatorSection: {
-    marginTop: 60,
-    paddingTop: 44,
-    borderTop: "1px solid #D7DCEE",
-  },
-  curatorCols: {
-    display: "grid",
-    gridTemplateColumns: "1fr 1fr 1fr",
-    columnGap: 40,
-    rowGap: 4,
-  },
-  curatorItem: {
-    display: "block",
-    padding: "8px 6px",
-    borderRadius: 8,
-    borderLeft: "2px solid transparent",
-    borderBottom: "1px solid #E7EAF4",
-    textDecoration: "none",
-    color: "#0B1220",
-  },
-  curatorTitle: {
-    fontSize: 13,
-    fontWeight: 700,
-    color: "#0B1220",
-  },
-
-  /* ---- Internet Archive link-out card ---- */
-  archiveLinkSection: {
-    marginTop: 60,
-    paddingTop: 44,
-    borderTop: "1px solid #D7DCEE",
-  },
-  archiveLinkCard: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    background: "#FFFFFF",
-    borderRadius: 16,
-    padding: "22px 26px",
-    textDecoration: "none",
-    boxShadow: "0 12px 30px rgba(20,30,70,0.10)",
-  },
-  archiveLinkEyebrow: {
-    fontFamily: "'Inter', sans-serif",
-    fontWeight: 700,
-    fontSize: 13,
-    letterSpacing: "0.14em",
-  },
-  archiveLinkArrow: {
-    fontSize: 18,
-    color: "#2F5FE0",
-    fontWeight: 700,
   },
 };
