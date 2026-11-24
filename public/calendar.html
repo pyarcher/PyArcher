@@ -4,6 +4,22 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Pyarcher’s Calendar — Kim Sang Yuk</title>
+<script>
+/* ---------------------------------------------------------------------
+   캘린더 잠금 — 비밀번호의 SHA-256 해시. 비워 두면 잠금 없이 열립니다.
+   바꾸는 법: 페이지 맨 아래 '비밀번호 설정·변경'에서 새 비밀번호를 넣으면
+   해시가 나옵니다. 그 값을 아래 따옴표 안에 붙여 넣으면 모든 기기에 적용됩니다.
+   --------------------------------------------------------------------- */
+var GATE_HASH = "";
+(function () {
+  var o = null, ok = false;
+  try { o = localStorage.getItem("pyarcher-cal-gate-v1"); } catch (e) {}
+  var eff = o || GATE_HASH;
+  if (!eff) return;
+  try { ok = sessionStorage.getItem("pyarcher-cal-open") === eff || localStorage.getItem("pyarcher-cal-remember") === eff; } catch (e) {}
+  if (!ok) document.documentElement.classList.add("locked");
+})();
+</script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
   :root {
@@ -178,10 +194,41 @@
     .card { padding: 18px 16px; }
     table.dd th:nth-child(1), table.dd td:nth-child(1) { padding-left: 4px; }
   }
+  /* 잠금 화면 */
+  .locked .wrap { display: none; }
+  #gate { display: none; min-height: 100vh; align-items: center; justify-content: center; padding: 24px 16px; }
+  .locked #gate { display: flex; }
+  .gate-card { background: #fff; border-radius: 18px; box-shadow: 0 18px 40px rgba(20,30,70,.14); padding: 28px 26px 24px; width: 100%; max-width: 360px; }
+  .gate-card h2 { margin: 0 0 4px; font-size: 20px; font-weight: 800; }
+  .gate-card p { margin: 0 0 16px; font-size: 13px; color: #6B7290; }
+  .gate-card input[type=password], #lockpanel input[type=password] { width: 100%; font: inherit; font-size: 15px; padding: 11px 12px; border: 1px solid #D7DCEE; border-radius: 10px; margin: 0 0 10px; }
+  .gate-card label { display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: #4A5170; margin: 0 0 14px; }
+  .gbtn { border: 0; background: #2F5FE0; color: #fff; font: inherit; font-size: 14px; font-weight: 700; padding: 10px 16px; border-radius: 10px; cursor: pointer; }
+  .gbtn.ghost { background: #EEF1FA; color: #27407f; }
+  .gate-card .gbtn { width: 100%; }
+  .gmsg { min-height: 18px; font-size: 12.5px; color: #D64545; margin-top: 8px; }
+  .gmsg.ok { color: #2F7A4F; }
+  #lockbar { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; margin-top: 48px; }
+  #lockbar .gbtn { font-size: 12.5px; padding: 8px 12px; }
+  #lockpanel { background: #fff; border-radius: 16px; box-shadow: 0 12px 30px rgba(20,30,70,.10); padding: 18px 20px; margin-top: 12px; max-width: 460px; margin-left: auto; }
+  #lockpanel h3 { margin: 0 0 10px; font-size: 14px; }
+  #lockpanel .row { display: flex; gap: 8px; flex-wrap: wrap; }
+  #lockpanel code { display: block; word-break: break-all; background: #F3F5FC; border-radius: 8px; padding: 8px 10px; font-size: 12px; margin: 8px 0; }
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
 </head>
 <body>
+<div id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-t">
+  <form class="gate-card" id="gate-form" autocomplete="off">
+    <h2 id="gate-t">Pyarcher’s Calendar</h2>
+    <p>비밀번호를 입력해 주세요.</p>
+    <input type="password" id="gate-pw" aria-label="비밀번호" autocomplete="current-password" />
+    <label><input type="checkbox" id="gate-rem" /> 이 기기에서 기억하기</label>
+    <button class="gbtn" type="submit">열기</button>
+    <div class="gmsg" id="gate-msg" aria-live="polite"></div>
+    <p style="margin:14px 0 0"><a href="/" style="color:#4A5170;font-size:12.5px;text-decoration:none">&larr; KIM SANG YUK</a></p>
+  </form>
+</div>
 <div class="wrap">
   <a class="back-link" href="/">&larr; KIM SANG YUK</a>
   <p class="eyebrow">PYARCHER’S <span>&mdash;</span> <span class="blue">CALENDAR</span></p>
@@ -254,6 +301,23 @@
   <section id="s-chrono">
     <div class="sec-head"><span class="sec-name"><a class="sec-link" href="/chronoskairos.html">◉ CHRONOS-KAIROS</a></span><span class="sec-line"></span></div>
   </section>
+  <div id="lockbar">
+    <button class="gbtn ghost" type="button" id="lk-lock" hidden>🔒 잠그기</button>
+    <button class="gbtn ghost" type="button" id="lk-set">비밀번호 설정·변경</button>
+  </div>
+  <div id="lockpanel" hidden>
+    <h3 id="lk-title">비밀번호 설정·변경</h3>
+    <input type="password" id="lk-cur" placeholder="현재 비밀번호" aria-label="현재 비밀번호" autocomplete="current-password" />
+    <input type="password" id="lk-new" placeholder="새 비밀번호 (4자 이상)" aria-label="새 비밀번호" autocomplete="new-password" />
+    <input type="password" id="lk-new2" placeholder="새 비밀번호 확인" aria-label="새 비밀번호 확인" autocomplete="new-password" />
+    <div class="row"><button class="gbtn" type="button" id="lk-save">저장</button><button class="gbtn ghost" type="button" id="lk-off">잠금 해제(비밀번호 없애기)</button><button class="gbtn ghost" type="button" id="lk-close">닫기</button></div>
+    <div class="gmsg" id="lk-msg" aria-live="polite"></div>
+    <div id="lk-out" hidden>
+      <p style="font-size:12.5px;color:#4A5170;margin:10px 0 0;line-height:1.6">이 브라우저에는 바로 적용됐습니다. <b>모든 기기</b>에 적용하려면 calendar.html 위쪽의 <b>GATE_HASH</b> 따옴표 안에 아래 값을 넣어 올려 주세요.</p>
+      <code id="lk-hash"></code>
+      <button class="gbtn ghost" type="button" id="lk-copy">값 복사</button>
+    </div>
+  </div>
 </div>
 
 <script src="calendar-data.js"></script>
@@ -1031,6 +1095,86 @@ document.getElementById("tod").addEventListener("click", () => { const t = today
 renderFilters();
 renderAll(true);
 setInterval(() => { const t = todayKST(); if (t.d !== T0.d || t.m !== T0.m) location.reload(); else renderToday(); }, 60000);
+</script>
+<script>
+/* ---------------- 캘린더 잠금 ---------------- */
+(function () {
+  var K_OVR = "pyarcher-cal-gate-v1", K_SES = "pyarcher-cal-open", K_REM = "pyarcher-cal-remember";
+  function g(st, k) { try { return st.getItem(k); } catch (e) { return null; } }
+  function s(st, k, v) { try { st.setItem(k, v); } catch (e) {} }
+  function d(st, k) { try { st.removeItem(k); } catch (e) {} }
+  function eff() { return g(localStorage, K_OVR) || GATE_HASH || ""; }
+  async function h(pw) {
+    if (!window.crypto || !crypto.subtle) throw new Error("nocrypto");
+    var b = await crypto.subtle.digest("SHA-256", new TextEncoder().encode("pyarcher-calendar-gate:" + pw));
+    return Array.from(new Uint8Array(b)).map(function (x) { return x.toString(16).padStart(2, "0"); }).join("");
+  }
+  var root = document.documentElement;
+  var form = document.getElementById("gate-form"), pw = document.getElementById("gate-pw"), rem = document.getElementById("gate-rem"), gmsg = document.getElementById("gate-msg");
+  function refreshBar() { document.getElementById("lk-lock").hidden = !eff(); document.getElementById("lk-cur").hidden = !eff(); document.getElementById("lk-off").hidden = !eff(); }
+  if (root.classList.contains("locked")) setTimeout(function () { pw.focus(); }, 50);
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
+    gmsg.textContent = "";
+    try {
+      var x = await h(pw.value), E = eff();
+      if (x === E) {
+        s(sessionStorage, K_SES, E);
+        if (rem.checked) s(localStorage, K_REM, E);
+        pw.value = ""; root.classList.remove("locked"); window.scrollTo(0, 0); refreshBar();
+      } else {
+        pw.value = ""; await new Promise(function (r) { setTimeout(r, 700); });
+        gmsg.textContent = "비밀번호가 맞지 않습니다."; pw.focus();
+      }
+    } catch (err) { gmsg.textContent = "이 브라우저에서는 잠금 기능을 쓸 수 없습니다(https 필요)."; }
+  });
+
+  var panel = document.getElementById("lockpanel"), lmsg = document.getElementById("lk-msg"), out = document.getElementById("lk-out");
+  document.getElementById("lk-lock").addEventListener("click", function () {
+    d(sessionStorage, K_SES); d(localStorage, K_REM); root.classList.add("locked"); panel.hidden = true; window.scrollTo(0, 0); pw.focus();
+  });
+  document.getElementById("lk-set").addEventListener("click", function () {
+    panel.hidden = !panel.hidden; lmsg.textContent = ""; out.hidden = true; refreshBar();
+    document.getElementById("lk-title").textContent = eff() ? "비밀번호 변경" : "비밀번호 설정";
+    if (!panel.hidden) (eff() ? document.getElementById("lk-cur") : document.getElementById("lk-new")).focus();
+  });
+  document.getElementById("lk-close").addEventListener("click", function () { panel.hidden = true; });
+  async function checkCur() {
+    if (!eff()) return true;
+    return (await h(document.getElementById("lk-cur").value)) === eff();
+  }
+  document.getElementById("lk-save").addEventListener("click", async function () {
+    lmsg.className = "gmsg"; lmsg.textContent = ""; out.hidden = true;
+    var n1 = document.getElementById("lk-new").value, n2 = document.getElementById("lk-new2").value;
+    try {
+      if (!(await checkCur())) { lmsg.textContent = "현재 비밀번호가 맞지 않습니다."; return; }
+      if (n1.length < 4) { lmsg.textContent = "새 비밀번호는 4자 이상으로 해 주세요."; return; }
+      if (n1 !== n2) { lmsg.textContent = "새 비밀번호 두 칸이 서로 다릅니다."; return; }
+      var x = await h(n1);
+      s(localStorage, K_OVR, x); s(sessionStorage, K_SES, x); d(localStorage, K_REM);
+      ["lk-cur", "lk-new", "lk-new2"].forEach(function (id) { document.getElementById(id).value = ""; });
+      lmsg.className = "gmsg ok"; lmsg.textContent = "저장했습니다.";
+      document.getElementById("lk-hash").textContent = x; out.hidden = false; refreshBar();
+      document.getElementById("lk-title").textContent = "비밀번호 변경";
+    } catch (err) { lmsg.textContent = "이 브라우저에서는 쓸 수 없습니다(https 필요)."; }
+  });
+  document.getElementById("lk-off").addEventListener("click", async function () {
+    lmsg.className = "gmsg"; lmsg.textContent = "";
+    try {
+      if (!(await checkCur())) { lmsg.textContent = "현재 비밀번호를 먼저 입력해 주세요."; return; }
+      d(localStorage, K_OVR); d(localStorage, K_REM);
+      lmsg.className = "gmsg ok";
+      lmsg.textContent = GATE_HASH ? "이 브라우저의 변경분을 지웠습니다. 파일(GATE_HASH)에 적힌 비밀번호로 돌아갑니다. 잠금을 완전히 없애려면 GATE_HASH를 비워 올려 주세요."
+                                   : "이 브라우저의 비밀번호를 지웠습니다. 이제 잠금 없이 열립니다.";
+      refreshBar();
+    } catch (err) { lmsg.textContent = "이 브라우저에서는 쓸 수 없습니다(https 필요)."; }
+  });
+  document.getElementById("lk-copy").addEventListener("click", function () {
+    var v = document.getElementById("lk-hash").textContent;
+    if (navigator.clipboard) navigator.clipboard.writeText(v).then(function () { lmsg.className = "gmsg ok"; lmsg.textContent = "복사했습니다."; });
+  });
+  refreshBar();
+})();
 </script>
 </body>
 </html>
