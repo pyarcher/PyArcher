@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Github, Copy, Check } from "lucide-react";
+import { Copy, Check } from "lucide-react";
 import faceImg from "./assets/face.jpg";
 import bookImg from "./assets/book.png";
 import harmonyImg from "./assets/harmony.png";
@@ -209,16 +209,9 @@ export default function KimSangYukPortfolio() {
 
             <div style={styles.ctaRow}>
               <a
-                href="https://github.com/pyarcher"
+                href="https://blog.naver.com/sixpod"
                 className="kp-btn-primary"
                 style={styles.btnPrimary}
-              >
-                GitHub
-              </a>
-              <a
-                href="https://blog.naver.com/sixpod"
-                className="kp-btn-ghost"
-                style={styles.btnGhost}
               >
                 Blog
               </a>
@@ -253,14 +246,6 @@ export default function KimSangYukPortfolio() {
             </div>
 
             <div style={styles.socialRow}>
-              <a
-                href="https://github.com/pyarcher"
-                aria-label="GitHub"
-                className="kp-social"
-                style={styles.socialIcon}
-              >
-                <Github size={18} />
-              </a>
               <a
                 href="https://blog.naver.com/sixpod"
                 aria-label="Naver Blog"
@@ -324,16 +309,6 @@ export default function KimSangYukPortfolio() {
             <div style={styles.cardDivider} />
 
             <p style={styles.cardEyebrow}>REACH ME</p>
-
-            <button
-              className="kp-copy"
-              style={styles.copyRow}
-              onClick={() => copy("github", "github.com/pyarcher")}
-            >
-              <span style={styles.copyLabel}>GitHub</span>
-              <span style={styles.copyValue}>github.com/pyarcher</span>
-              {copied === "github" ? <Check size={15} /> : <Copy size={15} />}
-            </button>
 
             <button
               className="kp-copy"
