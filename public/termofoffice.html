@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>통합울산선생안 — Kim Sang Yuk</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+  :root { --text:#0B1220; --muted:#6B7290; --soft:#8A90A8; --border:#D7DCEE; --line:#E7EAF4; --blue:#2F5FE0; --purple:#6D4FE0; --hover:#EEF1FA; --th:#F3F5FC; }
+  * { box-sizing:border-box; }
+  body { margin:0; min-height:100vh; background:linear-gradient(180deg,#EEF1FA 0%,#E7EBF7 100%); font-family:'Inter','Apple SD Gothic Neo','Malgun Gothic',sans-serif; color:var(--text); }
+  .wrap { max-width:1080px; margin:0 auto; padding:56px 32px 110px; }
+  .back-link { display:inline-flex; align-items:center; gap:6px; text-decoration:none; color:#4A5170; font-size:13px; font-weight:600; margin-bottom:40px; transition:color .15s ease; }
+  .back-link:hover { color:var(--blue); }
+  .eyebrow { font-weight:700; font-size:13px; letter-spacing:.14em; margin:0 0 12px; }
+  .eyebrow .blue { color:var(--blue); }
+  h1 { font-size:36px; line-height:1.15; margin:0 0 6px; font-weight:800; letter-spacing:-0.02em; }
+  .subtitle { font-size:15px; color:var(--muted); margin:0 0 24px; line-height:1.6; }
+  .zh { font-family:'Noto Serif CJK KR','Noto Serif KR','Batang','Songti SC','SimSun',serif; }
+  a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visible { outline:2px solid var(--blue); outline-offset:2px; border-radius:6px; }
+
+  /* 검색 */
+  .searchbar { position:sticky; top:0; z-index:5; padding:10px 0 12px; background:linear-gradient(180deg,#EEF1FA 75%,rgba(238,241,250,0)); }
+  .sbox { display:flex; align-items:center; gap:10px; background:#fff; border:1px solid var(--border); border-radius:14px; padding:4px 6px 4px 14px; box-shadow:0 8px 22px rgba(20,30,70,.08); }
+  .sbox input { flex:1; min-width:0; border:0; outline:none; font:inherit; font-size:15px; padding:10px 0; background:transparent; color:var(--text); }
+  .sbox .cnt { font-size:12.5px; font-weight:700; color:var(--purple); white-space:nowrap; }
+  .sbox button { border:0; background:var(--hover); color:#3b4260; font:inherit; font-size:12.5px; font-weight:700; padding:8px 12px; border-radius:10px; cursor:pointer; }
+  .sbox button:hover { background:#E2E7F6; }
+
+  /* 기관 탭 */
+  .tabs { display:flex; flex-wrap:wrap; gap:6px; margin:6px 0 4px; }
+  .tabs .grp { width:100%; font-size:11.5px; font-weight:800; letter-spacing:.12em; color:var(--soft); margin:10px 0 2px; }
+  .tab { border:1px solid var(--border); background:#fff; color:#27407f; font:inherit; font-size:13px; font-weight:700; padding:7px 12px; border-radius:999px; cursor:pointer; transition:background .15s ease, border-color .15s ease; }
+  .tab small { color:var(--soft); font-weight:600; margin-left:4px; }
+  .tab:hover { background:var(--hover); }
+  .tab[aria-pressed="true"] { background:var(--blue); border-color:var(--blue); color:#fff; }
+  .tab[aria-pressed="true"] small { color:#dfe6ff; }
+
+  /* 목록 */
+  .sec-head { display:flex; align-items:baseline; gap:12px; margin:34px 0 10px; }
+  .sec-name { font-weight:800; font-size:16px; color:var(--purple); letter-spacing:.02em; }
+  .sec-line { flex:1; height:1px; background:var(--border); }
+  .sec-cnt { font-size:12px; font-weight:700; color:var(--soft); }
+  .office { background:#fff; border-radius:16px; box-shadow:0 12px 30px rgba(20,30,70,.08); padding:6px 20px 10px; margin:0 0 16px; }
+  .office h3 { font-size:15px; margin:12px 0 4px; color:#1B2236; }
+  .office h3 .n { font-size:12px; color:var(--soft); font-weight:700; margin-left:6px; }
+  .divider { font-size:12px; font-weight:800; color:#27407f; background:var(--th); border-radius:8px; padding:5px 10px; margin:10px 0 2px; display:inline-block; }
+  .p { display:grid; grid-template-columns:52px minmax(0,1fr) auto; gap:4px 12px; align-items:baseline; padding:9px 4px; border-top:1px solid var(--line); }
+  .office .p:first-of-type { border-top:0; }
+  .ord { font-size:12px; font-weight:700; color:var(--soft); text-align:right; }
+  .who { font-size:14.5px; font-weight:700; }
+  .who .hj { font-weight:500; color:var(--muted); margin-left:4px; }
+  .who .ex { font-size:12px; font-weight:600; color:var(--purple); margin-left:6px; }
+  .when { font-size:12.5px; color:var(--muted); white-space:nowrap; text-align:right; }
+  .rec { grid-column:2 / 4; font-size:13px; color:#3b4260; line-height:1.65; }
+  .rec .first { white-space:pre-line; }
+  .rec details summary { cursor:pointer; color:var(--blue); font-size:12px; font-weight:700; list-style:none; margin-top:2px; }
+  .rec details summary::-webkit-details-marker { display:none; }
+  .rec details[open] summary { color:var(--soft); }
+  .rec .more { white-space:pre-line; margin-top:4px; }
+  .rec .pg { color:var(--soft); font-size:11.5px; }
+  mark { background:#FFE58A; color:inherit; border-radius:3px; padding:0 1px; }
+  .empty { padding:40px 0; text-align:center; color:var(--muted); }
+  .note { font-size:12.5px; color:var(--muted); line-height:1.7; margin:40px 0 0; }
+  .floatnav { position:fixed; right:18px; bottom:18px; z-index:10; }
+  .floatnav a { display:block; text-decoration:none; font-size:12px; font-weight:800; color:#fff; background:var(--blue); border-radius:999px; padding:9px 14px; box-shadow:0 8px 20px rgba(47,95,224,.35); }
+
+  @media (max-width:760px) {
+    .wrap { padding:36px 16px 100px; }
+    h1 { font-size:28px; }
+    .office { padding:4px 12px 8px; }
+    .p { grid-template-columns:38px minmax(0,1fr); }
+    .when { grid-column:2; text-align:left; white-space:normal; }
+    .rec { grid-column:2; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition:none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap" id="top">
+  <a class="back-link" href="/">&larr; KIM SANG YUK</a>
+  <p class="eyebrow">ULSAN <span>&mdash;</span> <span class="blue">TERM OF OFFICE</span></p>
+  <h1>통합울산선생안</h1>
+  <p class="subtitle" id="sub">조선 태조 이래 울산의 공공기관장 명단</p>
+
+  <div class="searchbar">
+    <div class="sbox">
+      <input id="q" type="search" placeholder="이름·한자·직명·연도 검색 (예: 이순신, 李, 도호부사, 1682)" aria-label="선생안 검색" autocomplete="off" />
+      <span class="cnt" id="cnt" aria-live="polite"></span>
+      <button type="button" id="clr">지우기</button>
+    </div>
+  </div>
+
+  <nav class="tabs" id="tabs" aria-label="기관 선택"></nav>
+  <div id="list"></div>
+
+  <p class="note" id="srcnote"></p>
+</div>
+<div class="floatnav"><a href="#top">↑ 위로</a></div>
+
+<script src="termofoffice-data.js"></script>
+<script>
+(function () {
+  var D = window.SSA;
+  if (!D) { document.getElementById("list").textContent = "데이터 파일(termofoffice-data.js)을 불러오지 못했습니다."; return; }
+  var C = {}; D.cols.forEach(function (c, i) { C[c] = i; });
+  var R = D.rows, S = D.sections;
+  var TOTAL = R.length;
+
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+
+  document.getElementById("sub").textContent = "조선 태조 이래 울산의 공공기관장 명단 · " + S.length + "개 기관 · " + TOTAL.toLocaleString() + "명(중복 재임 포함)";
+  document.getElementById("srcnote").textContent = "자료: " + D.source + ". 원서의 이름·한자·기록을 옮겼으며, 원서에서 한자를 표기하지 못한 글자는 한글 그대로 두었습니다. 각 항목 끝의 쪽수는 원서 쪽입니다.";
+
+  /* 검색용 문자열 미리 만들기 */
+  var HAY = R.map(function (r) {
+    return [S[r[C.sec]].name, r[C.office], r[C.sub], r[C.reign], r[C.ord], r[C.name], r[C.hanja], r[C.extra], r[C.district], r[C.term], r[C.year] || "", r[C.text]].join(" ").toLowerCase();
+  });
+  var counts = S.map(function () { return 0; });
+  R.forEach(function (r) { counts[r[C.sec]]++; });
+
+  /* 탭 */
+  var cur = 0;
+  try { var sv = parseInt(localStorage.getItem("pyarcher-ssa-tab"), 10); if (sv >= 0 && sv < S.length) cur = sv; } catch (e) {}
+  var tabs = document.getElementById("tabs"), tabBtns = [];
+  var lastEra = null;
+  S.forEach(function (s, i) {
+    var g = s.era === "현대" ? "대한민국 정부 수립 이후" : "조선 ~ 현대";
+    if (g !== lastEra) { tabs.appendChild(el("div", "grp", g)); lastEra = g; }
+    var b = el("button", "tab"); b.type = "button";
+    b.appendChild(document.createTextNode(s.name)); b.appendChild(el("small", null, String(counts[i])));
+    b.addEventListener("click", function () { cur = i; q.value = ""; try { localStorage.setItem("pyarcher-ssa-tab", String(i)); } catch (e) {} render(); });
+    tabs.appendChild(b); tabBtns.push(b);
+  });
+
+  /* 강조 표시(검색어) */
+  var TK = [];
+  function hl(parent, text) {
+    text = String(text == null ? "" : text);
+    if (!TK.length || !text) { parent.appendChild(document.createTextNode(text)); return; }
+    var low = text.toLowerCase(), pos = 0;
+    while (pos < text.length) {
+      var best = -1, len = 0;
+      TK.forEach(function (t) { var k = low.indexOf(t, pos); if (k >= 0 && (best < 0 || k < best)) { best = k; len = t.length; } });
+      if (best < 0) { parent.appendChild(document.createTextNode(text.slice(pos))); break; }
+      if (best > pos) parent.appendChild(document.createTextNode(text.slice(pos, best)));
+      parent.appendChild(el("mark", null, text.slice(best, best + len)));
+      pos = best + len;
+    }
+  }
+
+  function person(r) {
+    var p = el("div", "p");
+    p.appendChild(el("span", "ord", r[C.ord] || (r[C.district] ? "" : "")));
+    var who = el("div", "who");
+    if (r[C.district]) { var d = el("span", "ex", r[C.district]); d.style.marginLeft = "0"; d.style.marginRight = "6px"; who.appendChild(d); }
+    hl(who, r[C.name]);
+    if (r[C.hanja]) { var h = el("span", "hj zh"); hl(h, "(" + r[C.hanja] + ")"); who.appendChild(h); }
+    if (r[C.extra]) { var x = el("span", "ex"); hl(x, r[C.extra]); who.appendChild(x); }
+    p.appendChild(who);
+    var w = el("span", "when"); hl(w, r[C.term] || (r[C.year] ? String(r[C.year]) : "")); p.appendChild(w);
+    var t = r[C.text];
+    if (t) {
+      var rec = el("div", "rec");
+      var parts = t ? t.split("\n") : [];
+      if (parts.length) { var f = el("div", "first"); hl(f, parts[0]); rec.appendChild(f); }
+      if (parts.length > 1) {
+        var det = el("details"); det.appendChild(el("summary", null, "기록 더보기 (" + (parts.length - 1) + ")"));
+        var m = el("div", "more"); hl(m, parts.slice(1).join("\n")); det.appendChild(m);
+        if (TK.length && TK.some(function (k) { return parts.slice(1).join(" ").toLowerCase().indexOf(k) >= 0; })) det.open = true;
+        rec.appendChild(det);
+      }
+      if (r[C.page]) { var pg = el("span", "pg", " · 원서 " + r[C.page] + "쪽"); (rec.lastChild && rec.lastChild.className === "first" ? rec.lastChild : rec).appendChild(pg); }
+      p.appendChild(rec);
+    }
+    return p;
+  }
+
+  /* 같은 기관 안에서 직명 → (구분·왕대) 순으로 묶어 그리기 */
+  function drawSection(list, secIdx, withHead) {
+    var frag = document.createDocumentFragment();
+    if (withHead) {
+      var hd = el("div", "sec-head"); hd.appendChild(el("span", "sec-name", S[secIdx].name)); hd.appendChild(el("span", "sec-line")); hd.appendChild(el("span", "sec-cnt", list.length + "명"));
+      frag.appendChild(hd);
+    }
+    var box = null, office = null, lastDiv = null, offCount = null;
+    list.forEach(function (r) {
+      if (!box || r[C.office] !== office) {
+        office = r[C.office]; lastDiv = null;
+        box = el("section", "office");
+        var h3 = el("h3"); hl(h3, office || S[secIdx].name); offCount = el("span", "n"); h3.appendChild(offCount); offCount._n = 0;
+        box.appendChild(h3); frag.appendChild(box);
+      }
+      var dv = [r[C.sub], r[C.reign]].filter(Boolean).join(" · ");
+      if (dv && dv !== lastDiv) { box.appendChild(el("div", "divider", dv)); lastDiv = dv; }
+      box.appendChild(person(r));
+      offCount._n++; offCount.textContent = offCount._n + "명";
+    });
+    return frag;
+  }
+
+  var listEl = document.getElementById("list"), q = document.getElementById("q"), cnt = document.getElementById("cnt");
+  function tokens(s) { return s.toLowerCase().split(/\s+/).filter(Boolean); }
+
+  function render() {
+    TK = tokens(q.value);
+    listEl.textContent = "";
+    tabBtns.forEach(function (b, i) { b.setAttribute("aria-pressed", (!TK.length && i === cur) ? "true" : "false"); });
+    if (!TK.length) {
+      var list = R.filter(function (r) { return r[C.sec] === cur; });
+      listEl.appendChild(drawSection(list, cur, true));
+      cnt.textContent = "전체 " + TOTAL.toLocaleString() + "명";
+      return;
+    }
+    var hits = [];
+    R.forEach(function (r, i) { var h = HAY[i]; if (TK.every(function (t) { return h.indexOf(t) >= 0; })) hits.push(r); });
+    cnt.textContent = "검색 결과 " + hits.length.toLocaleString() + "건";
+    if (!hits.length) { listEl.appendChild(el("p", "empty", "찾는 내용이 없습니다.")); return; }
+    var shown = hits.slice(0, 600);
+    S.forEach(function (s, si) {
+      var part = shown.filter(function (r) { return r[C.sec] === si; });
+      if (part.length) listEl.appendChild(drawSection(part, si, true));
+    });
+    if (hits.length > shown.length) listEl.appendChild(el("p", "empty", "결과가 많아 앞의 600건만 보여 줍니다. 검색어를 더 넣어 좁혀 보세요."));
+  }
+
+  var tmr = null;
+  q.addEventListener("input", function () { clearTimeout(tmr); tmr = setTimeout(render, 160); });
+  document.getElementById("clr").addEventListener("click", function () { q.value = ""; render(); q.focus(); });
+  render();
+})();
+</script>
+</body>
+</html>
