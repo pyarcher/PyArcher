@@ -15,7 +15,9 @@
   .eyebrow { font-weight:700; font-size:13px; letter-spacing:.14em; margin:0 0 12px; }
   .eyebrow .blue { color:var(--blue); }
   h1 { font-size:36px; line-height:1.15; margin:0 0 6px; font-weight:800; letter-spacing:-0.02em; }
-  .subtitle { font-size:15px; color:var(--muted); margin:0 0 24px; line-height:1.6; }
+  .subtitle { font-size:15px; color:var(--muted); margin:0 0 6px; line-height:1.6; }
+  .cite { font-size:13px; color:var(--soft); margin:0 0 24px; }
+  .cite b { color:#4A5170; font-weight:700; }
   .zh { font-family:'Noto Serif CJK KR','Noto Serif KR','Batang','Songti SC','SimSun',serif; }
   a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visible { outline:2px solid var(--blue); outline-offset:2px; border-radius:6px; }
 
@@ -82,6 +84,7 @@
   <p class="eyebrow">ULSAN <span>&mdash;</span> <span class="blue">TERM OF OFFICE</span></p>
   <h1>통합울산선생안</h1>
   <p class="subtitle" id="sub">조선 태조 이래 울산의 공공기관장 명단</p>
+  <p class="cite">출처: <b>통합울산선생안(울산연구원)</b></p>
 
   <div class="searchbar">
     <div class="sbox">
@@ -110,7 +113,7 @@
   function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
 
   document.getElementById("sub").textContent = "조선 태조 이래 울산의 공공기관장 명단 · " + S.length + "개 기관 · " + TOTAL.toLocaleString() + "명(중복 재임 포함)";
-  document.getElementById("srcnote").textContent = "자료: " + D.source + ". 원서의 이름·한자·기록을 옮겼으며, 원서에서 한자를 표기하지 못한 글자는 한글 그대로 두었습니다. 각 항목 끝의 쪽수는 원서 쪽입니다.";
+  document.getElementById("srcnote").textContent = "출처: " + D.source + ". 원서의 이름·한자·기록을 옮겼으며, 원서에서 한자를 표기하지 못한 글자는 한글 그대로 두었습니다. 각 항목 끝의 쪽수는 원서 쪽입니다.";
 
   /* 검색용 문자열 미리 만들기 */
   var HAY = R.map(function (r) {
