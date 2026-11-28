@@ -435,7 +435,10 @@ const pillarH = i => STEM_H[i % 10] + BR_H[i % 12];
 const NAEUM = ["海中金", "爐中火", "大林木", "路傍土", "劍鋒金", "山頭火", "澗下水", "城頭土", "白蠟金", "楊柳木",
   "泉中水", "屋上土", "霹靂火", "松柏木", "長流水", "砂中金", "山下火", "平地木", "壁上土", "金箔金",
   "覆燈火", "天河水", "大驛土", "釵釧金", "桑柘木", "大溪水", "沙中土", "天上火", "石榴木", "大海水"];
-const naeum = i => NAEUM[Math.floor(i / 2)];
+const NAEUM_K = ["해중금", "노중화", "대림목", "노방토", "검봉금", "산두화", "간하수", "성두토", "백랍금", "양류목",
+  "천중수", "옥상토", "벽력화", "송백목", "장류수", "사중금", "산하화", "평지목", "벽상토", "금박금",
+  "복등화", "천하수", "대역토", "차천금", "상자목", "대계수", "사중토", "천상화", "석류목", "대해수"];
+const naeum = i => NAEUM_K[Math.floor(i / 2)] + "(" + NAEUM[Math.floor(i / 2)] + ")";
 
 function sunLon(jd) {
   const T = (jd - 2451545) / 36525, r = Math.PI / 180;
@@ -770,9 +773,9 @@ function renderToday() {
   const nl = nextLeapYear(t), lms = leapMonthsAfter(t, 19), nlm = lms[0];
   const tiles = [
     ["음력", "Lunar Calendar", (l.leap ? "윤 " : "") + l.m + "월 " + l.d + "일 – (" + sizeKo(lunarMonthLen(t.y, t.m, t.d)) + ")"],
-    ["세차", "Yearly Cycle", pillarK(yp) + "년(" + naeum(yp) + ")"],
-    ["월건", "Monthly Cycle", pillarK(monthIdx) + "월(" + naeum(monthIdx) + ")"],
-    ["일진", "Daily Cycle", pillarK(dp) + "일(" + naeum(dp) + ")"],
+    ["세차", "Yearly Cycle", pillarK(yp) + "년·" + naeum(yp)],
+    ["월건", "Monthly Cycle", pillarK(monthIdx) + "월·" + naeum(monthIdx)],
+    ["일진", "Daily Cycle", pillarK(dp) + "일·" + naeum(dp)],
     ["회기", "Islamic Era", hj ? hj + "년" : "—"],
     ["불기", "Buddhist Era", (t.y + 544) + "년"],
     ["공기", "Confucius Era", (t.y + 551) + "년"],
