@@ -108,6 +108,11 @@ var GATE_HASH = "";
   .num.sun, .num.off { color: var(--red); }
   .num.sat { color: var(--blue); }
   .num.today { background: var(--blue); color: #fff; }
+  /* 오늘 강조: 깜박임 */
+  @keyframes todayBlink { 0%, 100% { opacity: 1; } 50% { opacity: .2; } }
+  @keyframes ringBlink { 0%, 100% { box-shadow: inset 0 0 0 3px var(--blue); } 50% { box-shadow: inset 0 0 0 3px rgba(47,95,224,.12); } }
+  .today-line .blink { display: inline-block; color: var(--blue); font-size: 15px; background: #E8EEFD; border-radius: 8px; padding: 2px 8px; animation: todayBlink 1.2s ease-in-out infinite; }
+  .cell.is-today { animation: ringBlink 1.2s ease-in-out infinite; box-shadow: inset 0 0 0 3px var(--blue); }
   .lun { font-size: 10.5px; color: var(--soft); font-weight: 600; white-space: nowrap; }
   .chips { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
   .chip { font-size: 10.5px; font-weight: 700; line-height: 1.3; padding: 1.5px 5px; border-radius: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -317,7 +322,8 @@ var GATE_HASH = "";
   </section>
 
   <section id="s-chrono">
-    <div class="sec-head"><span class="sec-name"><a class="sec-link" href="/chronoskairos.html">◉ CHRONOS-KAIROS</a></span><span class="sec-line"></span></div>
+    <div class="sec-head"><span class="sec-name">◉ CHRONOS-KAIROS</span><span class="sec-line"></span></div>
+    <div class="card hist"><div class="lbl"><a href="/chronoskairos.html">시간의 인문학: 해와 달과 함께하는 시간</a></div></div>
   </section>
   <div id="lockbar">
     <button class="gbtn ghost" type="button" id="lk-lock" hidden>🔒 잠그기</button>
@@ -750,7 +756,8 @@ function renderToday() {
   const t = todayKST(), root = document.getElementById("today");
   root.textContent = "";
   const info = dayInfo(t.y, t.m, t.d), l = info.lunar;
-  const line = el("p", "today-line", "▷양력: " + t.y + "년 " + t.m + "월 " + t.d + "일(" + DOW_KO[info.w] + ")");
+  const line = el("p", "today-line", "▷양력: ");
+  line.append(el("span", "blink", t.y + "년 " + t.m + "월 " + t.d + "일(" + DOW_KO[info.w] + ")"));
   root.append(line);
   const yp = yearPillar(t.y, t.m, t.d), mp = monthPillar(t.y, t.m, t.d), dp = dayPillar(t.y, t.m, t.d);
   const monthIdx = (() => { for (let i = 0; i < 60; i++) if (i % 10 === mp.stem && i % 12 === mp.br) return i; return 0; })();
@@ -809,6 +816,7 @@ function renderGrid() {
     btn.type = "button";
     if (cy === sel.y && cm === sel.m && cd === sel.d) btn.classList.add("sel");
     const isToday = cy === T0.y && cm === T0.m && cd === T0.d;
+    if (isToday) btn.classList.add("is-today");
     const top = el("div", "ctop");
     const num = el("span", "num" + (isToday ? " today" : info.w === 0 || info.off ? " off" : info.w === 6 ? " sat" : ""), flt.solar ? String(cd) : "");
     top.append(num);
