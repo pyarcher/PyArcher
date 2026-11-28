@@ -116,6 +116,7 @@ var GATE_HASH = "";
   .c-mem { background: #EEF1FA; color: #4A5170; }
   .c-folk { background: #F1EDFC; color: var(--purple); }
   .c-ul { background: #E8EEFD; color: var(--blue); }
+  .c-corp { background: #E9F6EC; color: #2F7A4F; }
   .c-intl { background: #FFF4E0; color: var(--amber); font-weight: 600; }
   .ilist { list-style: none; margin: 0; padding: 0; }
   .ilist li { display: grid; grid-template-columns: 158px 1fr; gap: 10px; padding: 6px 0; border-bottom: 1px solid var(--line); font-size: 13.5px; line-height: 1.6; }
@@ -291,7 +292,7 @@ var GATE_HASH = "";
 
   <section id="s-intl">
     <div class="sec-head"><span class="sec-name">◇ INTERNATIONAL DAYS &amp; WEEKS</span><span class="sec-line"></span></div>
-    <div class="card" id="intl"></div>
+    <div class="card hist" id="intl"></div>
   </section>
 
   <section id="s-ulsan">
@@ -302,6 +303,11 @@ var GATE_HASH = "";
   <section id="s-market">
     <div class="sec-head"><span class="sec-name">♥ ULSAN MARKET DAY</span><span class="sec-line"></span></div>
     <div class="card" id="market"></div>
+  </section>
+
+  <section id="s-corp">
+    <div class="sec-head"><span class="sec-name">♦ ULSAN CORPORATE ANNIVERSARY</span><span class="sec-line"></span></div>
+    <div class="card hist"><div class="lbl"><a href="/corporateday.html">울산 주요 기관·기업 창립기념일</a></div></div>
   </section>
 
   <section id="s-hist">
@@ -333,6 +339,7 @@ var GATE_HASH = "";
 </div>
 
 <script src="calendar-data.js"></script>
+<script src="corporate-data.js"></script>
 <script>
 /* =====================================================================
    설정 영역 — 여기만 고치면 됩니다
@@ -735,8 +742,8 @@ async function sha(s) {
    ===================================================================== */
 const T0 = todayKST();
 const view = { y: T0.y, m: T0.m }, sel = { y: T0.y, m: T0.m, d: T0.d };
-const FILTERS = [["solar", "양력"], ["lunar", "음력"], ["term", "절기"], ["mem", "기념일"], ["intl", "국제기념일"], ["ul", "울산 기념일"], ["mk", "울산 장날"]];
-const flt = { solar: true, lunar: true, term: true, mem: true, intl: true, ul: true, mk: false };
+const FILTERS = [["solar", "양력"], ["lunar", "음력"], ["term", "절기"], ["mem", "기념일"], ["intl", "국제기념일"], ["ul", "울산 기념일"], ["corp", "기업 창립일"], ["mk", "울산 장날"]];
+const flt = { solar: true, lunar: true, term: true, mem: true, intl: true, ul: true, corp: true, mk: false };
 
 /* ---------- TODAY ---------- */
 function renderToday() {
@@ -814,6 +821,7 @@ function renderGrid() {
     if (flt.mem) { info.folk.forEach(e => add("c-folk", e.n, "d-folk")); info.mem.forEach(e => add("c-mem", e.n, "d-mem")); }
     if (flt.intl) unOn(cy, cm, cd).forEach(e => { const c = el("span", "chip c-intl", e.s); c.title = e.n + (e.wk ? " (" + e.wk + " days)" : ""); chips.append(c); });
     if (flt.ul) { info.ul.forEach(e => add("c-ul", e.n, "d-ul")); info.jesa.forEach(e => add("c-ul", e.n, "d-ul")); }
+    if (flt.corp) corpOn(cm, cd).forEach(e => { const c = el("span", "chip c-corp", e.s); c.title = e.n + " · " + e.y + "년 · " + e.memo; chips.append(c); });
     if (flt.mk) {
       const mk = info.mk;
       if (mk.five.length) add("c-mk", mk.five[0] + "장", "d-mk");
@@ -1240,25 +1248,12 @@ function unYear(y) {
   }
   return (UNC[y] = M);
 }
+function corpOn(m, d) { return ((window.CORP && CORP.rows) || []).filter(r => r.m === m && r.d === d); }
 function unOn(y, m, d) { return unYear(y)[key(y, m, d)] || []; }
 function renderIntl() {
   const box = document.getElementById("intl"); box.textContent = "";
-  const { y, m } = view, ul = el("ul", "ilist");
-  let n = 0;
-  for (let d = 1; d <= dimOf(y, m); d++) {
-    for (const e of unOn(y, m, d)) {
-      const li = el("li");
-      let dt = m + "월 " + d + "일(" + DOW_KO[dowOf(y, m, d)] + ")";
-      if (e.wk) { const end = addDays(y, m, d, e.wk - 1); dt += " ~ " + (end[1] !== m ? end[1] + "월 " : "") + end[2] + "일"; }
-      li.append(el("span", "dt", dt));
-      const nm = el("span", "nm", e.n);
-      if (e.s !== e.n) nm.append(el("span", "ab", "(" + e.s + ")"));
-      li.append(nm); ul.append(li); n++;
-    }
-  }
-  if (!n) box.append(el("p", "hint", "이달에는 국제기념일이 없습니다.")); else box.append(ul);
-  box.append(el("p", "hint", y + "년 " + m + "월 기준 · " + n + "건 · 괄호 안은 달력에 표시하는 짧은 이름입니다. · Vesak(5월 보름), World Migratory Bird Day(5·10월 둘째 토요일), World Habitat Day(10월 첫째 월요일), World Maritime Day(9월 마지막 목요일), World Philosophy Day(11월 셋째 목요일), World Day of Remembrance for Road Traffic Victims(11월 셋째 일요일)는 해마다 날짜를 계산합니다."));
-  box.append(noteBlock("출처", [{ text: "United Nations — International Days and Weeks", url: UN_SRC }]));
+  const l = el("div", "lbl"); l.append(link(UN_SRC, "United Nations — International Days and Weeks"));
+  box.append(l);
 }
 
 /* ---------- CELEBRATION DAY ---------- */
